@@ -20,29 +20,29 @@ app:
     enabled: false
 
   # OAuth
-  oauth:
-    authentication:
-      type: DB
-      ldap:
-        user-dn-patterns:
-          - sn={0},ou=People
-          - sn={0},ou=People2
-        group-search-base: ou=Group
-        group-search-filter: member={0}
-        context-source-url: ldap://192.168.1.219:389/dc=izertis,dc=com
-    authorization-server:
-      enabled: true
-      client-type: INMEMORY
-      client-id: acme
-      client-secret: acmesecret
-      token-store-type: INMEMORY
-    resource-server:
-      enabled: true
-      type: EMBED
-    unprotected-url:
-      - /public/**
-      - /oauth/**
-      - /management/**
+#  oauth:
+#    authentication:
+#      type: DB
+#      ldap:
+#        user-dn-patterns:
+#          - sn={0},ou=People
+#          - sn={0},ou=People2
+#        group-search-base: ou=Group
+#        group-search-filter: member={0}
+#        context-source-url: ldap://192.168.1.219:389/dc=izertis,dc=com
+#    authorization-server:
+#      enabled: true
+#      client-type: INMEMORY
+#      client-id: acme
+#      client-secret: acmesecret
+#      token-store-type: INMEMORY
+#    resource-server:
+#      enabled: true
+#      type: EMBED
+#    unprotected-url:
+#      - /public/**
+#      - /oauth/**
+#      - /management/**
 
 # Spring configuration
 spring:
@@ -73,5 +73,3 @@ management:
       enabled: false
     redis:
       enabled: false
-    solr:
-      enabled: ${app.solr.enabled}

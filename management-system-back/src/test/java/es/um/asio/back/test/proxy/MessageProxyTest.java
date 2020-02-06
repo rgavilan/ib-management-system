@@ -19,7 +19,7 @@ import es.um.asio.service.proxy.impl.MessageProxyImpl;
 import es.um.asio.service.service.MessageService;
 
 @RunWith(SpringRunner.class)
-public class UserProxyTest {
+public class MessageProxyTest {
     /**
      * User proxy
      */

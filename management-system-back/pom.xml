@@ -25,10 +25,10 @@
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
 
-		<dependency>
-			<groupId>com.izertis.libraries</groupId>
-			<artifactId>izertis-oauth-starter-jdk11</artifactId>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>com.izertis.libraries</groupId> -->
+<!-- 			<artifactId>izertis-oauth-starter-jdk11</artifactId> -->
+<!-- 		</dependency> -->
 
 		<dependency>
 			<groupId>com.izertis.libraries</groupId>
@@ -74,12 +74,7 @@
     		<artifactId>spring-boot-starter-test</artifactId>
     		<scope>test</scope>
 		</dependency>
-		
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<scope>test</scope>
-		</dependency>
+
 	</dependencies>
 
 	<profiles>
@@ -99,10 +94,6 @@
 					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-starter-tomcat</artifactId>
 					<scope>compile</scope>
-				</dependency>
-				<dependency>
-					<groupId>org.postgresql</groupId>
-					<artifactId>postgresql</artifactId>
 				</dependency>
 			</dependencies>
 

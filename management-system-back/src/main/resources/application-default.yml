@@ -3,7 +3,7 @@ app:
   # Swagger
   swagger:
     enabled: true
-    secured: true
+    secured: false
     authServerUrl: ../oauth
     authServerClientId: acme
     authServerClientSecret: acmesecret
