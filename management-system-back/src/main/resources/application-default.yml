@@ -1,5 +1,8 @@
 ---
 app:
+  kafka:
+    create-topics: true
+
   # Swagger
   swagger:
     enabled: true
@@ -19,6 +22,11 @@ app:
       - /v2/api-docs
 ## Actuator
 management:
+  server:
+    port: 9322
   health:
     redis:
       enabled: false
+
+server:
+  port: 8082

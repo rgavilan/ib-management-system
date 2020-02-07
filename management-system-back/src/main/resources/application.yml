@@ -3,6 +3,7 @@ app:
   kafka:
     general-topic-name: general-data
     management-topic-name: management-data
+    create-topics: false
 
   # CORS
   cors:
