@@ -48,4 +48,18 @@ Se ha añadido la posibilidad de utilizar Swagger, el cual se ha configurado com
 
 Para acceder a Swagger, se utilizará la siguiente URL:
 
-http://localhost:8080/swagger-ui.html
+[http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
+
+## Instalación en entorno real
+
+Será preciso configurar las siguientes variables de entorno cuando se instale en un entorno real:
+
+|Variable|Descripción|Valor por defecto|
+|---|---|---|
+|`APP_KAFKA_GENERAL_TOPIC_NAME`|Nombre del topic de Kafka general|general-data|
+|`APP_KAFKA_MANAGEMENT_TOPIC_NAME`|Nombre del topic de Kafka de gestión|management-data|
+|`APP_KAFKA_CREATE_TOPICS`|Flag que indica si debe crear automáticamente los topics de Kafka. Valores admisibles `true` y `false`|false|
+| `SPRING_KAFKA_BOOTSTRAP_SERVERS` | URL del servicio de Kafka para los productores | localhost:29092 |
+| `SPRING_KAFKA_CONSUMER_BOOTSTRAP_SERVERS` | URL del servicio de Kafka para los consumidores | localhost:29092 |
+| `SPRING_KAFKA_CONSUMER_GROUP_ID` | ID del grupo de consumidores | management-system |
+|`APP_SWAGGER_ENABLED`|Flag que indica si se habilita Swagger. Valores admisibles `true` y `false`|false|
