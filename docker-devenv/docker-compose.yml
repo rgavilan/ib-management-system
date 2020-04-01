@@ -24,6 +24,16 @@ services:
       - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
     depends_on:
       - zookeeper
+  kafdrop:
+    image: obsidiandynamics/kafdrop:3.24.0
+    restart: "no"
+    ports:
+      - 19000:9000
+    environment:
+      KAFKA_BROKERCONNECT: kafka:9092
+      JVM_OPTS: -Xms16M -Xmx48M -Xss180K -XX:-TieredCompilation -XX:+UseStringDeduplication -noverify
+    depends_on:
+      - kafka
 
 volumes:
   zookeeper_data:
