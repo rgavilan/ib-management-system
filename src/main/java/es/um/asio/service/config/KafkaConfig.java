@@ -14,7 +14,7 @@ import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 
-import es.um.asio.domain.DataSetDataBase;
+import es.um.asio.domain.DataSetData;
 
 /**
  * Kafka related configuration
@@ -33,7 +33,7 @@ public class KafkaConfig {
      * 
      * @return {@link ConsumerFactory}.
      */
-    public ConsumerFactory<String, DataSetDataBase> inputDataConsumerFactory() {
+    public ConsumerFactory<String, DataSetData> inputDataConsumerFactory() {
     	
     	Map<String, Object> customerConfigMap = this.kafkaProperties.getConsumer().buildProperties();
     	customerConfigMap.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
@@ -49,8 +49,8 @@ public class KafkaConfig {
      * @return the concurrent kafka listener container factory
      */
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, DataSetDataBase> inputKafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, DataSetDataBase> factory = new ConcurrentKafkaListenerContainerFactory<>();
+    public ConcurrentKafkaListenerContainerFactory<String, DataSetData> inputKafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, DataSetData> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(this.inputDataConsumerFactory());
         return factory;
     }

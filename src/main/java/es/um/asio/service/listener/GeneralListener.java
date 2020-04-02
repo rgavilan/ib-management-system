@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
-import es.um.asio.domain.DataSetDataBase;
+import es.um.asio.domain.DataSetData;
 import es.um.asio.service.service.MessageService;
 
 /**
@@ -31,7 +31,7 @@ public class GeneralListener {
      * @param message
      */
     @KafkaListener(topics = "#{'${app.kafka.general-topic-name}'.split(',')}", containerFactory = "inputKafkaListenerContainerFactory")
-    public void listen(final DataSetDataBase message) {
+    public void listen(final DataSetData message) {
         if (this.logger.isDebugEnabled()) {
             this.logger.debug("Received message: {}", message);
         }
