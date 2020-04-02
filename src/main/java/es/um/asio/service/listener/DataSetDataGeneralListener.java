@@ -10,14 +10,14 @@ import es.um.asio.domain.DataSetData;
 import es.um.asio.service.service.MessageService;
 
 /**
- * General message listener
+ * General message listener for DataSetData
  */
 @Component
-public class GeneralListener {
+public class DataSetDataGeneralListener {
     /**
      * Logger
      */
-    private final Logger logger = LoggerFactory.getLogger(GeneralListener.class);
+    private final Logger logger = LoggerFactory.getLogger(DataSetDataGeneralListener.class);
 
     /**
      * Service to handle message entity related operations
@@ -30,7 +30,7 @@ public class GeneralListener {
      * 
      * @param message
      */
-    @KafkaListener(topics = "#{'${app.kafka.general-topic-name}'.split(',')}", containerFactory = "inputKafkaListenerContainerFactory")
+    @KafkaListener(topics = "#{'${app.kafka.general-topic-name}'.split(',')}", containerFactory = "dataSetDataKafkaListenerContainerFactory")
     public void listen(final DataSetData message) {
         if (this.logger.isDebugEnabled()) {
             this.logger.debug("Received message: {}", message);

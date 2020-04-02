@@ -21,6 +21,7 @@
 	<properties>
 		<artifact.packaging>jar</artifact.packaging>
 		<dataset-domain-model.version>1.0-SNAPSHOT</dataset-domain-model.version>
+		<domain-model.version>1.0-SNAPSHOT</domain-model.version>
 	</properties>
 	
 	<dependencies>
@@ -30,6 +31,12 @@
 			<groupId>es.um.asio</groupId>
 			<artifactId>dataset-domain-model</artifactId>
 			<version>${dataset-domain-model.version}</version>
+		</dependency>
+						
+		<dependency>
+			<groupId>es.um.asio</groupId>
+			<artifactId>domain-model</artifactId>
+			<version>${domain-model.version}</version>
 		</dependency>
 
 	 	
