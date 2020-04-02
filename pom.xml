@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -7,39 +9,42 @@
 		<artifactId>izertis-superpom-parent-app</artifactId>
 		<version>1.1.1</version>
 	</parent>
-	
+
 	<groupId>es.um.asio</groupId>
 	<artifactId>management-system</artifactId>
 	<packaging>${artifact.packaging}</packaging>
 	<name>UM - ASIO - management-system - Back</name>
 	<description>UM - ASIO - management-system - Back</description>
-	
+
 	<scm>
 		<url>https://git.izertis.com/universidaddemurcia/semantmurc/management-system</url>
 	</scm>
+
 
 	<properties>
 		<artifact.packaging>jar</artifact.packaging>
 		<dataset-domain-model.version>1.0-SNAPSHOT</dataset-domain-model.version>
 		<domain-model.version>1.0-SNAPSHOT</domain-model.version>
+		<jena.version>3.14.0</jena.version>
+		<commons-beanutils.version>1.9.4</commons-beanutils.version>
 	</properties>
-	
+
 	<dependencies>
-		
+
 		<!-- UM ASIO - dependencies -->
 		<dependency>
 			<groupId>es.um.asio</groupId>
 			<artifactId>dataset-domain-model</artifactId>
 			<version>${dataset-domain-model.version}</version>
 		</dependency>
-						
+
 		<dependency>
 			<groupId>es.um.asio</groupId>
 			<artifactId>domain-model</artifactId>
 			<version>${domain-model.version}</version>
 		</dependency>
 
-	 	
+
 		<dependency>
 			<groupId>com.fasterxml.jackson.datatype</groupId>
 			<artifactId>jackson-datatype-hibernate5</artifactId>
@@ -49,7 +54,7 @@
 			<groupId>de.siegmar</groupId>
 			<artifactId>logback-gelf</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
@@ -59,31 +64,49 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<optional>true</optional>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework.kafka</groupId>
 			<artifactId>spring-kafka</artifactId>
 		</dependency>
-		
-		
-		<!-- Testing -->
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.jena</groupId>
+			<artifactId>jena-core</artifactId>
+			<version>${jena.version}</version>
+		</dependency>
 		
 		<dependency>
-    		<groupId>org.springframework.boot</groupId>
-    		<artifactId>spring-boot-starter-test</artifactId>
-    		<scope>test</scope>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>${commons-beanutils.version}</version>
+		</dependency>
+
+
+		<!-- Testing -->
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
 		</dependency>
 
 	</dependencies>

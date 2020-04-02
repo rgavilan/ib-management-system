@@ -1,5 +1,6 @@
 package es.um.asio.service.listener;
 
+import org.apache.jena.rdf.model.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,9 @@ import org.springframework.stereotype.Component;
 
 import es.um.asio.domain.DataSetData;
 import es.um.asio.domain.InputData;
+import es.um.asio.service.model.BusEvent;
 import es.um.asio.service.service.MessageService;
+import es.um.asio.service.service.RDFService;
 
 /**
  * General message listener for DataSetData
@@ -25,6 +28,9 @@ public class DataSetDataGeneralListener {
      */
     @Autowired
     private MessageService messageService;
+    
+    @Autowired
+    private RDFService rdfService;
 
     /**
      * Method listening input topic name
@@ -40,6 +46,11 @@ public class DataSetDataGeneralListener {
             this.logger.debug("Received message: {}", message);
         }
 
+        Model rdf = rdfService.convert(new BusEvent<InputData<DataSetData>>(message));
+        
+        rdf.write(System.out);
+        
+        this.logger.info(rdf.toString());
         // Cuando el mensaje sea recibido es preciso procesarlo
         // this.messageService.save(message);
     }
