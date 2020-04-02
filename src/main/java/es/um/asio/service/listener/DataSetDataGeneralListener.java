@@ -32,6 +32,9 @@ public class DataSetDataGeneralListener {
      */
     @KafkaListener(topics = "#{'${app.kafka.general-topic-name}'.split(',')}", containerFactory = "dataSetDataKafkaListenerContainerFactory")
     public void listen(final DataSetData message) {
+    	
+    	// INSERT operation by default
+    	
         if (this.logger.isDebugEnabled()) {
             this.logger.debug("Received message: {}", message);
         }

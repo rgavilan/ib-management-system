@@ -16,6 +16,7 @@ import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 import es.um.asio.domain.DataSetData;
 import es.um.asio.domain.PojoData;
+import es.um.asio.domain.pojo.Pojo;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -59,7 +60,7 @@ public class KafkaConfig {
      *
      * @return the consumer factory
      */
-    public ConsumerFactory<String, PojoData> pojoConsumerFactory() {
+    public ConsumerFactory<String, PojoData<Pojo>> pojoConsumerFactory() {
     	return new DefaultKafkaConsumerFactory<>(this.getKafkaConfiguration());
     }
     
@@ -70,8 +71,8 @@ public class KafkaConfig {
      * @return the concurrent kafka listener container factory
      */
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, PojoData> pojoKafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, PojoData> factory = new ConcurrentKafkaListenerContainerFactory<>();
+    public ConcurrentKafkaListenerContainerFactory<String, PojoData<Pojo>> pojoKafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, PojoData<Pojo>> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(this.pojoConsumerFactory());
         return factory;
     }
