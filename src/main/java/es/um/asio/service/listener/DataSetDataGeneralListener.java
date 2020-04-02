@@ -7,6 +7,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
 import es.um.asio.domain.DataSetData;
+import es.um.asio.domain.InputData;
 import es.um.asio.service.service.MessageService;
 
 /**
@@ -31,7 +32,7 @@ public class DataSetDataGeneralListener {
      * @param message
      */
     @KafkaListener(topics = "#{'${app.kafka.general-topic-name}'.split(',')}", containerFactory = "dataSetDataKafkaListenerContainerFactory")
-    public void listen(final DataSetData message) {
+    public void listen(final InputData<DataSetData> message) {
     	
     	// INSERT operation by default
     	
