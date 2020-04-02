@@ -42,13 +42,6 @@ La aplicación está preparada para funcionar con JDK 11. En caso de necesitar t
 
 Para descargar JDK 11, se precisa utilizar openjdk, la cual se puede obtener de https://jdk.java.net/11/
 
-### Swagger
-
-Se ha añadido la posibilidad de utilizar Swagger, el cual se ha configurado como Starter:
-
-Para acceder a Swagger, se utilizará la siguiente URL:
-
-[http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
 
 ## Instalación en entorno real
 
@@ -62,4 +55,3 @@ Será preciso configurar las siguientes variables de entorno cuando se instale e
 | `SPRING_KAFKA_BOOTSTRAP_SERVERS` | URL del servicio de Kafka para los productores | localhost:29092 |
 | `SPRING_KAFKA_CONSUMER_BOOTSTRAP_SERVERS` | URL del servicio de Kafka para los consumidores | localhost:29092 |
 | `SPRING_KAFKA_CONSUMER_GROUP_ID` | ID del grupo de consumidores | management-system |
-|`APP_SWAGGER_ENABLED`|Flag que indica si se habilita Swagger. Valores admisibles `true` y `false`|false|
