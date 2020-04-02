@@ -19,10 +19,19 @@
 	</scm>
 
 	<properties>
-		<artifact.packaging>war</artifact.packaging>
+		<artifact.packaging>jar</artifact.packaging>
+		<dataset-domain-model.version>1.0-SNAPSHOT</dataset-domain-model.version>
 	</properties>
-
+	
 	<dependencies>
+		
+		<!-- UM ASIO - dependencies -->
+		<dependency>
+			<groupId>es.um.asio</groupId>
+			<artifactId>dataset-domain-model</artifactId>
+			<version>${dataset-domain-model.version}</version>
+		</dependency>
+
 	 	
 		<dependency>
 			<groupId>com.fasterxml.jackson.datatype</groupId>
@@ -80,10 +89,6 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 
-			<properties>
-				<artifact.packaging>jar</artifact.packaging>
-			</properties>
-
 			<dependencies>
 				<dependency>
 					<groupId>org.springframework.boot</groupId>
@@ -100,21 +105,6 @@
 					</plugin>
 				</plugins>
 			</build>
-		</profile>
-
-		<profile>
-			<id>tomcat</id>
-		</profile>
-
-		<profile>
-			<id>jboss</id>
-
-			<dependencies>
-				<dependency>
-					<groupId>org.postgresql</groupId>
-					<artifactId>postgresql</artifactId>
-				</dependency>
-			</dependencies>
 		</profile>
 	</profiles>
 
