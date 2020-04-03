@@ -5,8 +5,8 @@ import java.lang.reflect.Field;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.Resource;
-import org.apache.jena.vocabulary.VCARD;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -20,10 +20,22 @@ import es.um.asio.service.service.RDFService;
 @Service
 public class RDFServiceImpl implements RDFService {
 
-	/**
-     * Logger
-     */
+	/** Logger. */
     private final Logger logger = LoggerFactory.getLogger(RDFServiceImpl.class);
+    
+    /** The Constant uri. */
+    public static final String uri ="http://www.w3.org/2001/asio-rdf/3.0#";
+    
+    
+    /**
+     * Gets the uri.
+     *
+     * @param entity the entity
+     * @return the uri
+     */
+    private String getURI(String entity) {
+    	return "http://example.org/" + entity;
+    }
     
     /**
      * Convert.
@@ -31,34 +43,25 @@ public class RDFServiceImpl implements RDFService {
      * @param input the input
      * @return the model
      */
-    public Model convert(BusEvent input) {
+    public Model convert(BusEvent<?> input) {
     	logger.info("Convert event bus: " + input);
     	
     	Model model = ModelFactory.createDefaultModel();
-    	Object obj = input.retrieveObject();
+    	Object obj = input.getData();
     	
     	// create the resource
-    	Resource resource = model.createResource(this.getURI(obj));
+    	Resource resource = model.createResource(this.getURI(obj.getClass().getSimpleName()));
     	
     	Field[] fields = obj.getClass().getDeclaredFields();
     	for(Field field: fields) {
     		try {
-				resource.addProperty(VCARD.N, BeanUtils.getSimpleProperty(obj, field.getName()));
+    			Property property = model.createProperty(uri,  field.getName() );
+				resource.addProperty(property, BeanUtils.getSimpleProperty(obj, field.getName()));
 			} catch (Exception e) {
 				logger.error("Error creating resource from input: " + input);
 			} 
     	}
 
     	return model;
-    }
-    
-    /**
-     * Gets the uri.
-     *
-     * @param obj the obj
-     * @return the uri
-     */
-    private String getURI(Object obj) {
-    	return "http://example.org/" + obj.getClass().getSimpleName();
     }
 }

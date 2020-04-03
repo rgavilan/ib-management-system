@@ -15,5 +15,5 @@ public interface RDFService {
 	 * @param input the input
 	 * @return the model
 	 */
-	Model convert(BusEvent input);
+	Model convert(BusEvent<?> input);
 }
