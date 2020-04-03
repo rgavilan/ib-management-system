@@ -10,6 +10,6 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @ComponentScan
 @Import({KafkaConfig.class})
-public class ServiceConfig {
+public class ManagementSystemServiceConfig {
 
 }

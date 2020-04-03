@@ -9,10 +9,12 @@ import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.um.asio.service.model.BusEvent;
 import es.um.asio.service.service.RDFService;
+import es.um.asio.service.service.UrisMockService;
 
 /**
  * The Class RDFServiceImpl.
@@ -26,6 +28,8 @@ public class RDFServiceImpl implements RDFService {
     /** The Constant uri. */
     public static final String uri ="http://www.w3.org/2001/asio-rdf/3.0#";
     
+    @Autowired
+    private UrisMockService urisMockService;
     
     /**
      * Gets the uri.
@@ -34,6 +38,7 @@ public class RDFServiceImpl implements RDFService {
      * @return the uri
      */
     private String getURI(String entity) {
+    	String test = urisMockService.getUri();
     	return "http://example.org/" + entity;
     }
     

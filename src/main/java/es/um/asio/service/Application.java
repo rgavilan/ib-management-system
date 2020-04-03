@@ -6,11 +6,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 
-import es.um.asio.service.config.ServiceConfig;
+import es.um.asio.service.config.ManagementSystemServiceConfig;
 
 @SpringBootApplication
 @EnableAutoConfiguration
-@Import({ ServiceConfig.class })
+@Import({ ManagementSystemServiceConfig.class })
 @ComponentScan
 public class Application {
     /**

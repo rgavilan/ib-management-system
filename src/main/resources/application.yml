@@ -4,6 +4,18 @@ app:
     general-topic-name: general-data
     management-topic-name: management-data
     create-topics: false
+  persistence:
+    datasource:
+      driver-class-name: org.postgresql.Driver
+      username: postgres
+      password: admin123
+      url: jdbc:postgresql://127.0.0.1:5432/app?ssl=false
+    jpa:
+      dialect: org.hibernate.dialect.PostgreSQL95Dialect
+      generate-ddl: false
+      show-sql: false
+      properties:
+        hibernate.temp.use_jdbc_metadata_defaults: false
 
   # CORS
   cors:
