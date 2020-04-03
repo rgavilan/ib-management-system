@@ -23,10 +23,10 @@
 
 	<properties>
 		<artifact.packaging>jar</artifact.packaging>
+		<commons-beanutils.version>1.9.4</commons-beanutils.version>
 		<dataset-domain-model.version>1.0-SNAPSHOT</dataset-domain-model.version>
 		<domain-model.version>1.0-SNAPSHOT</domain-model.version>
 		<jena.version>3.14.0</jena.version>
-		<commons-beanutils.version>1.9.4</commons-beanutils.version>
 		<uris-generator-service.version>1.0-SNAPSHOT</uris-generator-service.version>
 	</properties>
 
