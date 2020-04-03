@@ -1,5 +1,7 @@
 package es.um.asio.service.model;
 
+import org.apache.commons.beanutils.PropertyUtils;
+
 import es.um.asio.domain.InputData;
 import es.um.asio.domain.Operation;
 import es.um.asio.domain.PojoData;
@@ -19,6 +21,18 @@ public class BusEvent<T extends Object> {
 	 * Data set data.
 	 */
 	private T data;
+	
+	@SuppressWarnings("unchecked")
+	public T retrieveInnerObj() {
+		
+		try {
+			return (T) PropertyUtils.getProperty(data,"data");
+		} catch (Exception e) {
+			//TODO
+		}
+		
+		return data;
+	}
 
 	/**
 	 * Retrieve operation.
