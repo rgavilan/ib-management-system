@@ -12,7 +12,7 @@ import es.um.asio.domain.InputData;
 import es.um.asio.domain.PojoData;
 import es.um.asio.domain.pojo.Pojo;
 import es.um.asio.service.model.BusEvent;
-import es.um.asio.service.service.RDFService;
+import es.um.asio.service.rdf.RDFService;
 
 /**
  * General message listener for Pojo

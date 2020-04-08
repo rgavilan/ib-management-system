@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 
 import es.um.asio.domain.DataSetData;
 import es.um.asio.domain.InputData;
+import es.um.asio.service.kafka.KafkaService;
 import es.um.asio.service.model.BusEvent;
-import es.um.asio.service.service.MessageService;
-import es.um.asio.service.service.RDFService;
+import es.um.asio.service.rdf.RDFService;
 
 /**
  * General message listener for DataSetData
@@ -27,7 +27,7 @@ public class DataSetDataGeneralListener {
      * Service to handle message entity related operations
      */
     @Autowired
-    private MessageService messageService;
+    private KafkaService kafkaService;
     
     @Autowired
     private RDFService rdfService;
@@ -48,8 +48,6 @@ public class DataSetDataGeneralListener {
 
         Model rdf = rdfService.createRDF(new BusEvent<InputData<DataSetData>>(message));
                       
-        this.logger.info(rdf.toString());
-        // Cuando el mensaje sea recibido es preciso procesarlo
-        // this.messageService.save(message);
+        this.kafkaService.send(rdf.toString());
     }
 }

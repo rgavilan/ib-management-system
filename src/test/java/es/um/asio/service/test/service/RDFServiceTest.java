@@ -11,8 +11,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import es.um.asio.domain.DataSetData;
 import es.um.asio.domain.InputData;
 import es.um.asio.service.model.BusEvent;
-import es.um.asio.service.service.RDFService;
-import es.um.asio.service.service.impl.RDFServiceImpl;
+import es.um.asio.service.rdf.RDFService;
+import es.um.asio.service.rdf.impl.RDFServiceImpl;
 
 @RunWith(SpringRunner.class)
 public class RDFServiceTest {

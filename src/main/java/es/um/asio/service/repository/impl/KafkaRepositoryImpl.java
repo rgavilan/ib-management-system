@@ -5,13 +5,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
-import es.um.asio.service.repository.MessageRepository;
+import es.um.asio.service.repository.KafkaRepository;
 
 /**
  * Kafka repository implementation for messages.
  */
 @Component
-public class KafkaMessageRepositoryImpl implements MessageRepository {
+public class KafkaRepositoryImpl implements KafkaRepository {
     
     /**
      * Kafka template.
@@ -29,7 +29,7 @@ public class KafkaMessageRepositoryImpl implements MessageRepository {
      * {@inheritDoc}
      */
     @Override
-    public void save(String message) {
+    public void send(String message) {
         kafkaTemplate.send(managementTopicName, message);
     }
 

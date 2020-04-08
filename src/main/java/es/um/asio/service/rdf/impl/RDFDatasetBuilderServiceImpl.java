@@ -1,4 +1,4 @@
-package es.um.asio.service.service.impl;
+package es.um.asio.service.rdf.impl;
 
 import java.lang.reflect.Field;
 
@@ -16,9 +16,9 @@ import org.springframework.stereotype.Service;
 import es.um.asio.abstractions.Constants;
 import es.um.asio.domain.InputData;
 import es.um.asio.service.model.BusEvent;
-import es.um.asio.service.service.GeneratorIDService;
-import es.um.asio.service.service.RDFDatasetBuilderService;
-import es.um.asio.service.service.RDFPojoBuilderService;
+import es.um.asio.service.rdf.RDFGeneratorIDService;
+import es.um.asio.service.rdf.RDFDatasetBuilderService;
+import es.um.asio.service.rdf.RDFPojoBuilderService;
 
 /**
  * The Class RDFDatasetBuilderServiceImpl.
@@ -40,7 +40,7 @@ public class RDFDatasetBuilderServiceImpl  implements RDFDatasetBuilderService {
 
 	/** The generator ID service. */
 	@Autowired
-	private GeneratorIDService generatorIDService;
+	private RDFGeneratorIDService generatorIDService;
 
 
 	/**

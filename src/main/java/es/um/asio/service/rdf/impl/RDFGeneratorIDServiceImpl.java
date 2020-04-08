@@ -1,4 +1,4 @@
-package es.um.asio.service.service.impl;
+package es.um.asio.service.rdf.impl;
 
 import java.lang.reflect.Field;
 import java.net.URLEncoder;
@@ -10,16 +10,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import es.um.asio.abstractions.Constants;
-import es.um.asio.service.service.GeneratorIDService;
+import es.um.asio.service.rdf.RDFGeneratorIDService;
 
 /**
  * The Class GeneratorIDServiceImpl.
  */
 @Service
-public class GeneratorIDServiceImpl implements GeneratorIDService {
+public class RDFGeneratorIDServiceImpl implements RDFGeneratorIDService {
 
 	/** Logger. */
-	private final Logger logger = LoggerFactory.getLogger(GeneratorIDServiceImpl.class);
+	private final Logger logger = LoggerFactory.getLogger(RDFGeneratorIDServiceImpl.class);
 
 	/** The Constant CHART_SET. */
 	private static final String CHART_SET = java.nio.charset.StandardCharsets.UTF_8.toString();

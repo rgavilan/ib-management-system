@@ -1,4 +1,4 @@
-package es.um.asio.service.service;
+package es.um.asio.service.rdf;
 
 import org.apache.jena.rdf.model.Model;
 

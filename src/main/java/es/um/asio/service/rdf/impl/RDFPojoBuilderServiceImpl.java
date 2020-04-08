@@ -1,11 +1,11 @@
-package es.um.asio.service.service.impl;
+package es.um.asio.service.rdf.impl;
 
 import org.apache.jena.rdf.model.Model;
 import org.springframework.stereotype.Service;
 
 import es.um.asio.domain.PojoData;
 import es.um.asio.service.model.BusEvent;
-import es.um.asio.service.service.RDFPojoBuilderService;
+import es.um.asio.service.rdf.RDFPojoBuilderService;
 
 /**
  * The Class RDFPojoBuilderServiceImpl.

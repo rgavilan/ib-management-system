@@ -1,14 +1,15 @@
-package es.um.asio.service.service.impl;
+package es.um.asio.service.rdf.impl;
 
 import org.apache.jena.rdf.model.Model;
+import org.apache.jena.util.PrintUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.um.asio.service.model.BusEvent;
-import es.um.asio.service.service.RDFDatasetBuilderService;
-import es.um.asio.service.service.RDFService;
+import es.um.asio.service.rdf.RDFDatasetBuilderService;
+import es.um.asio.service.rdf.RDFService;
 
 /**
  * The Class RDFServiceImpl.
@@ -34,7 +35,10 @@ public class RDFServiceImpl implements RDFService {
 		logger.info("Convert event bus: " + input);
 
 		Model model = rdfDatasetBuilderService.inkoveBuilder(input);
-		// TODO print MODEL
+		
+		logger.info("Generated RDF: ");
+		model.write(System.out);
+		
 		return model;
 	}
 }
