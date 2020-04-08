@@ -28,7 +28,7 @@ import es.um.asio.domain.InputData;
 import es.um.asio.domain.PojoData;
 import es.um.asio.domain.pojo.Pojo;
 import es.um.asio.service.model.ManagementBusEvent;
-import es.um.asio.service.util.JsonSerializer;
+import es.um.asio.service.util.CustomJsonSerializer;
 
 /**
  * Kafka related configuration.
@@ -103,6 +103,7 @@ public class KafkaConfig {
     
     // PRODUCTOR
     
+    // FIXME
     // @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServers;
 
@@ -111,7 +112,7 @@ public class KafkaConfig {
         Map<String, Object> props = new HashMap<>();
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:29092");
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, CustomJsonSerializer.class);
         return props;
     }
 
