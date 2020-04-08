@@ -33,7 +33,7 @@ public class RDFServiceImpl implements RDFService {
 	public Model createRDF(BusEvent<?> input) {
 		logger.info("Convert event bus: " + input);
 
-		Model model = rdfDatasetBuilderService.create(input);
+		Model model = rdfDatasetBuilderService.inkoveBuilder(input);
 		// TODO print MODEL
 		return model;
 	}

@@ -49,7 +49,7 @@ public class RDFDatasetBuilderServiceImpl  implements RDFDatasetBuilderService {
 	 * @param input the input
 	 * @return the model
 	 */
-	public Model create(BusEvent<?> input) {
+	public Model inkoveBuilder(BusEvent<?> input) {
 		Model result = null;
 		if (!(input.getData() instanceof InputData)) {
 			result = nextBuilder(input);
@@ -67,7 +67,7 @@ public class RDFDatasetBuilderServiceImpl  implements RDFDatasetBuilderService {
 	 */
 	@Override
 	public Model nextBuilder(BusEvent<?> input) {
-		return rdfPojoBuilderService.create(input);
+		return rdfPojoBuilderService.inkoveBuilder(input);
 	}
 
 	
@@ -88,7 +88,7 @@ public class RDFDatasetBuilderServiceImpl  implements RDFDatasetBuilderService {
 	 * @param obj the obj
 	 * @return the model
 	 */
-	private Model createRDF(Object obj) {
+	public Model createRDF(Object obj) {
 		Model model = ModelFactory.createDefaultModel();
 		model.createProperty(Constants.ROOT_URI);
 
