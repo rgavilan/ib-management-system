@@ -1,10 +1,12 @@
 package es.um.asio.service.repository.impl;
 
+import org.apache.jena.rdf.model.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
+import es.um.asio.service.model.ManagementBusEvent;
 import es.um.asio.service.repository.KafkaRepository;
 
 /**
@@ -17,7 +19,7 @@ public class KafkaRepositoryImpl implements KafkaRepository {
      * Kafka template.
      */
     @Autowired
-    private KafkaTemplate<String, String> kafkaTemplate;
+    private KafkaTemplate<String, ManagementBusEvent<Model>> kafkaTemplate;
     
     /**
      * Topic name
@@ -29,8 +31,8 @@ public class KafkaRepositoryImpl implements KafkaRepository {
      * {@inheritDoc}
      */
     @Override
-    public void send(String message) {
-        kafkaTemplate.send(managementTopicName, message);
+    public void send(ManagementBusEvent<Model> message) {
+       kafkaTemplate.send(managementTopicName, message);
     }
 
 }

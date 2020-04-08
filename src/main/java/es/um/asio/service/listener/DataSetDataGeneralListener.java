@@ -11,6 +11,7 @@ import es.um.asio.domain.DataSetData;
 import es.um.asio.domain.InputData;
 import es.um.asio.service.kafka.KafkaService;
 import es.um.asio.service.model.GeneralBusEvent;
+import es.um.asio.service.model.ManagementBusEvent;
 import es.um.asio.service.rdf.RDFService;
 
 /**
@@ -46,8 +47,8 @@ public class DataSetDataGeneralListener {
             this.logger.debug("Received message: {}", message);
         }
 
-        Model rdf = rdfService.createRDF(new GeneralBusEvent<InputData<DataSetData>>(message));
+        ManagementBusEvent<Model> managementBusEvent = rdfService.createRDF(new GeneralBusEvent<InputData<DataSetData>>(message));
                       
-        this.kafkaService.send(rdf.toString());
+        this.kafkaService.send(managementBusEvent);
     }
 }

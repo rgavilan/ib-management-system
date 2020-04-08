@@ -16,8 +16,9 @@ import org.springframework.stereotype.Service;
 import es.um.asio.abstractions.constants.Constants;
 import es.um.asio.domain.InputData;
 import es.um.asio.service.model.GeneralBusEvent;
-import es.um.asio.service.rdf.RDFGeneratorIDService;
+import es.um.asio.service.model.ManagementBusEvent;
 import es.um.asio.service.rdf.RDFDatasetBuilderService;
+import es.um.asio.service.rdf.RDFGeneratorIDService;
 import es.um.asio.service.rdf.RDFPojoBuilderService;
 
 /**
@@ -49,13 +50,14 @@ public class RDFDatasetBuilderServiceImpl  implements RDFDatasetBuilderService {
 	 * @param input the input
 	 * @return the model
 	 */
-	public Model inkoveBuilder(GeneralBusEvent<?> input) {
-		Model result = null;
+	public ManagementBusEvent<Model> inkoveBuilder(GeneralBusEvent<?> input) {
+		ManagementBusEvent<Model> result = null;
 		if (!(input.getData() instanceof InputData)) {
 			result = nextBuilder(input);
 		}
-		result = this.createRDF(input.retrieveInnerObj());
-
+		Model model = this.createRDF(input.retrieveInnerObj());
+		result = new ManagementBusEvent<Model>(model, input.retrieveOperation());
+		
 		return result;
 	}
 
@@ -66,7 +68,7 @@ public class RDFDatasetBuilderServiceImpl  implements RDFDatasetBuilderService {
 	 * @return the model
 	 */
 	@Override
-	public Model nextBuilder(GeneralBusEvent<?> input) {
+	public ManagementBusEvent<Model> nextBuilder(GeneralBusEvent<?> input) {
 		return rdfPojoBuilderService.inkoveBuilder(input);
 	}
 

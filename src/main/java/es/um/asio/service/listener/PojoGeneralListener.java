@@ -12,6 +12,7 @@ import es.um.asio.domain.InputData;
 import es.um.asio.domain.PojoData;
 import es.um.asio.domain.pojo.Pojo;
 import es.um.asio.service.model.GeneralBusEvent;
+import es.um.asio.service.model.ManagementBusEvent;
 import es.um.asio.service.rdf.RDFService;
 
 /**
@@ -39,7 +40,7 @@ public class PojoGeneralListener {
              this.logger.debug("Received message: {}", message);
          }
 
-         Model rdf = rdfService.createRDF(new GeneralBusEvent<PojoData<Pojo>>(message));
+    	 ManagementBusEvent<Model> rdf = rdfService.createRDF(new GeneralBusEvent<PojoData<Pojo>>(message));
                        
          this.logger.info(rdf.toString());
     }

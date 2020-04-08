@@ -3,6 +3,7 @@ package es.um.asio.service.rdf;
 import org.apache.jena.rdf.model.Model;
 
 import es.um.asio.service.model.GeneralBusEvent;
+import es.um.asio.service.model.ManagementBusEvent;
 
 /**
  * The Interface RDFChainResponsability.
@@ -15,7 +16,7 @@ public interface RDFChainResponsability {
 	 * @param input the input
 	 * @return the model
 	 */
-	Model inkoveBuilder(GeneralBusEvent<?> input);
+	 ManagementBusEvent<Model> inkoveBuilder(GeneralBusEvent<?> input);
 	
 	/**
 	 * Next builder.
@@ -23,7 +24,7 @@ public interface RDFChainResponsability {
 	 * @param input the input
 	 * @return the model
 	 */
-	Model nextBuilder(GeneralBusEvent<?> input);
+	 ManagementBusEvent<Model> nextBuilder(GeneralBusEvent<?> input);
 	
 	/**
 	 * Creates the RDF.
