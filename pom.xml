@@ -27,7 +27,7 @@
 		<dataset-domain-model.version>1.0-SNAPSHOT</dataset-domain-model.version>
 		<domain-model.version>1.0-SNAPSHOT</domain-model.version>
 		<jena.version>3.14.0</jena.version>
-		<uris-generator-service.version>1.0-SNAPSHOT</uris-generator-service.version>
+		<asio-abstractions.version>1.1.1</asio-abstractions.version>
 	</properties>
 
 	<dependencies>
@@ -44,13 +44,12 @@
 			<artifactId>domain-model</artifactId>
 			<version>${domain-model.version}</version>
 		</dependency>
-
+		
 		<dependency>
 			<groupId>es.um.asio</groupId>
-			<artifactId>uris-generator-service</artifactId>
-			<version>${uris-generator-service.version}</version>
+			<artifactId>asio-abstractions</artifactId>
+			<version>${asio-abstractions.version}</version>
 		</dependency>
-
 
 		<dependency>
 			<groupId>com.fasterxml.jackson.datatype</groupId>
@@ -107,17 +106,6 @@
 			<version>${commons-beanutils.version}</version>
 		</dependency>
 
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<exclusions>
-				<exclusion>
-					<artifactId>hsqldb</artifactId>
-					<groupId>org.hsqldb</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-
 		<!-- Testing -->
 
 		<dependency>
@@ -125,7 +113,7 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-
+		
 	</dependencies>
 
 	<profiles>

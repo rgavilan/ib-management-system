@@ -1,25 +1,22 @@
 package es.um.asio.service.service.impl;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.net.URLEncoder;
 
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.vocabulary.RDF;
-import org.apache.jena.vocabulary.SKOS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import es.um.asio.abstractions.Constants;
 import es.um.asio.service.model.BusEvent;
+import es.um.asio.service.service.GeneratorIDService;
 import es.um.asio.service.service.RDFService;
-import es.um.asio.service.service.UrisMockService;
 
 /**
  * The Class RDFServiceImpl.
@@ -33,34 +30,14 @@ public class RDFServiceImpl implements RDFService {
 	/** The Constant uri. */
 	public static final String uri = "http://www.w3.org/2001/asio-rdf/3.0#";
 
-	public static final String rootURI = "http://example.org";
-	public static final String CHART_SET = java.nio.charset.StandardCharsets.UTF_8.toString();
+	
 
+	// @Autowired
+	// private UrisGeneratorClient urisGeneratorClient;
+	
 	@Autowired
-	private UrisMockService urisMockService;
+	private GeneratorIDService generatorIDService;
 
-	/**
-	 * Gets the uri.
-	 *
-	 * @param entity the entity
-	 * @return the uri
-	 * @throws NoSuchMethodException
-	 * @throws InvocationTargetException
-	 * @throws IllegalAccessException
-	 */
-	private String getIDResource(Object obj) throws Exception {
-
-		StringBuilder result = new StringBuilder(rootURI);
-		String valueField = StringUtils.EMPTY;
-		
-		for (Field field : obj.getClass().getDeclaredFields()) {
-			result.append("/");
-			valueField = BeanUtils.getSimpleProperty(obj, field.getName());
-			result.append(URLEncoder.encode(valueField, CHART_SET));
-		}
-
-		return result.toString();
-	}
 
 	/**
 	 * Gets the uri.
@@ -83,14 +60,14 @@ public class RDFServiceImpl implements RDFService {
 		logger.info("Convert event bus: " + input);
 
 		Model model = ModelFactory.createDefaultModel();
-		model.createProperty(rootURI);
+		model.createProperty(Constants.ROOT_URI);
 
 		try {
 
 			Object obj = input.retrieveInnerObj();
 
 			// create the resource
-			Resource resourceProperties = model.createResource(this.getIDResource(obj));
+			Resource resourceProperties = model.createResource(generatorIDService.generateResourceID(obj));
 
 			Field[] fields = obj.getClass().getDeclaredFields();
 			for (Field field : fields) {
@@ -100,7 +77,7 @@ public class RDFServiceImpl implements RDFService {
 			}
 
 			// we set the type
-			Resource resourceClass = model.createResource(rootURI + "/" +obj.getClass().getSimpleName());
+			Resource resourceClass = model.createResource(Constants.ROOT_URI + "/" +obj.getClass().getSimpleName());
 			model.add(resourceProperties, RDF.type, resourceClass);
 
 		} catch (Exception e) {

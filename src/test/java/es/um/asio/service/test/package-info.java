@@ -1,4 +1,4 @@
 /**
  * Package containing back layer tests
  */
-package es.um.asio.back.test;
+package es.um.asio.service.test;

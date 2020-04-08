@@ -1,28 +1,20 @@
-#---
-#app:
-#  persistence:
-#    datasource:
-#      driver-class-name: org.h2.Driver
-#      username: root
-#      password: 
-#      url: 'jdbc:h2:mem:'
-#    jpa:
-#      dialect: org.hibernate.dialect.H2Dialect
-#      generate-ddl: true
-#      show-sql: true
-#      properties:
-#        hibernate.temp.use_jdbc_metadata_defaults: false
-#  # Solr
-#  solr:
-#    enabled: false
-#    
-#  # CORS
-#  cors:
-#    enabled: true
-#    allowedOrigin: '*'
-#    allowedMethods: GET,POST,PUT,DELETE
-#    allowedHeaders:
-#      - Authorization
-#      - X-Requested-With
-#      - Content-Type
-#    maxAge: 3600
+app:
+  kafka:
+    general-topic-name: general-data
+    management-topic-name: management-data
+    create-topics: false
+    
+# Spring configuration
+spring:
+  kafka:
+    bootstrap-servers:
+      - localhost:29092
+    consumer:
+      bootstrap-servers:
+        - localhost:29092
+      group-id: management-system
+    producer:
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+  # Solr
+  solr:
+    enabled: false

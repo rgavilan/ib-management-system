@@ -2,31 +2,5 @@
 app:
   kafka:
     create-topics: true
-
-  # Swagger
-  swagger:
-    enabled: true
-    secured: false
-    authServerUrl: ../oauth
-    authServerClientId: acme
-    authServerClientSecret: acmesecret
-  # OAuth
-  oauth:
-    unprotected-url:
-      - /public/**
-      - /oauth/**
-      - /management/**
-      - /swagger-ui.html
-      - /webjars/springfox-swagger-ui/**
-      - /swagger-resources/**
-      - /v2/api-docs
-## Actuator
-management:
-  server:
-    port: 9322
-  health:
-    redis:
-      enabled: false
-
 server:
   port: 8082
