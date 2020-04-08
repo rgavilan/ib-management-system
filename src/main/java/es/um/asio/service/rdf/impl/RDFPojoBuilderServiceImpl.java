@@ -4,7 +4,7 @@ import org.apache.jena.rdf.model.Model;
 import org.springframework.stereotype.Service;
 
 import es.um.asio.domain.PojoData;
-import es.um.asio.service.model.BusEvent;
+import es.um.asio.service.model.GeneralBusEvent;
 import es.um.asio.service.rdf.RDFPojoBuilderService;
 
 /**
@@ -20,7 +20,7 @@ public class RDFPojoBuilderServiceImpl implements RDFPojoBuilderService {
 	 * @return the model
 	 */
 	@Override
-	public Model inkoveBuilder(BusEvent<?> input) {
+	public Model inkoveBuilder(GeneralBusEvent<?> input) {
 		Model result = null;
 		if (!(input.getData() instanceof PojoData)) {
 			result = nextBuilder(input);
@@ -37,7 +37,7 @@ public class RDFPojoBuilderServiceImpl implements RDFPojoBuilderService {
 	 * @return the model
 	 */
 	@Override
-	public Model nextBuilder(BusEvent<?> input) {
+	public Model nextBuilder(GeneralBusEvent<?> input) {
 		return null;
 	}
 

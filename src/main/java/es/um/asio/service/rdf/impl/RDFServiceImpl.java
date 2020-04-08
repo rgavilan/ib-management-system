@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import es.um.asio.service.model.BusEvent;
+import es.um.asio.service.model.GeneralBusEvent;
 import es.um.asio.service.rdf.RDFDatasetBuilderService;
 import es.um.asio.service.rdf.RDFService;
 
@@ -31,7 +31,7 @@ public class RDFServiceImpl implements RDFService {
 	 * @param input the input
 	 * @return the model
 	 */
-	public Model createRDF(BusEvent<?> input) {
+	public Model createRDF(GeneralBusEvent<?> input) {
 		logger.info("Convert event bus: " + input);
 
 		Model model = rdfDatasetBuilderService.inkoveBuilder(input);

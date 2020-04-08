@@ -2,7 +2,7 @@ package es.um.asio.service.rdf;
 
 import org.apache.jena.rdf.model.Model;
 
-import es.um.asio.service.model.BusEvent;
+import es.um.asio.service.model.GeneralBusEvent;
 
 /**
  * The Interface RDFService.
@@ -15,5 +15,5 @@ public interface RDFService {
 	 * @param input the input
 	 * @return the model
 	 */
-	Model createRDF(BusEvent<?> input);
+	Model createRDF(GeneralBusEvent<?> input);
 }

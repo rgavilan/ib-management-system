@@ -2,8 +2,8 @@ package es.um.asio.service.model;
 
 import org.apache.commons.beanutils.PropertyUtils;
 
+import es.um.asio.abstractions.domain.Operation;
 import es.um.asio.domain.InputData;
-import es.um.asio.domain.Operation;
 import es.um.asio.domain.PojoData;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,22 +16,20 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class BusEvent<T extends Object> {
+public class GeneralBusEvent<T> {
 	/**
 	 * Data set data.
 	 */
 	private T data;
-	
+
 	@SuppressWarnings("unchecked")
 	public T retrieveInnerObj() {
-		
+
 		try {
-			return (T) PropertyUtils.getProperty(data,"data");
+			return (T) PropertyUtils.getProperty(data, "data");
 		} catch (Exception e) {
-			//TODO
+			throw new RuntimeException("Not found data property in " + data);
 		}
-		
-		return data;
 	}
 
 	/**

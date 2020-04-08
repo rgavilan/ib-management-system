@@ -13,9 +13,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import es.um.asio.abstractions.Constants;
+import es.um.asio.abstractions.constants.Constants;
 import es.um.asio.domain.InputData;
-import es.um.asio.service.model.BusEvent;
+import es.um.asio.service.model.GeneralBusEvent;
 import es.um.asio.service.rdf.RDFGeneratorIDService;
 import es.um.asio.service.rdf.RDFDatasetBuilderService;
 import es.um.asio.service.rdf.RDFPojoBuilderService;
@@ -49,7 +49,7 @@ public class RDFDatasetBuilderServiceImpl  implements RDFDatasetBuilderService {
 	 * @param input the input
 	 * @return the model
 	 */
-	public Model inkoveBuilder(BusEvent<?> input) {
+	public Model inkoveBuilder(GeneralBusEvent<?> input) {
 		Model result = null;
 		if (!(input.getData() instanceof InputData)) {
 			result = nextBuilder(input);
@@ -66,7 +66,7 @@ public class RDFDatasetBuilderServiceImpl  implements RDFDatasetBuilderService {
 	 * @return the model
 	 */
 	@Override
-	public Model nextBuilder(BusEvent<?> input) {
+	public Model nextBuilder(GeneralBusEvent<?> input) {
 		return rdfPojoBuilderService.inkoveBuilder(input);
 	}
 
