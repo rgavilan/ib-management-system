@@ -21,13 +21,14 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
-import org.springframework.kafka.support.serializer.JsonSerializer;
+
 
 import es.um.asio.domain.DataSetData;
 import es.um.asio.domain.InputData;
 import es.um.asio.domain.PojoData;
 import es.um.asio.domain.pojo.Pojo;
 import es.um.asio.service.model.ManagementBusEvent;
+import es.um.asio.service.util.JsonSerializer;
 
 /**
  * Kafka related configuration.
