@@ -32,6 +32,6 @@ public class RDFServiceTest {
 	@Test
 	public void convertToRDF() {
 		BusEvent<InputData<DataSetData>> input = new BusEvent<InputData<DataSetData>>();
-		this.rdfService.convert(input);
+		this.rdfService.createRDF(input);
 	}
 }

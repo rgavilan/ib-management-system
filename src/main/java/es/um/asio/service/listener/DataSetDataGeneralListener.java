@@ -46,10 +46,8 @@ public class DataSetDataGeneralListener {
             this.logger.debug("Received message: {}", message);
         }
 
-        Model rdf = rdfService.convert(new BusEvent<InputData<DataSetData>>(message));
-        
-        rdf.write(System.out);
-        
+        Model rdf = rdfService.createRDF(new BusEvent<InputData<DataSetData>>(message));
+                      
         this.logger.info(rdf.toString());
         // Cuando el mensaje sea recibido es preciso procesarlo
         // this.messageService.save(message);
