@@ -6,8 +6,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import es.um.asio.abstractions.domain.ManagementBusEvent;
 import es.um.asio.service.kafka.KafkaService;
-import es.um.asio.service.model.ManagementBusEvent;
 import es.um.asio.service.repository.KafkaRepository;
 
 @Service

@@ -14,9 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.um.asio.abstractions.constants.Constants;
+import es.um.asio.abstractions.domain.ManagementBusEvent;
 import es.um.asio.domain.InputData;
 import es.um.asio.service.model.GeneralBusEvent;
-import es.um.asio.service.model.ManagementBusEvent;
 import es.um.asio.service.rdf.RDFDatasetBuilderService;
 import es.um.asio.service.rdf.RDFGeneratorIDService;
 import es.um.asio.service.rdf.RDFPojoBuilderService;

@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
-import es.um.asio.service.model.ManagementBusEvent;
+import es.um.asio.abstractions.domain.ManagementBusEvent;
 import es.um.asio.service.repository.KafkaRepository;
 
 /**

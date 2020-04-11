@@ -3,9 +3,9 @@ package es.um.asio.service.rdf.impl;
 import org.apache.jena.rdf.model.Model;
 import org.springframework.stereotype.Service;
 
+import es.um.asio.abstractions.domain.ManagementBusEvent;
 import es.um.asio.domain.PojoData;
 import es.um.asio.service.model.GeneralBusEvent;
-import es.um.asio.service.model.ManagementBusEvent;
 import es.um.asio.service.rdf.RDFPojoBuilderService;
 
 /**

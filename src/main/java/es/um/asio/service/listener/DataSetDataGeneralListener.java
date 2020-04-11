@@ -7,11 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
+import es.um.asio.abstractions.domain.ManagementBusEvent;
 import es.um.asio.domain.DataSetData;
 import es.um.asio.domain.InputData;
 import es.um.asio.service.kafka.KafkaService;
 import es.um.asio.service.model.GeneralBusEvent;
-import es.um.asio.service.model.ManagementBusEvent;
 import es.um.asio.service.rdf.RDFService;
 
 /**
