@@ -2,7 +2,7 @@ package es.um.asio.service.util.dummy.data;
 
 import es.um.asio.domain.DataSetData;
 import es.um.asio.domain.gruposInvestigacion.ConceptoInvestigador;
-import es.um.asio.service.util.DatasetTypeTest;
+import es.um.asio.service.util.test.DatasetTypeTest;
 
 /**
  * The Class ConceptoInvestigadorDummy.

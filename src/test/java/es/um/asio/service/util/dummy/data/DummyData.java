@@ -4,7 +4,7 @@
 package es.um.asio.service.util.dummy.data;
 
 import es.um.asio.domain.DataSetData;
-import es.um.asio.service.util.DatasetTypeTest;
+import es.um.asio.service.util.test.DatasetTypeTest;
 
 /**
  * The Interface DummyData.

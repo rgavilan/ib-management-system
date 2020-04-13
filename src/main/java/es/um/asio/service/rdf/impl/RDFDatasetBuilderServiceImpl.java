@@ -97,8 +97,10 @@ public class RDFDatasetBuilderServiceImpl  implements RDFDatasetBuilderService {
 		try {
 			// create the resource
 			Resource resourceProperties = model.createResource(generatorIDService.generateResourceID(obj));
-
+			
+			// only the own fields
 			Field[] fields = obj.getClass().getDeclaredFields();
+			
 			for (Field field : fields) {
 				Property property = model.createProperty(this.getURI(field.getName()), field.getName());
 				resourceProperties.addProperty(property, BeanUtils.getSimpleProperty(obj, field.getName()));

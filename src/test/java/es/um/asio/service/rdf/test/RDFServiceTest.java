@@ -2,6 +2,7 @@ package es.um.asio.service.rdf.test;
 
 
 import org.apache.jena.rdf.model.Model;
+import org.apache.jena.riot.RDFFormat;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,9 @@ import es.um.asio.service.rdf.impl.RDFDatasetBuilderServiceImpl;
 import es.um.asio.service.rdf.impl.RDFGeneratorIDServiceImpl;
 import es.um.asio.service.rdf.impl.RDFPojoBuilderServiceImpl;
 import es.um.asio.service.rdf.impl.RDFServiceImpl;
-import es.um.asio.service.util.AsioMockupBuilder;
-import es.um.asio.service.util.DatasetTypeTest;
+import es.um.asio.service.util.RDFUtil;
+import es.um.asio.service.util.test.AsioMockupBuilder;
+import es.um.asio.service.util.test.DatasetTypeTest;
 
 @RunWith(SpringRunner.class)
 public class RDFServiceTest {
@@ -58,6 +60,11 @@ public class RDFServiceTest {
 	public void createRDFConceptoGrupo() {
 		GeneralBusEvent<InputData<DataSetData>> input = AsioMockupBuilder.createBusEventDataSet(DatasetTypeTest.CONCEPTO_GRUPO);
 		ManagementBusEvent<Model> managementBusEvent = this.rdfService.createRDF(input);
-		managementBusEvent.getModel().write(System.out);
+		
+		String result = RDFUtil.toString(managementBusEvent.getModel(), RDFFormat.TURTLE_PRETTY);
+		
+		System.out.println(result);
+		
+		// managementBusEvent.getModel().write(System.out);
 	}
 }

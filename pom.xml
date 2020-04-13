@@ -101,6 +101,12 @@
 		</dependency>
 		
 		<dependency>
+		    <groupId>org.apache.jena</groupId>
+		    <artifactId>jena-arq</artifactId>
+		    <version>${jena.version}</version>
+		</dependency>
+		
+		<dependency>
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
 			<version>${commons-beanutils.version}</version>

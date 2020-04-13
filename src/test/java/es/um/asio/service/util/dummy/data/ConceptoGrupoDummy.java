@@ -1,12 +1,24 @@
 package es.um.asio.service.util.dummy.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import es.um.asio.domain.DataSetData;
 import es.um.asio.domain.gruposInvestigacion.ConceptoGrupo;
-import es.um.asio.service.util.DatasetTypeTest;
+import es.um.asio.service.util.test.DatasetTypeTest;
 
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ConceptoGrupoDummy extends ConceptoGrupo implements DummyData {
-
-	private static final long serialVersionUID = -3887789868183420670L;
+	
+	// vbles
+    private String idGrupoInvestigacion;
+    private long numero;
+    private String codTipoConcepto;
+    private String texto;
+	
+	public ConceptoGrupoDummy() {
+		super();
+	}
 
 	@Override
 	public DataSetData createInstance(DatasetTypeTest type) {
