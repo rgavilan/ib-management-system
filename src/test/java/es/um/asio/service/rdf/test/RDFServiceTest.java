@@ -1,6 +1,7 @@
 package es.um.asio.service.rdf.test;
 
 
+import org.apache.jena.rdf.model.Model;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import es.um.asio.abstractions.domain.ManagementBusEvent;
 import es.um.asio.domain.DataSetData;
 import es.um.asio.domain.InputData;
 import es.um.asio.service.model.GeneralBusEvent;
@@ -19,6 +21,8 @@ import es.um.asio.service.rdf.impl.RDFDatasetBuilderServiceImpl;
 import es.um.asio.service.rdf.impl.RDFGeneratorIDServiceImpl;
 import es.um.asio.service.rdf.impl.RDFPojoBuilderServiceImpl;
 import es.um.asio.service.rdf.impl.RDFServiceImpl;
+import es.um.asio.service.util.AsioMockupBuilder;
+import es.um.asio.service.util.DatasetTypeTest;
 
 @RunWith(SpringRunner.class)
 public class RDFServiceTest {
@@ -51,9 +55,9 @@ public class RDFServiceTest {
    
 	
 	@Test
-	public void convertToRDF() {
-		GeneralBusEvent<InputData<DataSetData>> input = new GeneralBusEvent<InputData<DataSetData>>();
-		// this.rdfDatasetBuilderService.createRDF(input);
-		this.rdfService.createRDF(input);
+	public void createRDFConceptoGrupo() {
+		GeneralBusEvent<InputData<DataSetData>> input = AsioMockupBuilder.createBusEventDataSet(DatasetTypeTest.CONCEPTO_GRUPO);
+		ManagementBusEvent<Model> managementBusEvent = this.rdfService.createRDF(input);
+		managementBusEvent.getModel().write(System.out);
 	}
 }
