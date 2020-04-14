@@ -45,7 +45,8 @@ public class GeneralBusEvent<T> {
 		}
 
 		if (data instanceof PojoData) {
-			result = ((PojoData<?>) data).getOperation();
+			// FIXME
+			// result = ((PojoData<?>) data).getOperation();
 		}
 		return result;
 	}

@@ -3,13 +3,11 @@ package es.um.asio.service.config;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.jena.rdf.model.Model;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -116,12 +114,12 @@ public class KafkaConfig {
     }
 
     @Bean
-    public ProducerFactory<String, ManagementBusEvent<Model>> producerFactory() {
+    public ProducerFactory<String, ManagementBusEvent> producerFactory() {
         return new DefaultKafkaProducerFactory<>(producerConfigs());
     }
 
     @Bean
-    public KafkaTemplate<String, ManagementBusEvent<Model>> kafkaTemplate() {
+    public KafkaTemplate<String, ManagementBusEvent> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
     

@@ -1,6 +1,5 @@
 package es.um.asio.service.listener;
 
-import org.apache.jena.rdf.model.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +46,7 @@ public class DataSetDataGeneralListener {
             this.logger.debug("Received message: {}", message);
         }
 
-        ManagementBusEvent<Model> managementBusEvent = rdfService.createRDF(new GeneralBusEvent<InputData<DataSetData>>(message));
+        ManagementBusEvent managementBusEvent = rdfService.createRDF(new GeneralBusEvent<InputData<DataSetData>>(message));
                       
         this.kafkaService.send(managementBusEvent);
     }

@@ -19,7 +19,7 @@ public class KafkaRepositoryImpl implements KafkaRepository {
      * Kafka template.
      */
     @Autowired
-    private KafkaTemplate<String, ManagementBusEvent<Model>> kafkaTemplate;
+    private KafkaTemplate<String, ManagementBusEvent> kafkaTemplate;
     
     /**
      * Topic name
@@ -31,7 +31,7 @@ public class KafkaRepositoryImpl implements KafkaRepository {
      * {@inheritDoc}
      */
     @Override
-    public void send(ManagementBusEvent<Model> message) {
+    public void send(ManagementBusEvent message) {
        kafkaTemplate.send(managementTopicName, message);
     }
 

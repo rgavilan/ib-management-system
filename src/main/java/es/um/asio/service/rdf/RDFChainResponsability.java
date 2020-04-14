@@ -16,7 +16,7 @@ public interface RDFChainResponsability {
 	 * @param input the input
 	 * @return the model
 	 */
-	 ManagementBusEvent<Model> inkoveBuilder(GeneralBusEvent<?> input);
+	 ManagementBusEvent inkoveBuilder(GeneralBusEvent<?> input);
 	
 	/**
 	 * Next builder.
@@ -24,7 +24,7 @@ public interface RDFChainResponsability {
 	 * @param input the input
 	 * @return the model
 	 */
-	 ManagementBusEvent<Model> nextBuilder(GeneralBusEvent<?> input);
+	 ManagementBusEvent nextBuilder(GeneralBusEvent<?> input);
 	
 	/**
 	 * Creates the RDF.

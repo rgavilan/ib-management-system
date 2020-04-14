@@ -1,6 +1,5 @@
 package es.um.asio.service.kafka.impl;
 
-import org.apache.jena.rdf.model.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,7 @@ public class KafkaServiceImpl implements KafkaService {
 	private KafkaRepository kafkaRepository;
 
 	@Override
-	public void send(ManagementBusEvent<Model> message) {
+	public void send(ManagementBusEvent message) {
 		this.kafkaRepository.send(message);		
 	}
 }

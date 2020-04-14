@@ -20,6 +20,7 @@ import es.um.asio.service.model.GeneralBusEvent;
 import es.um.asio.service.rdf.RDFDatasetBuilderService;
 import es.um.asio.service.rdf.RDFGeneratorIDService;
 import es.um.asio.service.rdf.RDFPojoBuilderService;
+import es.um.asio.service.util.RDFUtil;
 
 /**
  * The Class RDFDatasetBuilderServiceImpl.
@@ -50,13 +51,13 @@ public class RDFDatasetBuilderServiceImpl  implements RDFDatasetBuilderService {
 	 * @param input the input
 	 * @return the model
 	 */
-	public ManagementBusEvent<Model> inkoveBuilder(GeneralBusEvent<?> input) {
-		ManagementBusEvent<Model> result = null;
+	public ManagementBusEvent inkoveBuilder(GeneralBusEvent<?> input) {
+		ManagementBusEvent result = null;
 		if (!(input.getData() instanceof InputData)) {
 			result = nextBuilder(input);
 		}
 		Model model = this.createRDF(input.retrieveInnerObj());
-		result = new ManagementBusEvent<Model>(model, input.retrieveOperation());
+		result = new ManagementBusEvent(RDFUtil.toString(model), input.retrieveOperation());
 		
 		return result;
 	}
@@ -68,7 +69,7 @@ public class RDFDatasetBuilderServiceImpl  implements RDFDatasetBuilderService {
 	 * @return the model
 	 */
 	@Override
-	public ManagementBusEvent<Model> nextBuilder(GeneralBusEvent<?> input) {
+	public ManagementBusEvent nextBuilder(GeneralBusEvent<?> input) {
 		return rdfPojoBuilderService.inkoveBuilder(input);
 	}
 

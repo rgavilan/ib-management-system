@@ -7,6 +7,7 @@ import es.um.asio.abstractions.domain.ManagementBusEvent;
 import es.um.asio.domain.PojoData;
 import es.um.asio.service.model.GeneralBusEvent;
 import es.um.asio.service.rdf.RDFPojoBuilderService;
+import es.um.asio.service.util.RDFUtil;
 
 /**
  * The Class RDFPojoBuilderServiceImpl.
@@ -21,14 +22,14 @@ public class RDFPojoBuilderServiceImpl implements RDFPojoBuilderService {
 	 * @return the model
 	 */
 	@Override
-	public ManagementBusEvent<Model> inkoveBuilder(GeneralBusEvent<?> input) {
-		ManagementBusEvent<Model> result = null;
+	public ManagementBusEvent inkoveBuilder(GeneralBusEvent<?> input) {
+		ManagementBusEvent result = null;
 		if (!(input.getData() instanceof PojoData)) {
 			result = nextBuilder(input);
 		}
 		Model model = this.createRDF(input.retrieveInnerObj());
 
-		result = new ManagementBusEvent<Model>(model, input.retrieveOperation());
+		result = new ManagementBusEvent(RDFUtil.toString(model), input.retrieveOperation());
 		
 		return result;
 	}
@@ -40,7 +41,7 @@ public class RDFPojoBuilderServiceImpl implements RDFPojoBuilderService {
 	 * @return the model
 	 */
 	@Override
-	public ManagementBusEvent<Model> nextBuilder(GeneralBusEvent<?> input) {
+	public ManagementBusEvent nextBuilder(GeneralBusEvent<?> input) {
 		return null;
 	}
 
