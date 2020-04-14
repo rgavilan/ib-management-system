@@ -10,6 +10,16 @@ import es.um.asio.service.util.test.DatasetTypeTest;
 public class ConceptoInvestigadorDummy extends ConceptoInvestigador implements DummyData {
 
 	private static final long serialVersionUID = 1176647267460058490L;
+	
+	// vbles
+    private long idPersona;
+    private long numero;
+    private String codTipoConcepto;
+    private String texto;
+    
+	public ConceptoInvestigadorDummy() {
+		super();
+	}
 
 	@Override
 	public DataSetData createInstance(DatasetTypeTest type) {

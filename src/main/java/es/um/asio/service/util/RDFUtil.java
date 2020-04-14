@@ -1,26 +1,47 @@
 package es.um.asio.service.util;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
 
 import org.apache.jena.rdf.model.Model;
-import org.apache.jena.riot.RDFFormat;
-import org.apache.jena.riot.RDFWriter;
+import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.riot.RDFDataMgr;
+import org.apache.jena.riot.RDFLanguages;
 
+/**
+ * The Class RDFUtil.
+ */
 public final class RDFUtil {
-	
+
+	/** The Constant RDF_XML_ABBREV. */
+	public static final String RDF_XML_ABBREV = "RDF/XML-ABBREV";
+
 	/**
-	 * To string.
+	 * Method to transform model to string
 	 *
-	 * @param model the model
+	 * @param model  the model
 	 * @param format the format
 	 * @return the string
 	 */
-	public static String toString(Model model, RDFFormat format) {
-		try(ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-            RDFWriter.create().source(model).format(format).context(null).output(out);
-            out.flush();
-            return out.toString("UTF-8");
-        } catch (IOException e) { throw new RuntimeException(e); }
+	public static String toString(Model model) {
+		String syntax = RDFUtil.RDF_XML_ABBREV;
+		StringWriter out = new StringWriter();
+		model.write(out, syntax);
+		return out.toString();
+	}
+	
+	/**
+	 * Method to transform string to model
+	 *
+	 * @param strModel the str model
+	 * @return the model
+	 */
+	public static Model toObject(String strModel) {
+		StringReader stringReader = new StringReader(strModel);
+		
+		Model modelFromString = ModelFactory.createDefaultModel();
+		RDFDataMgr.read(modelFromString, stringReader, null, RDFLanguages.RDFXML);
+		
+		return modelFromString;
 	}
 }
