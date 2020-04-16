@@ -4,6 +4,9 @@ app:
     general-topic-name: general-data
     management-topic-name: management-data
     create-topics: false
+  generator-uris:
+    mockup:
+      enabled: true
 
 # Spring configuration
 spring:

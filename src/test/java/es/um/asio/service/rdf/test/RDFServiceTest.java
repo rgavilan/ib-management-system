@@ -10,6 +10,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -26,6 +27,9 @@ import es.um.asio.service.rdf.impl.RDFDatasetBuilderServiceImpl;
 import es.um.asio.service.rdf.impl.RDFGeneratorIDServiceImpl;
 import es.um.asio.service.rdf.impl.RDFPojoBuilderServiceImpl;
 import es.um.asio.service.rdf.impl.RDFServiceImpl;
+import es.um.asio.service.uris.URISGeneratorClient;
+import es.um.asio.service.uris.impl.URISGeneratorClientImpl;
+import es.um.asio.service.uris.impl.URISGeneratorClientMockupImpl;
 import es.um.asio.service.util.RDFUtil;
 import es.um.asio.service.util.dummy.data.ConceptoGrupoDummy;
 import es.um.asio.service.util.test.AsioMockupBuilder;
@@ -49,6 +53,18 @@ public class RDFServiceTest {
 			return new RDFDatasetBuilderServiceImpl();
 		}
 
+		@Bean
+		@ConditionalOnProperty(prefix = "app.generator-uris.mockup", name = "enabled", havingValue = "true", matchIfMissing = true)
+		public URISGeneratorClient urisGeneratorClientMockup() {
+			return new URISGeneratorClientMockupImpl();
+		}
+		
+		@Bean
+		@ConditionalOnProperty(prefix = "app.generator-uris.mockup", name = "enabled", havingValue = "false", matchIfMissing = false)
+		public URISGeneratorClient urisGeneratorClient() {
+			return new URISGeneratorClientImpl();
+		}
+		
 		@Bean
 		public RDFGeneratorIDService rdfGeneratorIDService() {
 			return new RDFGeneratorIDServiceImpl();
@@ -102,12 +118,6 @@ public class RDFServiceTest {
 	 * @return the model
 	 */
 	private Model retrieveConceptoGrupo() {
-		/*
-			StringReader s = new StringReader(ConceptoGrupoDummy.RDF_EXAMPLE);
-			Model m = ModelFactory.createDefaultModel();
-			RDFDataMgr.read(m, s, null, RDFLanguages.RDFXML);
-			*/
-		
 		StringReader s1 = new StringReader(ConceptoGrupoDummy.getRDF());
 		Model model = ModelFactory.createDefaultModel();
 		model.read(s1, null, "RDF/XML");

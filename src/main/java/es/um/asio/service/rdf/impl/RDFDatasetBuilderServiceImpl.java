@@ -18,8 +18,8 @@ import es.um.asio.abstractions.domain.ManagementBusEvent;
 import es.um.asio.domain.InputData;
 import es.um.asio.service.model.GeneralBusEvent;
 import es.um.asio.service.rdf.RDFDatasetBuilderService;
-import es.um.asio.service.rdf.RDFGeneratorIDService;
 import es.um.asio.service.rdf.RDFPojoBuilderService;
+import es.um.asio.service.uris.URISGeneratorClient;
 import es.um.asio.service.util.RDFUtil;
 
 /**
@@ -34,17 +34,10 @@ public class RDFDatasetBuilderServiceImpl  implements RDFDatasetBuilderService {
 	@Autowired
 	private RDFPojoBuilderService rdfPojoBuilderService;
 
-	/** The Constant uri. */
-	public static final String uri = "http://www.w3.org/2001/asio-rdf/3.0#";
-
-	// @Autowired
-	// private UrisGeneratorClient urisGeneratorClient;
-
-	/** The generator ID service. */
 	@Autowired
-	private RDFGeneratorIDService generatorIDService;
+	private URISGeneratorClient urisGeneratorClient;
 
-
+	
 	/**
 	 * Creates the.
 	 *
@@ -73,18 +66,7 @@ public class RDFDatasetBuilderServiceImpl  implements RDFDatasetBuilderService {
 		return rdfPojoBuilderService.inkoveBuilder(input);
 	}
 
-	
-	/**
-	 * Gets the uri.
-	 *
-	 * @param property the property
-	 * @return the uri
-	 */
-	private String getURI(String property) {
-		// return this.urisMockService.getUri(property);
-		return uri;
-	}
-	
+		
 	/**
 	 * Creates the RDF.
 	 *
@@ -97,18 +79,18 @@ public class RDFDatasetBuilderServiceImpl  implements RDFDatasetBuilderService {
 
 		try {
 			// create the resource
-			Resource resourceProperties = model.createResource(generatorIDService.generateResourceID(obj));
+			Resource resourceProperties = model.createResource(urisGeneratorClient.createResourceID(obj));
 			
 			// only the own fields
 			Field[] fields = obj.getClass().getDeclaredFields();
 			
 			for (Field field : fields) {
-				Property property = model.createProperty(this.getURI(field.getName()), field.getName());
+				Property property = model.createProperty(urisGeneratorClient.createPropertyURI(obj), field.getName());
 				resourceProperties.addProperty(property, BeanUtils.getSimpleProperty(obj, field.getName()));
 			}
 
 			// we set the type
-			Resource resourceClass = model.createResource(Constants.ROOT_URI + "/" + obj.getClass().getSimpleName());
+			Resource resourceClass = model.createResource(urisGeneratorClient.createResourceTypeURI(obj.getClass().getSimpleName()));
 			model.add(resourceProperties, RDF.type, resourceClass);
 
 		} catch (Exception e) {
