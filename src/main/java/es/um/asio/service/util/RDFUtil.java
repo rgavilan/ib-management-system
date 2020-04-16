@@ -1,5 +1,7 @@
 package es.um.asio.service.util;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 
@@ -43,5 +45,20 @@ public final class RDFUtil {
 		RDFDataMgr.read(modelFromString, stringReader, null, RDFLanguages.RDFXML);
 		
 		return modelFromString;
+	}
+	
+	/**
+	 * Clone model.
+	 *
+	 * @param model the model
+	 * @return the model
+	 */
+	public static Model cloneModel(Model model) {
+		Model result = ModelFactory.createDefaultModel();
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		model.write(out);
+		ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
+		result.read(in, null);
+		return result;
 	}
 }
