@@ -22,7 +22,7 @@ public class URISGeneratorClientMockupImpl implements URISGeneratorClient {
 	}
 
 	@Override
-	public String createPropertyURI(Object input) {
+	public String createPropertyURI(Object input, String property, String resourceID) {
 		return "http://www.w3.org/2001/asio-rdf/3.0#";
 	}
 

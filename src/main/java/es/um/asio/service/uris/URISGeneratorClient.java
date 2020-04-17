@@ -13,13 +13,16 @@ public interface URISGeneratorClient {
 	 */
 	String createResourceID(Object input);
 	
+	
 	/**
 	 * Creates the property URI.
 	 *
 	 * @param input the input
+	 * @param property the property
+	 * @param resourceID the resource ID
 	 * @return the string
 	 */
-	String createPropertyURI(Object input);
+	String createPropertyURI(Object input, String property, String resourceID);
 	
 	/**
 	 * Creates the resource type URI.
@@ -28,4 +31,5 @@ public interface URISGeneratorClient {
 	 * @return the string
 	 */
 	String createResourceTypeURI(String className);
+	
 }

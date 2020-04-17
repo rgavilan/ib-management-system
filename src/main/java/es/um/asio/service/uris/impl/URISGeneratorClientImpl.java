@@ -1,11 +1,14 @@
 package es.um.asio.service.uris.impl;
 
+import java.util.HashMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import es.um.asio.abstractions.constants.Constants;
 import es.um.asio.service.uris.URISGeneratorClient;
 
 @Service
@@ -35,11 +38,18 @@ public class URISGeneratorClientImpl implements URISGeneratorClient {
 	 * @return the string
 	 */
 	@Override
-	public String createResourceID(Object input) {
+	public String createResourceID(Object obj) {
 		// FIXME remove it
 		if("${app.generator-uris.endpoint-resource-id}".equals(resourceIdEndpoint)) {
 			resourceIdEndpoint = "http://localhost:8080/uri/resource-id";
 		}
+		
+		HashMap input = new HashMap<>();
+		input.put(Constants.OBJECT, obj);
+		input.put(Constants.CLASS_NAME, obj.getClass().getSimpleName());
+		input.put(Constants.LANGUAGE, Constants.SPANISH_LANGUAGE);
+		input.put(Constants.UNIVERSITY, Constants.MURCIA_UNIVERSITY);
+		
 		String result = restTemplate.postForObject(resourceIdEndpoint, input, String.class);
 		return result;
 	}
@@ -51,11 +61,20 @@ public class URISGeneratorClientImpl implements URISGeneratorClient {
 	 * @return the string
 	 */
 	@Override
-	public String createPropertyURI(Object input) {
+	public String createPropertyURI(Object obj, String property, String resourceID) {
 		// FIXME remove it
 		if("${app.generator-uris.property}".equals(propertyEndpoint)) {
 			propertyEndpoint = "http://localhost:8080/uri/property";
 		}
+		
+		HashMap input = new HashMap<>();
+		input.put(Constants.OBJECT, obj);
+		input.put(Constants.CLASS_NAME, obj.getClass().getSimpleName());
+		input.put(Constants.PROPERTY, property);
+		input.put(Constants.RESOURCE_ID, resourceID);
+		input.put(Constants.LANGUAGE, Constants.SPANISH_LANGUAGE);
+		input.put(Constants.UNIVERSITY, Constants.MURCIA_UNIVERSITY);
+		
 		String result = restTemplate.postForObject(propertyEndpoint, input, String.class);
 		return result;
 	}
@@ -72,7 +91,13 @@ public class URISGeneratorClientImpl implements URISGeneratorClient {
 		if("${app.generator-uris.resource-type}".equals(resourceTypeEndpoint)) {
 			resourceTypeEndpoint = "http://localhost:8080/uri/resource-type";
 		}
-		String result = restTemplate.postForObject(resourceTypeEndpoint, className, String.class);
+		
+		HashMap input = new HashMap<>();
+		input.put(Constants.CLASS_NAME, className);
+		input.put(Constants.LANGUAGE, Constants.SPANISH_LANGUAGE);
+		input.put(Constants.UNIVERSITY, Constants.MURCIA_UNIVERSITY);
+		
+		String result = restTemplate.postForObject(resourceTypeEndpoint, input, String.class);
 		return result;
 	}
 

@@ -79,13 +79,15 @@ public class RDFDatasetBuilderServiceImpl  implements RDFDatasetBuilderService {
 
 		try {
 			// create the resource
-			Resource resourceProperties = model.createResource(urisGeneratorClient.createResourceID(obj));
+			String resourceId = urisGeneratorClient.createResourceID(obj);
+			
+			Resource resourceProperties = model.createResource(resourceId);
 			
 			// only the own fields
 			Field[] fields = obj.getClass().getDeclaredFields();
 			
 			for (Field field : fields) {
-				Property property = model.createProperty(urisGeneratorClient.createPropertyURI(obj), field.getName());
+				Property property = model.createProperty(urisGeneratorClient.createPropertyURI(obj, field.getName(), resourceId), field.getName());
 				resourceProperties.addProperty(property, BeanUtils.getSimpleProperty(obj, field.getName()));
 			}
 
