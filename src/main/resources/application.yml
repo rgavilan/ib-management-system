@@ -6,8 +6,12 @@ app:
     create-topics: false
   generator-uris:
     mockup:
-      enabled: true
-
+      enabled: false
+    endpoint: http://localhost:8080
+    endpoint-resource-id: ${app.generator-uris.endpoint}/uri/resource-id
+    endpoint-property: ${app.generator-uris.endpoint}/uri/property
+    endpoint-resource-type: ${app.generator-uris.endpoint}/uri/resource-type
+   
 # Spring configuration
 spring:
   kafka:
