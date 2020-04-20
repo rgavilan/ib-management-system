@@ -20,10 +20,9 @@ public interface URISGeneratorClient {
 	 *
 	 * @param input the input
 	 * @param property the property
-	 * @param resourceID the resource ID
 	 * @return the string
 	 */
-	String createPropertyURI(Object input, String property, String resourceID);
+	String createPropertyURI(Object input, String property);
 	
 	/**
 	 * Creates the resource type URI.

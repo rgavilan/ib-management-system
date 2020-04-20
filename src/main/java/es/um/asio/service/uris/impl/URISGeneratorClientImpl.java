@@ -68,7 +68,7 @@ public class URISGeneratorClientImpl implements URISGeneratorClient {
 	 * @return the stringc
 	 */
 	@Override
-	public String createPropertyURI(Object obj, String property, String resourceID) {
+	public String createPropertyURI(Object obj, String property) {
 		// FIXME remove it
 		if("${app.generator-uris.property}".equals(propertyEndpoint)) {
 			propertyEndpoint = "http://localhost:8080/uri-factory/canonical/property";
@@ -78,8 +78,7 @@ public class URISGeneratorClientImpl implements URISGeneratorClient {
 		input.put(Constants.OBJECT, obj);
 		input.put(Constants.CLASS, obj.getClass().getName());
 		input.put(Constants.PROPERTY, property);
-		input.put(Constants.RESOURCE_ID, resourceID);
-		
+				
 		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(propertyEndpoint)
 		        .queryParam(Constants.DOMAIN, Constants.DOMAIN_VALUE)
 		        .queryParam(Constants.LANG, Constants.SPANISH_LANGUAGE)

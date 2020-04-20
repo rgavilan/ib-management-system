@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import es.um.asio.abstractions.constants.Constants;
 import es.um.asio.abstractions.domain.ManagementBusEvent;
 import es.um.asio.domain.InputData;
 import es.um.asio.service.model.GeneralBusEvent;
@@ -79,15 +78,13 @@ public class RDFDatasetBuilderServiceImpl  implements RDFDatasetBuilderService {
 
 		try {
 			// create the resource
-			String resourceId = urisGeneratorClient.createResourceID(obj);
-			
-			Resource resourceProperties = model.createResource(resourceId);
+			Resource resourceProperties = model.createResource(urisGeneratorClient.createResourceID(obj));
 			
 			// only the own fields
 			Field[] fields = obj.getClass().getDeclaredFields();
 			
 			for (Field field : fields) {
-				Property property = model.createProperty(urisGeneratorClient.createPropertyURI(obj, field.getName(), resourceId), field.getName());
+				Property property = model.createProperty(urisGeneratorClient.createPropertyURI(obj, field.getName()), field.getName());
 				resourceProperties.addProperty(property, BeanUtils.getSimpleProperty(obj, field.getName()));
 			}
 

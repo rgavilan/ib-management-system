@@ -12,6 +12,11 @@ import es.um.asio.service.uris.URISGeneratorClient;
 @ConditionalOnProperty(prefix = "app.generator-uris.mockup", name = "enabled", havingValue = "true", matchIfMissing = true)
 public class URISGeneratorClientMockupImpl implements URISGeneratorClient {
 	
+	@Override
+	public String createResourceTypeURI(String className) {
+		return Constants.ROOT_URI + "/" + className;
+	}
+	
 	/** The generator ID service. */
 	@Autowired
 	private RDFGeneratorIDService generatorIDService;
@@ -27,12 +32,8 @@ public class URISGeneratorClientMockupImpl implements URISGeneratorClient {
 	}
 
 	@Override
-	public String createPropertyURI(Object input, String property, String resourceID) {
+	public String createPropertyURI(Object input, String property) {
 		return "http://www.w3.org/2001/asio-rdf/3.0#";
 	}
 
-	@Override
-	public String createResourceTypeURI(String className) {
-		return Constants.ROOT_URI + "/" + className;
-	}
 }
