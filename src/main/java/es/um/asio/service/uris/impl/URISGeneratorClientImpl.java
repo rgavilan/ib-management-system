@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -23,10 +24,10 @@ public class URISGeneratorClientImpl implements URISGeneratorClient {
 	@Value("${app.generator-uris.endpoint-resource-id}")
     private String resourceIdEndpoint;
 	
-	@Value("${app.generator-uris.property}")
+	@Value("${app.generator-uris.endpoint-property}")
     private String propertyEndpoint;
 	
-	@Value("${app.generator-uris.resource-type}")
+	@Value("${app.generator-uris.endpoint-resource-type}")
     private String resourceTypeEndpoint;
 	
 	 /**
@@ -35,6 +36,10 @@ public class URISGeneratorClientImpl implements URISGeneratorClient {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
 
 	/**
 	 * Creates the resource ID.
@@ -70,7 +75,7 @@ public class URISGeneratorClientImpl implements URISGeneratorClient {
 	@Override
 	public String createPropertyURI(Object obj, String property) {
 		// FIXME remove it
-		if("${app.generator-uris.property}".equals(propertyEndpoint)) {
+		if("${app.generator-uris.endpoint-property}".equals(propertyEndpoint)) {
 			propertyEndpoint = "http://localhost:8080/uri-factory/canonical/property";
 		}
 		
@@ -100,7 +105,7 @@ public class URISGeneratorClientImpl implements URISGeneratorClient {
 	@Override
 	public String createResourceTypeURI(String className) {
 		// FIXME remove it
-		if("${app.generator-uris.resource-type}".equals(resourceTypeEndpoint)) {
+		if("${app.generator-uris.endpoint-resource-type}".equals(resourceTypeEndpoint)) {
 			resourceTypeEndpoint = "http://localhost:8080/uri-factory/canonical/entity";
 		}
 		
