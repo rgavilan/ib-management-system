@@ -17,6 +17,11 @@ public class URISGeneratorClientMockupImpl implements URISGeneratorClient {
 	private RDFGeneratorIDService generatorIDService;
 
 	@Override
+	public String rootUri() {
+		return Constants.ROOT_URI;
+	}
+	
+	@Override
 	public String createResourceID(Object input) {
 		return generatorIDService.generateResourceID(input);
 	}
@@ -30,5 +35,4 @@ public class URISGeneratorClientMockupImpl implements URISGeneratorClient {
 	public String createResourceTypeURI(String className) {
 		return Constants.ROOT_URI + "/" + className;
 	}
-
 }

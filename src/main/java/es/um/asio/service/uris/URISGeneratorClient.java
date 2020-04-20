@@ -1,5 +1,6 @@
 package es.um.asio.service.uris;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Interface URISGeneratorClient.
  */
@@ -31,5 +32,13 @@ public interface URISGeneratorClient {
 	 * @return the string
 	 */
 	String createResourceTypeURI(String className);
+	
+	
+	/**
+	 * Root uri.
+	 *
+	 * @return the string
+	 */
+	String rootUri();
 	
 }

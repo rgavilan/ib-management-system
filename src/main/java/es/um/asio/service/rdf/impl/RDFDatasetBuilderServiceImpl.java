@@ -75,7 +75,7 @@ public class RDFDatasetBuilderServiceImpl  implements RDFDatasetBuilderService {
 	 */
 	public Model createRDF(Object obj) {
 		Model model = ModelFactory.createDefaultModel();
-		model.createProperty(Constants.ROOT_URI);
+		model.createProperty(urisGeneratorClient.rootUri());
 
 		try {
 			// create the resource
@@ -92,7 +92,7 @@ public class RDFDatasetBuilderServiceImpl  implements RDFDatasetBuilderService {
 			}
 
 			// we set the type
-			Resource resourceClass = model.createResource(urisGeneratorClient.createResourceTypeURI(obj.getClass().getSimpleName()));
+			Resource resourceClass = model.createResource(urisGeneratorClient.createResourceTypeURI(obj.getClass().getName()));
 			model.add(resourceProperties, RDF.type, resourceClass);
 
 		} catch (Exception e) {
