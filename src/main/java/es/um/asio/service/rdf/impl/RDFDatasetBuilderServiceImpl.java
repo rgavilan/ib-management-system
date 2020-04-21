@@ -3,6 +3,7 @@ package es.um.asio.service.rdf.impl;
 import java.lang.reflect.Field;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
@@ -83,9 +84,16 @@ public class RDFDatasetBuilderServiceImpl  implements RDFDatasetBuilderService {
 			// only the own fields
 			Field[] fields = obj.getClass().getDeclaredFields();
 			
+			String propertyValue;
 			for (Field field : fields) {
 				Property property = model.createProperty(urisGeneratorClient.createPropertyURI(obj, field.getName()), field.getName());
-				resourceProperties.addProperty(property, BeanUtils.getSimpleProperty(obj, field.getName()));
+				propertyValue = StringUtils.isEmpty(BeanUtils.getSimpleProperty(obj, field.getName())) ? StringUtils.EMPTY : BeanUtils.getSimpleProperty(obj, field.getName());
+				
+				if(StringUtils.EMPTY.equals(propertyValue)) {
+					logger.warn("Null property: " + field.getName() + " in object : " + obj.toString());
+				}
+				
+				resourceProperties.addProperty(property, propertyValue);
 			}
 
 			// we set the type
