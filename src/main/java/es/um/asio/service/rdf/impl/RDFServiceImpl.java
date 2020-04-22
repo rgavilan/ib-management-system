@@ -31,13 +31,13 @@ public class RDFServiceImpl implements RDFService {
 	 * @return the model
 	 */
 	public  ManagementBusEvent createRDF(GeneralBusEvent<?> input) {
-		logger.info("Convert event bus: " + input);
+		logger.debug("Convert event bus: " + input);
 
 		 ManagementBusEvent result = rdfDatasetBuilderService.inkoveBuilder(input);
 		
-		logger.info("Generated RDF: ");
-		logger.info("modelId: " + result.getIdModel());
-		logger.info("operation: " + result.getOperation());
+		logger.debug("Generated RDF: ");
+		logger.debug("modelId: " + result.getIdModel());
+		logger.debug("operation: " + result.getOperation());
 		logger.info(result.getModel());
 				
 		return result;

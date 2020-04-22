@@ -66,4 +66,39 @@ public final class RDFUtil {
 		result.read(in, null);
 		return result;
 	}
+	
+	/**
+	 * Gets the name space from path removing the last parameter <br/>
+	 * Examples: <br/>
+	 * Input: http://hercules.org/um/es-ES/rec/ContratoProyecto/ <br/>
+	 * Output: http://hercules.org/um/es-ES/rec/ <br/><br/>
+		
+	 * Input: http://hercules.org/um/es-ES/rec/ContratoProyecto <br/>
+	 * Output: http://hercules.org/um/es-ES/rec/ <br/><br/>
+		
+	 * Input: https://hercules.org/um/es-ES/rec/ContratoProyecto/ <br/>
+	 * Output: https://hercules.org/um/es-ES/rec/ <br/><br/>
+		
+	 * Input: https://hercules.org/um/es-ES/rec/ContratoProyecto <br/>
+	 * Output: https://hercules.org/um/es-ES/rec/ <br/><br/>
+	 *
+	 * @param path the path
+	 * @return the name space from path
+	 */
+	public static String getNameSpaceFromPath(String path) {
+        if (path == null )
+            return null;
+        else {
+        	String[] pathProtocol = path.split("/"); 
+            String tempPath = path.replace('/', ' ');
+            String[] pathParts = tempPath.split(" ");
+            
+            StringBuilder strBuilder = new StringBuilder();
+            strBuilder.append(pathProtocol[0]).append("//");
+            for(int i=2; i< pathParts.length-1 ; i++) {
+            	strBuilder.append(pathParts[i]).append("/");
+            }
+            return strBuilder.toString();
+        } 
+    }
 }

@@ -13,6 +13,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import es.um.asio.abstractions.constants.Constants;
 import es.um.asio.service.uris.URISGeneratorClient;
+import es.um.asio.service.util.RDFUtil;
 
 @Service
 @ConditionalOnProperty(prefix = "app.generator-uris.mockup", name = "enabled", havingValue = "false", matchIfMissing = true)
@@ -91,7 +92,7 @@ public class URISGeneratorClientImpl implements URISGeneratorClient {
 		
 		Map response = restTemplate.postForObject(builder.toUriString(), input, Map.class);
 		
-		String result = response != null ? (String)response.get(Constants.CANONICAL_LANGUAGE_URI): null; 
+		String result = response != null ? RDFUtil.getNameSpaceFromPath((String)response.get(Constants.CANONICAL_LANGUAGE_URI)): null; 
 		
 		return result;
 	}
