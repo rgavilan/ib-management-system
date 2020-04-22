@@ -36,6 +36,8 @@ public class RDFServiceImpl implements RDFService {
 		 ManagementBusEvent result = rdfDatasetBuilderService.inkoveBuilder(input);
 		
 		logger.info("Generated RDF: ");
+		logger.info("modelId: " + result.getIdModel());
+		logger.info("operation: " + result.getOperation());
 		logger.info(result.getModel());
 				
 		return result;

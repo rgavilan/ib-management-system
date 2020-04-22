@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import es.um.asio.abstractions.domain.ManagementBusEvent;
 import es.um.asio.domain.InputData;
 import es.um.asio.service.model.GeneralBusEvent;
+import es.um.asio.service.model.ModelWrapper;
 import es.um.asio.service.rdf.RDFDatasetBuilderService;
 import es.um.asio.service.rdf.RDFPojoBuilderService;
 import es.um.asio.service.uris.URISGeneratorClient;
@@ -49,8 +50,8 @@ public class RDFDatasetBuilderServiceImpl  implements RDFDatasetBuilderService {
 		if (!(input.getData() instanceof InputData)) {
 			result = nextBuilder(input);
 		}
-		Model model = this.createRDF(input.retrieveInnerObj());
-		result = new ManagementBusEvent(RDFUtil.toString(model), input.retrieveOperation());
+		ModelWrapper model = this.createRDF(input.retrieveInnerObj());
+		result = new ManagementBusEvent(model.getModelId(), RDFUtil.toString(model.getModel()), input.retrieveOperation());
 		
 		return result;
 	}
@@ -73,15 +74,18 @@ public class RDFDatasetBuilderServiceImpl  implements RDFDatasetBuilderService {
 	 * @param obj the obj
 	 * @return the model
 	 */
-	public Model createRDF(Object obj) {
+	public ModelWrapper createRDF(Object obj) {
+		ModelWrapper result = new ModelWrapper();
+		
 		Model model = ModelFactory.createDefaultModel();
 		model.createProperty(urisGeneratorClient.rootUri());
 
 		try {
-			// create the resource
-			Resource resourceProperties = model.createResource(urisGeneratorClient.createResourceID(obj));
+			// 1. create the resource
+			String modelId = urisGeneratorClient.createResourceID(obj);
+			Resource resourceProperties = model.createResource(modelId);
 			
-			// only the own fields
+			// 2. only the own fields
 			Field[] fields = obj.getClass().getDeclaredFields();
 			
 			String propertyValue;
@@ -96,17 +100,19 @@ public class RDFDatasetBuilderServiceImpl  implements RDFDatasetBuilderService {
 				resourceProperties.addProperty(property, propertyValue);
 			}
 
-			// we set the type
+			// 3. we set the type
 			Resource resourceClass = model.createResource(urisGeneratorClient.createResourceTypeURI(obj.getClass().getName()));
 			model.add(resourceProperties, RDF.type, resourceClass);
 
+			// 4. we build the result model
+			result.setModelId(modelId);
+			result.setModel(model);
+			
 		} catch (Exception e) {
 			logger.error("Error creating resource from input: " + obj);
 			e.printStackTrace();
 		}
-
-		return model;
+		
+		return result;
 	}
-
-	
 }

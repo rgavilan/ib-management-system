@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.riot.RDFDataMgr;
@@ -26,12 +27,16 @@ public final class RDFUtil {
 	 * @return the string
 	 */
 	public static String toString(Model model) {
-		String syntax = RDFUtil.RDF_XML_ABBREV;
-		StringWriter out = new StringWriter();
-		model.write(out, syntax);
-		return out.toString();
+		String result = StringUtils.EMPTY;
+		if (model != null) {
+			String syntax = RDFUtil.RDF_XML_ABBREV;
+			StringWriter out = new StringWriter();
+			model.write(out, syntax);
+			result = out.toString();
+		}
+		return result;
 	}
-	
+
 	/**
 	 * Method to transform string to model
 	 *
@@ -40,13 +45,13 @@ public final class RDFUtil {
 	 */
 	public static Model toObject(String strModel) {
 		StringReader stringReader = new StringReader(strModel);
-		
+
 		Model modelFromString = ModelFactory.createDefaultModel();
 		RDFDataMgr.read(modelFromString, stringReader, null, RDFLanguages.RDFXML);
-		
+
 		return modelFromString;
 	}
-	
+
 	/**
 	 * Clone model.
 	 *

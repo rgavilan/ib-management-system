@@ -1,11 +1,11 @@
 package es.um.asio.service.rdf.impl;
 
-import org.apache.jena.rdf.model.Model;
 import org.springframework.stereotype.Service;
 
 import es.um.asio.abstractions.domain.ManagementBusEvent;
 import es.um.asio.domain.PojoData;
 import es.um.asio.service.model.GeneralBusEvent;
+import es.um.asio.service.model.ModelWrapper;
 import es.um.asio.service.rdf.RDFPojoBuilderService;
 import es.um.asio.service.util.RDFUtil;
 
@@ -27,9 +27,9 @@ public class RDFPojoBuilderServiceImpl implements RDFPojoBuilderService {
 		if (!(input.getData() instanceof PojoData)) {
 			result = nextBuilder(input);
 		}
-		Model model = this.createRDF(input.retrieveInnerObj());
+		ModelWrapper model = this.createRDF(input.retrieveInnerObj());
 
-		result = new ManagementBusEvent(RDFUtil.toString(model), input.retrieveOperation());
+		result = new ManagementBusEvent(model.getModelId(), RDFUtil.toString(model.getModel()), input.retrieveOperation());
 		
 		return result;
 	}
@@ -46,7 +46,7 @@ public class RDFPojoBuilderServiceImpl implements RDFPojoBuilderService {
 	}
 
 	@Override
-	public Model createRDF(Object obj) {
+	public ModelWrapper createRDF(Object obj) {
 		// TODO Auto-generated method stub
 		return null;
 	}

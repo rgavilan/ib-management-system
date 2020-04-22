@@ -1,9 +1,8 @@
 package es.um.asio.service.rdf;
 
-import org.apache.jena.rdf.model.Model;
-
 import es.um.asio.abstractions.domain.ManagementBusEvent;
 import es.um.asio.service.model.GeneralBusEvent;
+import es.um.asio.service.model.ModelWrapper;
 
 /**
  * The Interface RDFChainResponsability.
@@ -32,5 +31,5 @@ public interface RDFChainResponsability {
 	 * @param obj the obj
 	 * @return the model
 	 */
-	Model createRDF(Object obj);
+	ModelWrapper createRDF(Object obj);
 }
