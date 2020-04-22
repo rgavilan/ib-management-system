@@ -51,7 +51,7 @@ public class RDFDatasetBuilderServiceImpl  implements RDFDatasetBuilderService {
 			result = nextBuilder(input);
 		}
 		ModelWrapper model = this.createRDF(input.retrieveInnerObj());
-		result = new ManagementBusEvent(model.getModelId(), RDFUtil.toString(model.getModel()), input.retrieveOperation());
+		result = new ManagementBusEvent(model.getModelId(), RDFUtil.toString(model.getModel()), input.retrieveInnerObj().getClass().getSimpleName(), input.retrieveOperation());
 		
 		return result;
 	}
