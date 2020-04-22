@@ -18,12 +18,10 @@
 			<includeCallerData>true</includeCallerData>
 			<includeRootCauseData>true</includeRootCauseData>
 			<includeLevelName>true</includeLevelName>
-			<shortPatternLayout
-				class="ch.qos.logback.classic.PatternLayout">
+			<shortPatternLayout class="ch.qos.logback.classic.PatternLayout">
 				<pattern>%m%nopex</pattern>
 			</shortPatternLayout>
-			<fullPatternLayout
-				class="ch.qos.logback.classic.PatternLayout">
+			<fullPatternLayout class="ch.qos.logback.classic.PatternLayout">
 				<pattern>%m</pattern>
 			</fullPatternLayout>
 			<staticField>app_name:back</staticField>
@@ -33,14 +31,14 @@
 		</layout>
 	</appender>
 
-	<!--  %d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36}.%M - %msg%n -->
+	<!-- %d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36}.%M - %msg%n -->
 	<appender name="SAVE-TO-FILE"
 		class="ch.qos.logback.core.FileAppender">
 		<file>${LOG_PATH}/rdf.log</file>
 		<encoder
 			class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<Pattern>
-			 %msg%n		
+				%msg%n
 			</Pattern>
 		</encoder>
 	</appender>
@@ -50,10 +48,11 @@
 		<logger name="org.springframework.web" level="INFO" />
 		<logger name="org.hibernate" level="INFO" />
 		<logger name="org.springframework.data.solr" level="DEBUG" />
-		
+
 		<!-- logger for RDF entries -->
-		<logger name="es.um.asio.service.rdf.impl.RDFServiceImpl" additivity="false" level="info">
-		    <appender-ref ref="SAVE-TO-FILE" />
+		<logger name="es.um.asio.service.rdf.impl.RDFServiceImpl"
+			additivity="false" level="info">
+			<appender-ref ref="SAVE-TO-FILE" />
 		</logger>
 
 		<root level="INFO">
@@ -66,9 +65,10 @@
 		<logger name="es.um.asio" level="INFO" />
 		<logger name="org.springframework.web" level="INFO" />
 		<logger name="org.hibernate" level="INFO" />
-				
+
 		<root level="INFO">
 			<appender-ref ref="CONSOLE" />
+			<appender-ref ref="GELF"/>
 		</root>
 	</springProfile>
 
