@@ -24,3 +24,20 @@ spring:
       group-id: management-system
     producer:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+      ## Actuator
+management:
+  endpoint:
+    shutdown:
+      enabled: true
+    health:
+      show-details: always
+  endpoints:
+    web:
+      base-path: /management
+  server:
+    port: 9321
+
+## In case of configure web endpoints, remove it or change port number
+server:
+  port: ${management.server.port}
