@@ -2,5 +2,8 @@
 app:
   kafka:
     create-topics: true
-server:
-  port: 8082
+
+## Actuator
+management:
+  server:
+    port: 9323
