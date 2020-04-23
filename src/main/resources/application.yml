@@ -7,7 +7,7 @@ app:
   generator-uris:
     mockup:
       enabled: false
-    endpoint: http://localhost:8080
+    endpoint: http://localhost:9326
     endpoint-root-uri: ${app.generator-uris.endpoint}/uri-factory/root/uri
     endpoint-resource-id: ${app.generator-uris.endpoint}/uri-factory/canonical/resource
     endpoint-property: ${app.generator-uris.endpoint}/uri-factory/canonical/property
