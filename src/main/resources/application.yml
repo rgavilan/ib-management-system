@@ -16,8 +16,7 @@ app:
 # Spring configuration
 spring:
   kafka:
-    bootstrap-servers:
-      - localhost:29092
+    bootstrap-servers: localhost:29092
     consumer:
       bootstrap-servers:
         - localhost:29092

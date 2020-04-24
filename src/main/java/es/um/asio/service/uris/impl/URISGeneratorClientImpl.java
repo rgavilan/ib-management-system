@@ -50,11 +50,6 @@ public class URISGeneratorClientImpl implements URISGeneratorClient {
 	 */
 	@Override
 	public String createResourceID(Object obj) {
-		// FIXME remove it
-		if("${app.generator-uris.endpoint-resource-id}".equals(resourceIdEndpoint)) {
-			resourceIdEndpoint = "http://localhost:8080/uri-factory/canonical/resource";
-		}
-		
 		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(resourceIdEndpoint)
 		        .queryParam(Constants.DOMAIN, Constants.DOMAIN_VALUE)
 		        .queryParam(Constants.LANG, Constants.SPANISH_LANGUAGE)
@@ -75,11 +70,6 @@ public class URISGeneratorClientImpl implements URISGeneratorClient {
 	 */
 	@Override
 	public String createPropertyURI(Object obj, String property) {
-		// FIXME remove it
-		if("${app.generator-uris.endpoint-property}".equals(propertyEndpoint)) {
-			propertyEndpoint = "http://localhost:8080/uri-factory/canonical/property";
-		}
-		
 		HashMap input = new HashMap<>();
 		input.put(Constants.OBJECT, obj);
 		input.put(Constants.CLASS, obj.getClass().getName());
@@ -105,11 +95,6 @@ public class URISGeneratorClientImpl implements URISGeneratorClient {
 	 */
 	@Override
 	public String createResourceTypeURI(String className) {
-		// FIXME remove it
-		if("${app.generator-uris.endpoint-resource-type}".equals(resourceTypeEndpoint)) {
-			resourceTypeEndpoint = "http://localhost:8080/uri-factory/canonical/entity";
-		}
-		
 		HashMap input = new HashMap<>();
 		input.put(Constants.CLASS, className);
 		
@@ -127,11 +112,6 @@ public class URISGeneratorClientImpl implements URISGeneratorClient {
 
 	@Override
 	public String rootUri() {
-		// FIXME remove it
-		if("${app.generator-uris.endpoint-root-uri}".equals(rootURIEndpoint)) {
-			rootURIEndpoint = "http://localhost:8080/uri-factory/root/uri";
-		}
-				
 		return restTemplate.getForObject(rootURIEndpoint, String.class);
 	}
 
