@@ -58,7 +58,7 @@ public class RDFPojoBuilderServiceImpl implements RDFPojoBuilderService {
 			final ModelWrapper model = this.createRDF(input.retrieveInnerObj());
 			
 			result = new ManagementBusEvent(model.getModelId(), RDFUtil.toString(model.getModel()),
-					input.retrieveInnerObj().getClass().getSimpleName(), input.retrieveOperation());
+					this.getClass(input.retrieveInnerObj()), input.retrieveOperation());
 		} else {
 			result = this.nextBuilder(input);
 		}
@@ -136,6 +136,22 @@ public class RDFPojoBuilderServiceImpl implements RDFPojoBuilderService {
 			e.printStackTrace();
 		}
 
+		return result;
+	}
+	
+	/**
+	 * Gets the class.
+	 *
+	 * @param obj the obj
+	 * @return the class
+	 */
+	private String getClass(Object obj) {
+		String result = StringUtils.EMPTY;
+		try {
+			result = (String) PropertyUtils.getProperty(obj, RDFPojoBuilderServiceImpl.ETL_POJO_CLASS);
+		} catch (Exception e) {
+			logger.error("Unknown class in object " + obj.toString());
+		} 
 		return result;
 	}
 
