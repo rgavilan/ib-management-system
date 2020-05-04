@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 import es.um.asio.abstractions.domain.ManagementBusEvent;
 import es.um.asio.domain.PojoData;
-import es.um.asio.domain.pojo.Pojo;
 import es.um.asio.service.model.GeneralBusEvent;
 import es.um.asio.service.rdf.RDFService;
 
@@ -32,12 +31,12 @@ public class PojoGeneralListener {
      * @param message
      */
     @KafkaListener(topics = "#{'${app.kafka.general-topic-name}'.split(',')}", containerFactory = "pojoKafkaListenerContainerFactory")
-    public void listen(final PojoData<Pojo> message) {
+    public void listen(final PojoData message) {
     	 if (this.logger.isDebugEnabled()) {
              this.logger.debug("Received message: {}", message);
          }
 
-    	 ManagementBusEvent rdf = rdfService.createRDF(new GeneralBusEvent<PojoData<Pojo>>(message));
+    	 ManagementBusEvent rdf = rdfService.createRDF(new GeneralBusEvent<PojoData>(message));
                        
          this.logger.info(rdf.toString());
     }

@@ -25,7 +25,6 @@ import es.um.asio.abstractions.domain.ManagementBusEvent;
 import es.um.asio.domain.DataSetData;
 import es.um.asio.domain.InputData;
 import es.um.asio.domain.PojoData;
-import es.um.asio.domain.pojo.Pojo;
 import es.um.asio.service.util.CustomJsonSerializer;
 
 /**
@@ -69,7 +68,7 @@ public class KafkaConfig {
      *
      * @return the consumer factory
      */
-    public ConsumerFactory<String, PojoData<Pojo>> pojoConsumerFactory() {
+    public ConsumerFactory<String, PojoData> pojoConsumerFactory() {
     	return new DefaultKafkaConsumerFactory<>(this.getKafkaConfiguration());
     }
     
@@ -80,8 +79,8 @@ public class KafkaConfig {
      * @return the concurrent kafka listener container factory
      */
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, PojoData<Pojo>> pojoKafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, PojoData<Pojo>> factory = new ConcurrentKafkaListenerContainerFactory<>();
+    public ConcurrentKafkaListenerContainerFactory<String, PojoData> pojoKafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, PojoData> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(this.pojoConsumerFactory());
         return factory;
     }
