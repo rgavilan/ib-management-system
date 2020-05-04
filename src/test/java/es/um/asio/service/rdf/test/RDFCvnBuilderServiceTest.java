@@ -1,16 +1,19 @@
 package es.um.asio.service.rdf.test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
+import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.jena.graph.Node;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
-import org.apache.jena.rdf.model.Property;
-import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
-import org.apache.jena.rdf.model.StmtIterator;
+import org.apache.jena.riot.RDFDataMgr;
+import org.apache.jena.riot.RDFFormat;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +24,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import es.um.asio.domain.cvn.CvnAuthorBean;
+import es.um.asio.domain.cvn.CvnBoolean;
+import es.um.asio.domain.cvn.CvnFamilyNameBean;
+import es.um.asio.domain.cvn.CvnItemBean;
+import es.um.asio.domain.cvn.CvnRootBean;
 import es.um.asio.service.rdf.RDFCvnBuilderService;
+import es.um.asio.service.rdf.RDFDatasetBuilderService;
 import es.um.asio.service.rdf.impl.RDFCvnBuilderServiceImpl;
 import es.um.asio.service.uris.URISGeneratorClient;
 import es.um.asio.service.util.asserts.rdf.ModelAssert;
@@ -47,14 +56,18 @@ public class RDFCvnBuilderServiceTest {
     @MockBean
     private URISGeneratorClient urisGenerator;
     
+    @MockBean
+    private RDFDatasetBuilderService rdfDatasetBuilderService;
+    
     @Before
     public void setUp() {
-        Mockito.when(urisGenerator.rootUri()).thenReturn("rootUri");
-        Mockito.when(urisGenerator.createResourceID(Mockito.any())).thenReturn("resourceID");
-        Mockito.when(urisGenerator.createPropertyURI(Mockito.any(),Mockito.any())).thenReturn("http://dummy.com/propertyUri#");
-        Mockito.when(urisGenerator.createResourceTypeURI(Mockito.any())).thenReturn("resourceTypeID");
+        Mockito.when(urisGenerator.rootUri()).thenReturn("http://dummy.org");
+        Mockito.when(urisGenerator.createResourceID(Mockito.any())).thenReturn("http://dummy.org/resourceID");
+        Mockito.when(urisGenerator.createPropertyURI(Mockito.any(),Mockito.any())).thenReturn("http://www.w3.org/2001/asio-rdf/3.0#");
+        Mockito.when(urisGenerator.createResourceTypeURI(Mockito.any())).thenAnswer(invocation -> {
+                                                    return "http://dummy.org/".concat(invocation.getArgument(0)); });
     }
-    
+       
     @Test
     public void whenCreateResourceOf_SimpleCvnBeanResource_thenGenerateRdf() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         SimpleCvnBeanDummy simpleCvnBean = new SimpleCvnBeanDummy();
@@ -62,15 +75,30 @@ public class RDFCvnBuilderServiceTest {
         simpleCvnBean.setFoo("foo value");
         Model model =  ModelFactory.createDefaultModel();
         
-        rdfCvnBuilderService.createResourceFromCvnBean(model, simpleCvnBean);
+        rdfCvnBuilderService.createResource(model, simpleCvnBean, StringUtils.EMPTY);
         
         ModelAssert.assertThat(model).hasStatementsSize(2);
-        ModelAssert.assertThat(model).containsPredicate("http://dummy.com/propertyUri#foo").withValue("foo value");       
-        ModelAssert.assertThat(model).containsPredicate("http://dummy.com/propertyUri#code").withValue("00001");  
+        ModelAssert.assertThat(model).containsPredicate("http://www.w3.org/2001/asio-rdf/3.0#foo").withValue("foo value");       
+        ModelAssert.assertThat(model).containsPredicate("http://www.w3.org/2001/asio-rdf/3.0#code").withValue("00001");  
     }
     
     @Test
-    public void whenCreateResourceOf_ComplexCvnBeanResource_thenGenerateRdf() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+    public void whenCreateResourceOf_SimpleCvnBeanWithEmptyProperties_thenGenerateRdf() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+        SimpleCvnBeanDummy simpleCvnBean = new SimpleCvnBeanDummy();
+        simpleCvnBean.setCode("");
+        simpleCvnBean.setFoo(null);
+        Model model =  ModelFactory.createDefaultModel();
+        
+        rdfCvnBuilderService.createResource(model, simpleCvnBean, StringUtils.EMPTY);
+        
+        ModelAssert.assertThat(model).hasStatementsSize(2);
+        ModelAssert.assertThat(model).containsPredicate("http://www.w3.org/2001/asio-rdf/3.0#foo").withValue(StringUtils.EMPTY);       
+        ModelAssert.assertThat(model).containsPredicate("http://www.w3.org/2001/asio-rdf/3.0#code").withValue(StringUtils.EMPTY);  
+    }
+    
+    
+    @Test
+    public void whenCreateResourceOf_ComplexCvnBean_thenGenerateRdf() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         // Arrange
         SimpleCvnBeanDummy simpleCvnBean = new SimpleCvnBeanDummy();
         simpleCvnBean.setCode("00002");
@@ -82,15 +110,15 @@ public class RDFCvnBuilderServiceTest {
         Model model =  ModelFactory.createDefaultModel();
         
         // Act
-        rdfCvnBuilderService.createResourceFromCvnBean(model, complexCvnBean);       
+        rdfCvnBuilderService.createResource(model, complexCvnBean, StringUtils.EMPTY);       
         
         // Assert             
         ModelAssert.assertThat(model).hasStatementsSize(5);        
-        ModelAssert.assertThat(model).containsPredicate("http://dummy.com/propertyUri#simpleCvnBean").withBlankNodeValue(); 
-        ModelAssert.assertThat(model).containsPredicate("http://dummy.com/propertyUri#foo").withBlankNodeSubject().withValue("foo value"); 
-        ModelAssert.assertThat(model).containsPredicate("http://dummy.com/propertyUri#code").withBlankNodeSubject().withValue("00002"); 
-        ModelAssert.assertThat(model).containsPredicate("http://dummy.com/propertyUri#bar").withValue("bar value");
-        ModelAssert.assertThat(model).containsPredicate("http://dummy.com/propertyUri#code").withValue("00001");
+        ModelAssert.assertThat(model).containsPredicate("http://www.w3.org/2001/asio-rdf/3.0#simpleCvnBean").withBlankNodeValue(); 
+        ModelAssert.assertThat(model).containsPredicate("http://www.w3.org/2001/asio-rdf/3.0#foo").withBlankNodeSubject().withValue("foo value"); 
+        ModelAssert.assertThat(model).containsPredicate("http://www.w3.org/2001/asio-rdf/3.0#code").withBlankNodeSubject().withValue("00002"); 
+        ModelAssert.assertThat(model).containsPredicate("http://www.w3.org/2001/asio-rdf/3.0#bar").withValue("bar value");
+        ModelAssert.assertThat(model).containsPredicate("http://www.w3.org/2001/asio-rdf/3.0#code").withValue("00001");
      
         // Assert - Relationships
         Statement complexCvnBean_simpleCvnBean = getStatement(model, "simpleCvnBean");
@@ -102,9 +130,28 @@ public class RDFCvnBuilderServiceTest {
         assertThat(complexCvnBean_simpleCvnBean_code.getSubject().asNode()).isEqualTo(simpleCvnNode);
     }
     
+    @Test
+    public void whenCreateResourceOf_ComplexCvnBeanWithNullCvnBean_thenGenerateRdf() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+        // Arrange       
+        ComplexCvnBeanDummy complexCvnBean = new ComplexCvnBeanDummy();
+        complexCvnBean.setSimpleCvnBean(null);
+        complexCvnBean.setCode(null);
+        complexCvnBean.setBar(null);
+        Model model =  ModelFactory.createDefaultModel();
+        
+        // Act
+        rdfCvnBuilderService.createResource(model, complexCvnBean, StringUtils.EMPTY);              
+        
+        // Assert             
+        ModelAssert.assertThat(model).hasStatementsSize(3);        
+        ModelAssert.assertThat(model).containsPredicate("http://www.w3.org/2001/asio-rdf/3.0#simpleCvnBean").withValue(StringUtils.EMPTY);
+        ModelAssert.assertThat(model).containsPredicate("http://www.w3.org/2001/asio-rdf/3.0#bar").withValue(StringUtils.EMPTY);
+        ModelAssert.assertThat(model).containsPredicate("http://www.w3.org/2001/asio-rdf/3.0#code").withValue(StringUtils.EMPTY);       
+    }
+    
     
     @Test
-    public void whenCreateResourceOf_CvnBeanResourceWithInheritance_thenGenerateRdf() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+    public void whenCreateResourceOf_CvnBeanWithInheritance_thenGenerateRdf() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         // inherits from ParentCvnBeanDummy
         ChildCvnBeanDummy childCvnBean = new ChildCvnBeanDummy();
         childCvnBean.setCode("00001");
@@ -112,12 +159,12 @@ public class RDFCvnBuilderServiceTest {
         childCvnBean.setChild("child value");
         Model model =  ModelFactory.createDefaultModel();
         
-        rdfCvnBuilderService.createResourceFromCvnBean(model, childCvnBean);        
+        rdfCvnBuilderService.createResource(model, childCvnBean, StringUtils.EMPTY);        
         
         ModelAssert.assertThat(model).hasStatementsSize(3);                
-        ModelAssert.assertThat(model).containsPredicate("http://dummy.com/propertyUri#code").withValue("00001");
-        ModelAssert.assertThat(model).containsPredicate("http://dummy.com/propertyUri#parent").withValue("parent value");       
-        ModelAssert.assertThat(model).containsPredicate("http://dummy.com/propertyUri#child").withValue("child value");       
+        ModelAssert.assertThat(model).containsPredicate("http://www.w3.org/2001/asio-rdf/3.0#code").withValue("00001");
+        ModelAssert.assertThat(model).containsPredicate("http://www.w3.org/2001/asio-rdf/3.0#parent").withValue("parent value");       
+        ModelAssert.assertThat(model).containsPredicate("http://www.w3.org/2001/asio-rdf/3.0#child").withValue("child value");       
     }
     
     @Test
@@ -135,24 +182,24 @@ public class RDFCvnBuilderServiceTest {
         Model model =  ModelFactory.createDefaultModel();
         
         // Act
-        rdfCvnBuilderService.createResourceFromCvnBean(model, cvnBeanWithCvnBeanCollection);        
+        rdfCvnBuilderService.createResource(model, cvnBeanWithCvnBeanCollection, StringUtils.EMPTY);        
  
         // Assert        
         ModelAssert.assertThat(model).hasStatementsSize(9);        
-        ModelAssert.assertThat(model).containsPredicate("http://dummy.com/propertyUri#code").withValue("00003");
-        ModelAssert.assertThat(model).containsPredicate("http://dummy.com/propertyUri#simpleCvnBeans").withBlankNodeValue().hasStatementsSize(3);
+        ModelAssert.assertThat(model).containsPredicate("http://www.w3.org/2001/asio-rdf/3.0#code").withValue("00003");
+        ModelAssert.assertThat(model).containsPredicate("http://www.w3.org/2001/asio-rdf/3.0#simpleCvnBeans").withBlankNodeValue().hasStatementsSize(3);
         ModelAssert.assertThat(model).containsPredicate("http://www.w3.org/1999/02/22-rdf-syntax-ns#type").withValue("http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag");
-        ModelAssert.assertThat(model).containsPredicate("http://dummy.com/propertyUri#code").withValue("00001");
-        ModelAssert.assertThat(model).containsPredicate("http://dummy.com/propertyUri#foo").withValue("foo value 1");
-        ModelAssert.assertThat(model).containsPredicate("http://dummy.com/propertyUri#code").withValue("00002");
-        ModelAssert.assertThat(model).containsPredicate("http://dummy.com/propertyUri#foo").withValue("foo value 2");
+        ModelAssert.assertThat(model).containsPredicate("http://www.w3.org/2001/asio-rdf/3.0#code").withValue("00001");
+        ModelAssert.assertThat(model).containsPredicate("http://www.w3.org/2001/asio-rdf/3.0#foo").withValue("foo value 1");
+        ModelAssert.assertThat(model).containsPredicate("http://www.w3.org/2001/asio-rdf/3.0#code").withValue("00002");
+        ModelAssert.assertThat(model).containsPredicate("http://www.w3.org/2001/asio-rdf/3.0#foo").withValue("foo value 2");
 
         // Assert - Relationships
-        var parentSubject = getStatement(model, "http://dummy.com/propertyUri#code", "00003").getSubject();
-        var parentSimpleCvnBeansValue = getStatement(model, parentSubject, "http://dummy.com/propertyUri#simpleCvnBeans").getResource();
+        var parentSubject = getStatement(model, "http://www.w3.org/2001/asio-rdf/3.0#code", "00003").getSubject();
+        var parentSimpleCvnBeansValue = getStatement(model, parentSubject, "http://www.w3.org/2001/asio-rdf/3.0#simpleCvnBeans").getResource();
         
-        ModelAssert.assertThat(model).containsPredicate("http://dummy.com/propertyUri#simpleCvnBeans").withSubjectNode(parentSubject).hasStatementsSize(1);
-        ModelAssert.assertThat(model).containsPredicate("http://dummy.com/propertyUri#simpleCvnBeans").withSubjectNode(parentSimpleCvnBeansValue).hasStatementsSize(2);
+        ModelAssert.assertThat(model).containsPredicate("http://www.w3.org/2001/asio-rdf/3.0#simpleCvnBeans").withSubjectNode(parentSubject).hasStatementsSize(1);
+        ModelAssert.assertThat(model).containsPredicate("http://www.w3.org/2001/asio-rdf/3.0#simpleCvnBeans").withSubjectNode(parentSimpleCvnBeansValue).hasStatementsSize(2);
         ModelAssert.assertThat(model).containsPredicate("http://www.w3.org/1999/02/22-rdf-syntax-ns#type").withSubjectNode(parentSimpleCvnBeansValue).hasStatementsSize(1);
     }
     
@@ -162,15 +209,30 @@ public class RDFCvnBuilderServiceTest {
         CvnBeanWithCvnBeanCollectionDummy cvnBeanWithCvnBeanCollection = new CvnBeanWithCvnBeanCollectionDummy();
         cvnBeanWithCvnBeanCollection.setSimpleCvnBeans(Arrays.asList());
         Model model =  ModelFactory.createDefaultModel();
+        
         // Act
-        rdfCvnBuilderService.createResourceFromCvnBean(model, cvnBeanWithCvnBeanCollection);        
-        print(model);
+        rdfCvnBuilderService.createResource(model, cvnBeanWithCvnBeanCollection, StringUtils.EMPTY);
 
         // Assert        
-        ModelAssert.assertThat(model).noContainsPredicate("http://dummy.com/propertyUri#simpleCvnBeans");
-        ModelAssert.assertThat(model).noContainsValue("http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag");
+        ModelAssert.assertThat(model).hasStatementsSize(3);        
+        ModelAssert.assertThat(model).containsPredicate("http://www.w3.org/2001/asio-rdf/3.0#simpleCvnBeans").withBlankNodeValue();
+        ModelAssert.assertThat(model).containsPredicate("http://www.w3.org/2001/asio-rdf/3.0#code").withValue(StringUtils.EMPTY);
+        ModelAssert.assertThat(model).containsPredicate("http://www.w3.org/1999/02/22-rdf-syntax-ns#type").withValue("http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag");     
     }
     
+    @Test
+    public void CvnRootBeanToRdf_ApprovalTest() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+        CvnRootBean cvnRootBean = givenACvnRootBean();
+        String rdfTurtleExpected = givenACvnRootBeanRdfTurtle();
+                
+        Model model = rdfCvnBuilderService.createRDF(cvnRootBean).getModel();
+        
+        StringWriter out = new StringWriter();       
+        RDFDataMgr.write(out, model, RDFFormat.TURTLE);
+        String rdfTurtleResult = out.toString();
+
+       assertThat(rdfTurtleResult).isEqualTo(rdfTurtleExpected);
+    }
     
     private static Statement getStatement(Model model, String propertyName, String propertyValue) {
         return model.listStatements().toList().stream().filter((st) -> st.getPredicate().toString().contains(propertyName) && st.getObject().toString().equals(propertyValue)).findFirst().get();
@@ -182,30 +244,109 @@ public class RDFCvnBuilderServiceTest {
     
     private static Statement getStatement(Model model, Resource subject, String propertyName) {
         return model.listStatements().toList().stream().filter((st) -> st.getSubject().equals(subject) && st.getPredicate().toString().contains(propertyName)).findFirst().get();
-    }
-     
+    } 
     
-    private void print(Model model) {
+    
+    private CvnRootBean givenACvnRootBean() {        
+        CvnRootBean cvnRootBean = new CvnRootBean();        
+        CvnItemBean cvnItemBean = new CvnItemBean();
+        CvnBoolean cvnBoolean1 = new CvnBoolean();
+        cvnBoolean1.setCode("00001");
+        cvnBoolean1.setValue(true);
+        CvnBoolean cvnBoolean2 = new CvnBoolean();
+        cvnBoolean2.setCode("00002");
+        cvnBoolean2.setValue(false);
+        cvnItemBean.setCvnBoolean(Arrays.asList(cvnBoolean1, cvnBoolean2));
         
-        StmtIterator iter = model.listStatements();
+        CvnAuthorBean cvnAuthorBean = new CvnAuthorBean();
+        cvnAuthorBean.setGivenName("Dummy name");
+        CvnFamilyNameBean cvnFamilyNameBean = new CvnFamilyNameBean();
+        cvnFamilyNameBean.setFirstFamilyName("First famility dummy name");
+        cvnAuthorBean.setCvnFamilyNameBean(cvnFamilyNameBean);
+        cvnItemBean.setCvnAuthorBean(Arrays.asList(cvnAuthorBean));
         
-        // print out the predicate, subject and object of each statement
-        while (iter.hasNext()) {
-            Statement stmt      = iter.nextStatement();         // get next statement
-            Resource  subject   = stmt.getSubject();   // get the subject
-            Property  predicate = stmt.getPredicate(); // get the predicate
-            RDFNode   object    = stmt.getObject();    // get the object
-            
-            System.out.print(subject.toString());
-            System.out.print(" " + predicate.toString() + " ");
-            if (object instanceof Resource) {
-                System.out.print(object.toString());
-            } else {
-                // object is a literal
-                System.out.print(" \"" + object.toString() + "\"");
-            }
-            System.out.println(" .");
-        }
+        cvnRootBean.setCvnItemBean(Arrays.asList(cvnItemBean));
+        return cvnRootBean;
     }
     
+    private String givenACvnRootBeanRdfTurtle() {
+        return "<http://dummy.org/resourceID>\n" + 
+                "        a       <http://dummy.org/es.um.asio.domain.cvn.CvnRootBean> ;\n" + 
+                "        <http://www.w3.org/2001/asio-rdf/3.0#cvnItemBean>\n" + 
+                "                [ a       <http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag> ;\n" + 
+                "                  <http://www.w3.org/2001/asio-rdf/3.0#cvnItemBean>\n" + 
+                "                          [ <http://www.w3.org/2001/asio-rdf/3.0#code>\n" + 
+                "                                    \"\" ;\n" + 
+                "                            <http://www.w3.org/2001/asio-rdf/3.0#cvnAuthorBean>\n" + 
+                "                                    [ a       <http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag> ;\n" + 
+                "                                      <http://www.w3.org/2001/asio-rdf/3.0#cvnAuthorBean>\n" + 
+                "                                              [ <http://www.w3.org/2001/asio-rdf/3.0#code>\n" + 
+                "                                                        \"\" ;\n" + 
+                "                                                <http://www.w3.org/2001/asio-rdf/3.0#cvnFamilyNameBean>\n" + 
+                "                                                        [ <http://www.w3.org/2001/asio-rdf/3.0#code>\n" + 
+                "                                                                  \"\" ;\n" + 
+                "                                                          <http://www.w3.org/2001/asio-rdf/3.0#firstFamilyName>\n" + 
+                "                                                                  \"First famility dummy name\" ;\n" + 
+                "                                                          <http://www.w3.org/2001/asio-rdf/3.0#secondFamilyName>\n" + 
+                "                                                                  \"\"\n" + 
+                "                                                        ] ;\n" + 
+                "                                                <http://www.w3.org/2001/asio-rdf/3.0#givenName>\n" + 
+                "                                                        \"Dummy name\" ;\n" + 
+                "                                                <http://www.w3.org/2001/asio-rdf/3.0#signature>\n" + 
+                "                                                        \"\" ;\n" + 
+                "                                                <http://www.w3.org/2001/asio-rdf/3.0#signatureOrder>\n" + 
+                "                                                        \"\"\n" + 
+                "                                              ]\n" + 
+                "                                    ] ;\n" + 
+                "                            <http://www.w3.org/2001/asio-rdf/3.0#cvnBoolean>\n" + 
+                "                                    [ a       <http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag> ;\n" + 
+                "                                      <http://www.w3.org/2001/asio-rdf/3.0#cvnBoolean>\n" + 
+                "                                              [ <http://www.w3.org/2001/asio-rdf/3.0#code>\n" + 
+                "                                                        \"00002\" ;\n" + 
+                "                                                <http://www.w3.org/2001/asio-rdf/3.0#value>\n" + 
+                "                                                        \"false\"\n" + 
+                "                                              ] ;\n" + 
+                "                                      <http://www.w3.org/2001/asio-rdf/3.0#cvnBoolean>\n" + 
+                "                                              [ <http://www.w3.org/2001/asio-rdf/3.0#code>\n" + 
+                "                                                        \"00001\" ;\n" + 
+                "                                                <http://www.w3.org/2001/asio-rdf/3.0#value>\n" + 
+                "                                                        \"true\"\n" + 
+                "                                              ]\n" + 
+                "                                    ] ;\n" + 
+                "                            <http://www.w3.org/2001/asio-rdf/3.0#cvnCodeGroup>\n" + 
+                "                                    \"\" ;\n" + 
+                "                            <http://www.w3.org/2001/asio-rdf/3.0#cvnDateDayMonthYear>\n" + 
+                "                                    \"\" ;\n" + 
+                "                            <http://www.w3.org/2001/asio-rdf/3.0#cvnDateMonthYear>\n" + 
+                "                                    \"\" ;\n" + 
+                "                            <http://www.w3.org/2001/asio-rdf/3.0#cvnDateYear>\n" + 
+                "                                    \"\" ;\n" + 
+                "                            <http://www.w3.org/2001/asio-rdf/3.0#cvnDouble>\n" + 
+                "                                    \"\" ;\n" + 
+                "                            <http://www.w3.org/2001/asio-rdf/3.0#cvnDuration>\n" + 
+                "                                    \"\" ;\n" + 
+                "                            <http://www.w3.org/2001/asio-rdf/3.0#cvnEntityBean>\n" + 
+                "                                    \"\" ;\n" + 
+                "                            <http://www.w3.org/2001/asio-rdf/3.0#cvnExternalPKBean>\n" + 
+                "                                    \"\" ;\n" + 
+                "                            <http://www.w3.org/2001/asio-rdf/3.0#cvnFamilyNameBean>\n" + 
+                "                                    \"\" ;\n" + 
+                "                            <http://www.w3.org/2001/asio-rdf/3.0#cvnPageBean>\n" + 
+                "                                    \"\" ;\n" + 
+                "                            <http://www.w3.org/2001/asio-rdf/3.0#cvnPhoneBean>\n" + 
+                "                                    \"\" ;\n" + 
+                "                            <http://www.w3.org/2001/asio-rdf/3.0#cvnPhotoBean>\n" + 
+                "                                    \"\" ;\n" + 
+                "                            <http://www.w3.org/2001/asio-rdf/3.0#cvnRichText>\n" + 
+                "                                    \"\" ;\n" + 
+                "                            <http://www.w3.org/2001/asio-rdf/3.0#cvnString>\n" + 
+                "                                    \"\" ;\n" + 
+                "                            <http://www.w3.org/2001/asio-rdf/3.0#cvnTitleBean>\n" + 
+                "                                    \"\" ;\n" + 
+                "                            <http://www.w3.org/2001/asio-rdf/3.0#cvnVolumeBean>\n" + 
+                "                                    \"\"\n" + 
+                "                          ]\n" + 
+                "                ] .\n" + 
+                "";
+    }
 }

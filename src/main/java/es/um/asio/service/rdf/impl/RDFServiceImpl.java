@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import es.um.asio.abstractions.domain.ManagementBusEvent;
 import es.um.asio.service.model.GeneralBusEvent;
-import es.um.asio.service.rdf.RDFDatasetBuilderService;
+import es.um.asio.service.rdf.RDFCvnBuilderService;
 import es.um.asio.service.rdf.RDFService;
 
 /**
@@ -20,8 +20,11 @@ public class RDFServiceImpl implements RDFService {
 	private final Logger logger = LoggerFactory.getLogger(RDFServiceImpl.class);
 
 
+	/** 
+	 * The rdf cvn builder service.
+	 */
 	@Autowired
-	private RDFDatasetBuilderService rdfDatasetBuilderService;
+	private RDFCvnBuilderService rdfCvnBuilderService;
 
 
 	/**
@@ -33,7 +36,7 @@ public class RDFServiceImpl implements RDFService {
 	public  ManagementBusEvent createRDF(GeneralBusEvent<?> input) {
 		logger.debug("Convert event bus: " + input);
 
-		ManagementBusEvent result = rdfDatasetBuilderService.inkoveBuilder(input);
+		ManagementBusEvent result = rdfCvnBuilderService.inkoveBuilder(input);
 		logger.info("Generated RDF: ");
 		logger.info("modelId: " + result.getIdModel());
 		logger.info("operation: " + result.getOperation());
