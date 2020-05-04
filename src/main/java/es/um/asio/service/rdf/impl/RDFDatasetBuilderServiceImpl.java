@@ -47,11 +47,12 @@ public class RDFDatasetBuilderServiceImpl  implements RDFDatasetBuilderService {
 	 */
 	public ManagementBusEvent inkoveBuilder(GeneralBusEvent<?> input) {
 		ManagementBusEvent result = null;
-		if (!(input.getData() instanceof InputData)) {
+		if (input.getData() instanceof InputData) {
+			ModelWrapper model = this.createRDF(input.retrieveInnerObj());
+			result = new ManagementBusEvent(model.getModelId(), RDFUtil.toString(model.getModel()), input.retrieveInnerObj().getClass().getSimpleName(), input.retrieveOperation());
+		} else {
 			result = nextBuilder(input);
 		}
-		ModelWrapper model = this.createRDF(input.retrieveInnerObj());
-		result = new ManagementBusEvent(model.getModelId(), RDFUtil.toString(model.getModel()), input.retrieveInnerObj().getClass().getSimpleName(), input.retrieveOperation());
 		
 		return result;
 	}

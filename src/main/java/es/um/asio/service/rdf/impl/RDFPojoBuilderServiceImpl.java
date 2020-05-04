@@ -54,13 +54,14 @@ public class RDFPojoBuilderServiceImpl implements RDFPojoBuilderService {
 	@Override
 	public ManagementBusEvent inkoveBuilder(final GeneralBusEvent<?> input) {
 		ManagementBusEvent result = null;
-		if (!(input.getData() instanceof PojoData)) {
+		if (input.getData() instanceof PojoData) {
+			final ModelWrapper model = this.createRDF(input.retrieveInnerObj());
+			
+			result = new ManagementBusEvent(model.getModelId(), RDFUtil.toString(model.getModel()),
+					input.retrieveInnerObj().getClass().getSimpleName(), input.retrieveOperation());
+		} else {
 			result = this.nextBuilder(input);
 		}
-		final ModelWrapper model = this.createRDF(input.retrieveInnerObj());
-
-		result = new ManagementBusEvent(model.getModelId(), RDFUtil.toString(model.getModel()),
-				input.retrieveInnerObj().getClass().getSimpleName(), input.retrieveOperation());
 
 		return result;
 	}
@@ -87,7 +88,7 @@ public class RDFPojoBuilderServiceImpl implements RDFPojoBuilderService {
 		final ModelWrapper result = new ModelWrapper();
 
 		final Model model = ModelFactory.createDefaultModel();
-		model.createProperty(this.urisGeneratorClient.rootUri());
+		model.createProperty(HTTP_HERCULES_ORG_UM_ES_ES_REC);
 
 		try {
 			// 1. create the resource

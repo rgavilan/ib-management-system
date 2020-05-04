@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import es.um.asio.abstractions.domain.ManagementBusEvent;
 import es.um.asio.domain.PojoData;
+import es.um.asio.service.kafka.KafkaService;
 import es.um.asio.service.model.GeneralBusEvent;
 import es.um.asio.service.rdf.RDFService;
 
@@ -22,6 +23,12 @@ public class PojoGeneralListener {
      * Logger
      */
     private final Logger logger = LoggerFactory.getLogger(PojoGeneralListener.class);
+    
+    /**
+     * Service to handle message entity related operations
+     */
+    @Autowired
+    private KafkaService kafkaService;
     
     @Autowired
     private RDFService rdfService;
@@ -38,9 +45,9 @@ public class PojoGeneralListener {
              this.logger.debug("Received message: {}", message);
          }
 
-    	 ManagementBusEvent rdf = rdfService.createRDF(new GeneralBusEvent<PojoData>(message));
+    	 ManagementBusEvent managementBusEvent = rdfService.createRDF(new GeneralBusEvent<PojoData>(message));
                        
-         this.logger.info(rdf.toString());
+    	 this.kafkaService.send(managementBusEvent);
     }
 
 }
