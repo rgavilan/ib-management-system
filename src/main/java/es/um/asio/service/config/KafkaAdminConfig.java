@@ -31,7 +31,7 @@ public class KafkaAdminConfig {
      */
     @Bean
     public NewTopic generalTopic() {
-        return new NewTopic(this.generalTopicName, 1, (short) 1);
+        return new NewTopic(this.generalTopicName, 2, (short) 1);
     }
 
     /**
