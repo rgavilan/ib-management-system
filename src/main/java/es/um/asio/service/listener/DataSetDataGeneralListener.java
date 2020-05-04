@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.annotation.TopicPartition;
 import org.springframework.stereotype.Component;
 
 import es.um.asio.abstractions.domain.ManagementBusEvent;
@@ -37,7 +38,8 @@ public class DataSetDataGeneralListener {
      * 
      * @param message
      */
-    @KafkaListener(topics = "#{'${app.kafka.general-topic-name}'.split(',')}", containerFactory = "dataSetDataKafkaListenerContainerFactory")
+    @KafkaListener(topics = "#{'${app.kafka.general-topic-name}'.split(',')}", containerFactory = "dataSetDataKafkaListenerContainerFactory",
+    		topicPartitions = { @TopicPartition(topic = "general-data", partitions = { "1" }) })
     public void listen(final InputData<DataSetData> message) {
     	
     	// INSERT operation by default

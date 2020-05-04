@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.annotation.TopicPartition;
 import org.springframework.stereotype.Component;
 
 import es.um.asio.abstractions.domain.ManagementBusEvent;
@@ -30,7 +31,8 @@ public class PojoGeneralListener {
      * 
      * @param message
      */
-    @KafkaListener(topics = "#{'${app.kafka.general-topic-name}'.split(',')}", containerFactory = "pojoKafkaListenerContainerFactory")
+    @KafkaListener(topics = "#{'${app.kafka.general-topic-name}'.split(',')}", containerFactory = "pojoKafkaListenerContainerFactory",
+    		topicPartitions = { @TopicPartition(topic = "general-data", partitions = { "0" }) })
     public void listen(final PojoData message) {
     	 if (this.logger.isDebugEnabled()) {
              this.logger.debug("Received message: {}", message);
