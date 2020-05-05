@@ -17,6 +17,10 @@ public class KafkaAdminConfig {
      */
     @Value("${app.kafka.general-topic-name}")
     private String generalTopicName;
+    
+    /** The general contingency topic name. */
+    @Value("${app.kafka.general-contingency-topic-name}")
+    private String generalContingencyTopicName;
 
     /**
      * Input topic name.
@@ -31,7 +35,17 @@ public class KafkaAdminConfig {
      */
     @Bean
     public NewTopic generalTopic() {
-        return new NewTopic(this.generalTopicName, 2, (short) 1);
+        return new NewTopic(this.generalTopicName, 1, (short) 1);
+    }
+    
+    /**
+     * General contingency topic.
+     *
+     * @return the new topic
+     */
+    @Bean
+    public NewTopic generalContingencyTopic() {
+        return new NewTopic(this.generalContingencyTopicName, 1, (short) 1);
     }
 
     /**

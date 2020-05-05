@@ -38,8 +38,7 @@ public class DataSetDataGeneralListener {
      * 
      * @param message
      */
-    @KafkaListener(topics = "#{'${app.kafka.general-topic-name}'.split(',')}", containerFactory = "dataSetDataKafkaListenerContainerFactory",
-    		topicPartitions = { @TopicPartition(topic = "general-data", partitions = { "1" }) })
+    @KafkaListener(topics = "#{'${app.kafka.general-contingency-topic-name}'.split(',')}", containerFactory = "dataSetDataKafkaListenerContainerFactory")
     public void listen(final InputData<DataSetData> message) {
     	
     	// INSERT operation by default
