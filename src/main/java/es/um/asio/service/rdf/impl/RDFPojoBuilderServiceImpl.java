@@ -5,9 +5,11 @@ import java.util.Set;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.jena.graph.BlankNodeId;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
+import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.vocabulary.RDF;
 import org.slf4j.Logger;
@@ -118,7 +120,8 @@ public class RDFPojoBuilderServiceImpl implements RDFPojoBuilderService {
 						// nested property
 						pojoNodeID = ((LinkedHashMap) inputPojo.get(key)).get(RDFPojoBuilderServiceImpl.ETL_POJO_ID).toString();
 						if(StringUtils.isNotBlank(pojoNodeID)) {
-							resourceProperties.addProperty(property, RDFPojoBuilderServiceImpl.HTTP_HERCULES_ORG_UM_ES_ES_REC + StringUtils.capitalize(key) + "/" + pojoNodeID);
+							RDFNode node = model.createResource(RDFPojoBuilderServiceImpl.HTTP_HERCULES_ORG_UM_ES_ES_REC + StringUtils.capitalize(key) + "/" + pojoNodeID);			
+							resourceProperties.addProperty(property, node);
 						} else {
 							this.logger.error("Nested object with null id: " + pojoNode);
 						}
