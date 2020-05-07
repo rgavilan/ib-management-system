@@ -93,10 +93,13 @@ public class RDFPojoBuilderServiceImpl implements RDFPojoBuilderService {
 		try {
 			// 1. create the resource
 			final String className = (String) PropertyUtils.getProperty(obj, RDFPojoBuilderServiceImpl.ETL_POJO_CLASS);
-			final Number objectId = (Number) PropertyUtils.getProperty(obj, RDFPojoBuilderServiceImpl.ETL_POJO_ID);
-
-			final String modelId = RDFPojoBuilderServiceImpl.HTTP_HERCULES_ORG_UM_ES_ES_REC + className + "/"
-					+ objectId;
+			final String objectId = this.sanifyCheck(PropertyUtils.getProperty(obj, RDFPojoBuilderServiceImpl.ETL_POJO_ID));
+			
+			if (StringUtils.isBlank(objectId)) {
+				throw new Exception("Pojo without identity");
+			}
+			
+			final String modelId = RDFPojoBuilderServiceImpl.HTTP_HERCULES_ORG_UM_ES_ES_REC + className + "/" + objectId;
 			final Resource resourceProperties = model.createResource(modelId);
 
 			// 2. create the properties
@@ -114,7 +117,11 @@ public class RDFPojoBuilderServiceImpl implements RDFPojoBuilderService {
 					if (pojoNode instanceof LinkedHashMap) {
 						// nested property
 						pojoNodeID = ((LinkedHashMap) inputPojo.get(key)).get(RDFPojoBuilderServiceImpl.ETL_POJO_ID).toString();
-						resourceProperties.addProperty(property, RDFPojoBuilderServiceImpl.HTTP_HERCULES_ORG_UM_ES_ES_REC + StringUtils.capitalize(key) + "/" + pojoNodeID);
+						if(StringUtils.isNotBlank(pojoNodeID)) {
+							resourceProperties.addProperty(property, RDFPojoBuilderServiceImpl.HTTP_HERCULES_ORG_UM_ES_ES_REC + StringUtils.capitalize(key) + "/" + pojoNodeID);
+						} else {
+							this.logger.error("Nested object with null id: " + pojoNode);
+						}
 					} else {
 						// simple property
 						propertyValue = inputPojo.get(key).toString();
@@ -133,6 +140,7 @@ public class RDFPojoBuilderServiceImpl implements RDFPojoBuilderService {
 
 		} catch (final Exception e) {
 			this.logger.error("Error creating resource from input: " + obj);
+			this.logger.error("Error cause " + e.getMessage());
 			e.printStackTrace();
 		}
 
@@ -152,6 +160,27 @@ public class RDFPojoBuilderServiceImpl implements RDFPojoBuilderService {
 		} catch (Exception e) {
 			logger.error("Unknown class in object " + obj.toString());
 		} 
+		return result;
+	}
+	
+	/**
+	 * Sanify check.
+	 *
+	 * @param obj the obj
+	 * @return the string
+	 */
+	private String sanifyCheck(Object obj) {
+		String result = StringUtils.EMPTY;
+		if( obj == null) {
+			return result;
+		}
+		if (obj instanceof Number) {
+			return ((Number) obj).toString();
+		}
+		if(obj instanceof String) {
+			return (String) obj;
+		}
+		
 		return result;
 	}
 
