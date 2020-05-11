@@ -101,7 +101,7 @@ public class RDFPojoBuilderServiceImpl implements RDFPojoBuilderService {
 		try {
 			// 1. create the resource
 			final String className = (String) PropertyUtils.getProperty(obj, RDFPojoBuilderServiceImpl.ETL_POJO_CLASS);
-			final String objectId = this.sanifyCheck(PropertyUtils.getProperty(obj, RDFPojoBuilderServiceImpl.ETL_POJO_ID));
+			final String objectId = this.safetyCheck(PropertyUtils.getProperty(obj, RDFPojoBuilderServiceImpl.ETL_POJO_ID));
 			
 			if (StringUtils.isBlank(objectId)) {
 				throw new Exception("Pojo without identity");
@@ -187,12 +187,12 @@ public class RDFPojoBuilderServiceImpl implements RDFPojoBuilderService {
 	}
 	
 	/**
-	 * Sanify check.
+	 * Safety check.
 	 *
 	 * @param obj the obj
 	 * @return the string
 	 */
-	private String sanifyCheck(Object obj) {
+	private String safetyCheck(Object obj) {
 		String result = StringUtils.EMPTY;
 		if( obj == null) {
 			return result;
