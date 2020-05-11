@@ -5,12 +5,16 @@ import java.util.Set;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.jena.graph.BlankNodeId;
+import org.apache.jena.ontology.OntClass;
+import org.apache.jena.ontology.OntModel;
+import org.apache.jena.ontology.OntModelSpec;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.riot.Lang;
+import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.vocabulary.RDF;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +34,8 @@ import es.um.asio.service.util.RDFUtil;
  */
 @Service
 public class RDFPojoBuilderServiceImpl implements RDFPojoBuilderService {
+	
+	private static final String SPANISH_LANGUAGE_BY_DEFAULT = "es";
 
 	/** The Constant ETL_POJO_CLASS. */
 	private static final String ETL_POJO_CLASS = "clase";
@@ -110,7 +116,7 @@ public class RDFPojoBuilderServiceImpl implements RDFPojoBuilderService {
 			// 2. create the properties
 			String propertyValue;
 			String pojoNodeID;
-
+						
 			final LinkedHashMap inputPojo = ((LinkedHashMap) obj);
 			final Set<String> keys = inputPojo.keySet();
 			for (final String key : keys) {
@@ -131,7 +137,7 @@ public class RDFPojoBuilderServiceImpl implements RDFPojoBuilderService {
 					} else {
 						// simple property
 						propertyValue = inputPojo.get(key).toString();
-						resourceProperties.addProperty(property, propertyValue);
+						resourceProperties.addProperty(property, propertyValue, RDFPojoBuilderServiceImpl.SPANISH_LANGUAGE_BY_DEFAULT);
 					}
 				}
 			}
@@ -143,7 +149,18 @@ public class RDFPojoBuilderServiceImpl implements RDFPojoBuilderService {
 			// 4. we build the result model
 			result.setModelId(modelId);
 			result.setModel(model);
-
+			
+			// 5. print out
+			System.out.println("************************************** TURTLE ************************************************");
+			RDFDataMgr.write(System.out, model, Lang.TURTLE);
+			System.out.println("************************************** RDF_XML ************************************************");
+			RDFDataMgr.write(System.out, model, Lang.RDFXML);
+			System.out.println("************************************** RDF_JSON ************************************************");
+			RDFDataMgr.write(System.out, model, Lang.RDFJSON);
+			System.out.println("************************************** OTHERS ************************************************");
+			
+			
+			
 		} catch (final Exception e) {
 			this.logger.error("Error creating resource from input: " + obj);
 			this.logger.error("Error cause " + e.getMessage());

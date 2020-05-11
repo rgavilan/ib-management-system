@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF 
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+	xmlns:dc="http://purl.org/dc/elements/1.1/" 
+	xmlns:owl="http://www.w3.org/2002/07/owl#" 
+	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" 
+	xml:base="http://hercules.org/um/ontology">
+	
+   <owl:Ontology rdf:about="" />
+   
+   <owl:Ontology rdf:about="http://hercules.org/um/ontology#" 
+		dc:title="The ASIO Ontology" 
+		dc:date="$Date: 2020-05-10 0:51:50 $" 
+		dc:creator="Alejandro Martino" 
+		dc:contributor="Izertis">
+      <dc:description>An ontology for describing university stuff"</dc:description>
+      <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing" />
+   </owl:Ontology>
+   
+   <owl:Class rdf:ID="Universidad">
+      <rdfs:subClassOf rdf:resource="http://xmlns.com/wordnet/1.6/Document" />
+      <rdfs:label>Universidad</rdfs:label>
+   </owl:Class>
+   
+   <owl:Class rdf:ID="GrupoInvestigacion">
+      <rdfs:subClassOf rdf:resource="http://xmlns.com/wordnet/1.6/Document" />
+      <rdfs:label>GrupoInvestigacion</rdfs:label>
+   </owl:Class>
+   
+   <owl:ObjectProperty rdf:ID="tieneUna">
+      <rdfs:domain rdf:resource="#GrupoInvestigacion" />
+      <rdfs:range rdf:resource="#Universidad" />
+      <rdfs:label>tiene una</rdfs:label>
+   </owl:ObjectProperty>
+   
+    <owl:ObjectProperty rdf:ID="poseeUna">
+      <rdfs:domain rdf:resource="#descripcion" />
+      <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string" />
+      <rdfs:label>posee una</rdfs:label>
+   </owl:ObjectProperty>
+    
+     
+   <owl:DatatypeProperty rdf:about="http://purl.org/dc/elements/1.1/contributor" />
+   <owl:DatatypeProperty rdf:about="http://purl.org/dc/elements/1.1/creator" />
+   <owl:DatatypeProperty rdf:about="http://purl.org/dc/elements/1.1/date" />
+   <owl:DatatypeProperty rdf:about="http://purl.org/dc/elements/1.1/description" />
+   <owl:DatatypeProperty rdf:about="http://purl.org/dc/elements/1.1/title" />
+
+</rdf:RDF>

@@ -112,6 +112,13 @@
 			<artifactId>commons-beanutils</artifactId>
 			<version>${commons-beanutils.version}</version>
 		</dependency>
+		
+		<dependency>
+		    <groupId>org.eclipse.rdf4j</groupId>
+		    <artifactId>rdf4j-rio-api</artifactId>
+		    <version>2.1.4</version>
+		</dependency>
+		
 
 		<!-- Testing -->
 
