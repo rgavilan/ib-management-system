@@ -148,19 +148,8 @@ public class RDFPojoBuilderServiceImpl implements RDFPojoBuilderService {
 
 			// 4. we build the result model
 			result.setModelId(modelId);
-			result.setModel(model);
-			
-			// 5. print out
-			System.out.println("************************************** TURTLE ************************************************");
-			RDFDataMgr.write(System.out, model, Lang.TURTLE);
-			System.out.println("************************************** RDF_XML ************************************************");
-			RDFDataMgr.write(System.out, model, Lang.RDFXML);
-			System.out.println("************************************** RDF_JSON ************************************************");
-			RDFDataMgr.write(System.out, model, Lang.RDFJSON);
-			System.out.println("************************************** OTHERS ************************************************");
-			
-			
-			
+			result.setModel(model);			
+					
 		} catch (final Exception e) {
 			this.logger.error("Error creating resource from input: " + obj);
 			this.logger.error("Error cause " + e.getMessage());
