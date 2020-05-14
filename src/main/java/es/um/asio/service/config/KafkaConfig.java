@@ -95,6 +95,8 @@ public class KafkaConfig {
     	customerConfigMap.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
     	customerConfigMap.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
     	customerConfigMap.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+    	customerConfigMap.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, "30000");
+    	customerConfigMap.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, 2);
     	return customerConfigMap;
     }
     
