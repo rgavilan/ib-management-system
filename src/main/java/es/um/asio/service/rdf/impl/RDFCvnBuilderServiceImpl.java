@@ -5,7 +5,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -49,6 +51,12 @@ public class RDFCvnBuilderServiceImpl implements RDFCvnBuilderService {
     */
     @Autowired
     private URISGeneratorClient urisGeneratorClient;
+    
+    /** 
+     * The property uri cache. 
+    */
+    Map<String, String> propertyUriCache = new HashMap<String, String>();
+
     
     /**
      * Inkove builder.
@@ -111,17 +119,16 @@ public class RDFCvnBuilderServiceImpl implements RDFCvnBuilderService {
 
             // 4. we build the result model
             result.setModelId(modelId);
-            result.setModel(model);
-
+            result.setModel(model);            
+            
         } catch (Exception e) {
             logger.error("Error creating resource from input: " + obj);
             e.printStackTrace();
         }
-
+        
         return result;
     }
     
-
     /**
      * Creates the resource from cvn bean.
      *
@@ -141,7 +148,11 @@ public class RDFCvnBuilderServiceImpl implements RDFCvnBuilderService {
         for (Field field : fields) {            
             field.setAccessible(true);
             Object value = field.get(obj);      
-            Property property = model.createProperty(urisGeneratorClient.createPropertyURI(obj, field.getName()), field.getName());
+            if(value == null) {
+                continue;
+            }
+            
+            Property property = model.createProperty(this.createPropertyUri(obj, field.getName()), field.getName());
             
             if(value instanceof CvnBean) {                
                 resource.addProperty(property, createResource(model,value, StringUtils.EMPTY));
@@ -149,15 +160,14 @@ public class RDFCvnBuilderServiceImpl implements RDFCvnBuilderService {
             }
             if(value instanceof Collection) {
                 Collection<?> internalCvnBeans = (Collection<?>)value;               
-                var bag = model.createBag();   
                 
-                if (internalCvnBeans != null) {
+                if (internalCvnBeans != null && !internalCvnBeans.isEmpty()) {                  
+                    var bag = model.createBag();  
                     for (Object internalCvnBean : internalCvnBeans) {
                         bag.addProperty(property, createResource(model, internalCvnBean, StringUtils.EMPTY));
                     }
+                    resource.addProperty(property, bag);
                 }
-                
-                resource.addProperty(property, bag);
                 continue;
             }
              
@@ -188,6 +198,23 @@ public class RDFCvnBuilderServiceImpl implements RDFCvnBuilderService {
         }
  
         return fields;
+    }
+    
+    
+    /**
+     * Creates the property uri.
+     *
+     * @param obj the obj
+     * @param property the property
+     * @return the string
+     */
+    private String createPropertyUri(Object obj, String property) {
+        var propertyUri = propertyUriCache.get(property);
+        if(propertyUri == null) {
+            propertyUri = urisGeneratorClient.createPropertyURI(obj, property);
+            propertyUriCache.put(property,propertyUri);
+        }
+        return propertyUri;
     }
     
 }

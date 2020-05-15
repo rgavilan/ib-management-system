@@ -83,7 +83,7 @@ public class RDFCvnBuilderServiceTest {
     }
     
     @Test
-    public void whenCreateResourceOf_SimpleCvnBeanWithEmptyProperties_thenGenerateRdf() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+    public void whenCreateResourceOf_SimpleCvnBeanWithEmptyAndNullProperties_thenGenerateRdf() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         SimpleCvnBeanDummy simpleCvnBean = new SimpleCvnBeanDummy();
         simpleCvnBean.setCode("");
         simpleCvnBean.setFoo(null);
@@ -91,9 +91,9 @@ public class RDFCvnBuilderServiceTest {
         
         rdfCvnBuilderService.createResource(model, simpleCvnBean, StringUtils.EMPTY);
         
-        ModelAssert.assertThat(model).hasStatementsSize(2);
-        ModelAssert.assertThat(model).containsPredicate("http://www.w3.org/2001/asio-rdf/3.0#foo").withValue(StringUtils.EMPTY);       
+        ModelAssert.assertThat(model).hasStatementsSize(1);
         ModelAssert.assertThat(model).containsPredicate("http://www.w3.org/2001/asio-rdf/3.0#code").withValue(StringUtils.EMPTY);  
+        ModelAssert.assertThat(model).noContainsPredicate("http://www.w3.org/2001/asio-rdf/3.0#foo");
     }
     
     
@@ -130,26 +130,7 @@ public class RDFCvnBuilderServiceTest {
         assertThat(complexCvnBean_simpleCvnBean_code.getSubject().asNode()).isEqualTo(simpleCvnNode);
     }
     
-    @Test
-    public void whenCreateResourceOf_ComplexCvnBeanWithNullCvnBean_thenGenerateRdf() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-        // Arrange       
-        ComplexCvnBeanDummy complexCvnBean = new ComplexCvnBeanDummy();
-        complexCvnBean.setSimpleCvnBean(null);
-        complexCvnBean.setCode(null);
-        complexCvnBean.setBar(null);
-        Model model =  ModelFactory.createDefaultModel();
-        
-        // Act
-        rdfCvnBuilderService.createResource(model, complexCvnBean, StringUtils.EMPTY);              
-        
-        // Assert             
-        ModelAssert.assertThat(model).hasStatementsSize(3);        
-        ModelAssert.assertThat(model).containsPredicate("http://www.w3.org/2001/asio-rdf/3.0#simpleCvnBean").withValue(StringUtils.EMPTY);
-        ModelAssert.assertThat(model).containsPredicate("http://www.w3.org/2001/asio-rdf/3.0#bar").withValue(StringUtils.EMPTY);
-        ModelAssert.assertThat(model).containsPredicate("http://www.w3.org/2001/asio-rdf/3.0#code").withValue(StringUtils.EMPTY);       
-    }
-    
-    
+  
     @Test
     public void whenCreateResourceOf_CvnBeanWithInheritance_thenGenerateRdf() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         // inherits from ParentCvnBeanDummy
@@ -214,10 +195,7 @@ public class RDFCvnBuilderServiceTest {
         rdfCvnBuilderService.createResource(model, cvnBeanWithCvnBeanCollection, StringUtils.EMPTY);
 
         // Assert        
-        ModelAssert.assertThat(model).hasStatementsSize(3);        
-        ModelAssert.assertThat(model).containsPredicate("http://www.w3.org/2001/asio-rdf/3.0#simpleCvnBeans").withBlankNodeValue();
-        ModelAssert.assertThat(model).containsPredicate("http://www.w3.org/2001/asio-rdf/3.0#code").withValue(StringUtils.EMPTY);
-        ModelAssert.assertThat(model).containsPredicate("http://www.w3.org/1999/02/22-rdf-syntax-ns#type").withValue("http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag");     
+        ModelAssert.assertThat(model).hasStatementsSize(0);  
     }
     
     @Test
@@ -275,27 +253,14 @@ public class RDFCvnBuilderServiceTest {
                 "        <http://www.w3.org/2001/asio-rdf/3.0#cvnItemBean>\n" + 
                 "                [ a       <http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag> ;\n" + 
                 "                  <http://www.w3.org/2001/asio-rdf/3.0#cvnItemBean>\n" + 
-                "                          [ <http://www.w3.org/2001/asio-rdf/3.0#code>\n" + 
-                "                                    \"\" ;\n" + 
-                "                            <http://www.w3.org/2001/asio-rdf/3.0#cvnAuthorBean>\n" + 
+                "                          [ <http://www.w3.org/2001/asio-rdf/3.0#cvnAuthorBean>\n" + 
                 "                                    [ a       <http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag> ;\n" + 
                 "                                      <http://www.w3.org/2001/asio-rdf/3.0#cvnAuthorBean>\n" + 
-                "                                              [ <http://www.w3.org/2001/asio-rdf/3.0#code>\n" + 
-                "                                                        \"\" ;\n" + 
-                "                                                <http://www.w3.org/2001/asio-rdf/3.0#cvnFamilyNameBean>\n" + 
-                "                                                        [ <http://www.w3.org/2001/asio-rdf/3.0#code>\n" + 
-                "                                                                  \"\" ;\n" + 
-                "                                                          <http://www.w3.org/2001/asio-rdf/3.0#firstFamilyName>\n" + 
-                "                                                                  \"First famility dummy name\" ;\n" + 
-                "                                                          <http://www.w3.org/2001/asio-rdf/3.0#secondFamilyName>\n" + 
-                "                                                                  \"\"\n" + 
-                "                                                        ] ;\n" + 
+                "                                              [ <http://www.w3.org/2001/asio-rdf/3.0#cvnFamilyNameBean>\n" + 
+                "                                                        [ <http://www.w3.org/2001/asio-rdf/3.0#firstFamilyName>\n" + 
+                "                                                                  \"First famility dummy name\" ] ;\n" + 
                 "                                                <http://www.w3.org/2001/asio-rdf/3.0#givenName>\n" + 
-                "                                                        \"Dummy name\" ;\n" + 
-                "                                                <http://www.w3.org/2001/asio-rdf/3.0#signature>\n" + 
-                "                                                        \"\" ;\n" + 
-                "                                                <http://www.w3.org/2001/asio-rdf/3.0#signatureOrder>\n" + 
-                "                                                        \"\"\n" + 
+                "                                                        \"Dummy name\"\n" + 
                 "                                              ]\n" + 
                 "                                    ] ;\n" + 
                 "                            <http://www.w3.org/2001/asio-rdf/3.0#cvnBoolean>\n" + 
@@ -312,41 +277,9 @@ public class RDFCvnBuilderServiceTest {
                 "                                                <http://www.w3.org/2001/asio-rdf/3.0#value>\n" + 
                 "                                                        \"true\"\n" + 
                 "                                              ]\n" + 
-                "                                    ] ;\n" + 
-                "                            <http://www.w3.org/2001/asio-rdf/3.0#cvnCodeGroup>\n" + 
-                "                                    \"\" ;\n" + 
-                "                            <http://www.w3.org/2001/asio-rdf/3.0#cvnDateDayMonthYear>\n" + 
-                "                                    \"\" ;\n" + 
-                "                            <http://www.w3.org/2001/asio-rdf/3.0#cvnDateMonthYear>\n" + 
-                "                                    \"\" ;\n" + 
-                "                            <http://www.w3.org/2001/asio-rdf/3.0#cvnDateYear>\n" + 
-                "                                    \"\" ;\n" + 
-                "                            <http://www.w3.org/2001/asio-rdf/3.0#cvnDouble>\n" + 
-                "                                    \"\" ;\n" + 
-                "                            <http://www.w3.org/2001/asio-rdf/3.0#cvnDuration>\n" + 
-                "                                    \"\" ;\n" + 
-                "                            <http://www.w3.org/2001/asio-rdf/3.0#cvnEntityBean>\n" + 
-                "                                    \"\" ;\n" + 
-                "                            <http://www.w3.org/2001/asio-rdf/3.0#cvnExternalPKBean>\n" + 
-                "                                    \"\" ;\n" + 
-                "                            <http://www.w3.org/2001/asio-rdf/3.0#cvnFamilyNameBean>\n" + 
-                "                                    \"\" ;\n" + 
-                "                            <http://www.w3.org/2001/asio-rdf/3.0#cvnPageBean>\n" + 
-                "                                    \"\" ;\n" + 
-                "                            <http://www.w3.org/2001/asio-rdf/3.0#cvnPhoneBean>\n" + 
-                "                                    \"\" ;\n" + 
-                "                            <http://www.w3.org/2001/asio-rdf/3.0#cvnPhotoBean>\n" + 
-                "                                    \"\" ;\n" + 
-                "                            <http://www.w3.org/2001/asio-rdf/3.0#cvnRichText>\n" + 
-                "                                    \"\" ;\n" + 
-                "                            <http://www.w3.org/2001/asio-rdf/3.0#cvnString>\n" + 
-                "                                    \"\" ;\n" + 
-                "                            <http://www.w3.org/2001/asio-rdf/3.0#cvnTitleBean>\n" + 
-                "                                    \"\" ;\n" + 
-                "                            <http://www.w3.org/2001/asio-rdf/3.0#cvnVolumeBean>\n" + 
-                "                                    \"\"\n" + 
+                "                                    ]\n" + 
                 "                          ]\n" + 
-                "                ] .\n" + 
+                "                ] .\n" +
                 "";
     }
 }
