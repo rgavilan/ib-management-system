@@ -34,7 +34,9 @@ public class RDFServiceImpl implements RDFService {
 	 * @return the model
 	 */
 	public  ManagementBusEvent createRDF(GeneralBusEvent<?> input) {
-        logger.debug("Convert event bus: " + input);
+	    if(logger.isDebugEnabled()) {
+	        logger.debug("Convert event bus: " + input);
+	    }        
 
 		ManagementBusEvent result = rdfCvnBuilderService.inkoveBuilder(input);
 		logger.info("Generated RDF: ");
