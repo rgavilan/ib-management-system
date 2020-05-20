@@ -14,11 +14,11 @@
 	<artifactId>management-system</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>${artifact.packaging}</packaging>
-	<name>UM - ASIO - management-system - Back</name>
-	<description>UM - ASIO - management-system - Back</description>
+	<name>UM - ASIO - management-system</name>
+	<description>UM - ASIO - management-system</description>
 
 	<scm>
-		<url>https://git.izertis.com/universidaddemurcia/semantmurc/management-system</url>
+		<url>scm:git:https://github.com/HerculesCRUE/ib-management-system.git</url>
 	</scm>
 
 
