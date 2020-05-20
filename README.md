@@ -6,42 +6,34 @@ Sistema de gestión de datos del módulo de procesamiento para el proyecto Backe
 
 Para iniciar el entorno de desarrollo se necesita cumplir los siguientes requisitos:
 
-* OpenJDK 11 (en caso de querer JDK8: Oracle JDK 8)
+* OpenJDK 11
 * Eclipse JEE 2019-09 con plugins:
-** Spring Tools 4
-** m2e-apt
-** Lombok
+  * Spring Tools 4
+  * m2e-apt
+  * Lombok
 * Docker
 
-También se debe instalar el entorno de desarrollo acorde con lo explicado en: [https://corpus.izertis.com/arquitectura/java/configuracion-del-entorno](https://corpus.izertis.com/arquitectura/java/configuracion-del-entorno)
+## Metodología de desarrollo
 
+La metodología de desarrollo es Git Flow.
 
-### Instalar Lombok
+## Entorno de desarrollo Docker
 
-Para la instalación de Lombok, es preciso descargar la última versión desde [https://projectlombok.org/download](https://projectlombok.org/download). Se descargará un jar que precisa ser ejecutado:
+La inicialización de los elementos adicionales al entorno de desarrollo se realiza con docker. 
 
-	java -jar lombok.jar
+En el directorio docker-devenv se ha configurado un fichero docker-compose.yml para poder arrancar el entorno de desarrollo.
 
-Se seleccionará la ubicación en la que se encuentra instalado Eclipse.
+Para arrancar el entorno:
 
-En caso que de problemas a la hora de generar las clases de Mapstruct, es preciso utilizar una versión parcheada de lombok. Para ello, se ha dejado en \\rackstation\Desarrollo\fuentes\Entorno de desarrollo\Eclipses el fichero lombok-patched-1.18.6.jar. Se deberá configurar en el fichero eclipse.ini, sustituyendo el jar que tiene configurado actualmente por el parcheado
-
-```
--javaagent:C:\desarrollo\java\install\eclipse-jee-2018-12-R-win32-x86_64\lombok-patched-1.18.6.jar
-```
-
-## Java 11
-
-La aplicación está preparada para funcionar con JDK 11. En caso de necesitar trabajar con un JDK anterior, es preciso especificar una propiedad en el POM:
-
-```xml
-<properties>
-	<java.version>1.8</java.version>
-</properties>
+```bash
+docker-compose up -d
 ```
 
-Para descargar JDK 11, se precisa utilizar openjdk, la cual se puede obtener de https://jdk.java.net/11/
+Para pararlo:
 
+```bash
+docker-compose down
+```
 
 ## Instalación en entorno real
 
@@ -58,3 +50,20 @@ Será preciso configurar las siguientes variables de entorno cuando se instale e
 | `SPRING_KAFKA_CONSUMER_GROUP_ID` | ID del grupo de consumidores | management-system |
 | `APP_GENERATOR_URIS_MOCKUP_ENABLED` | Flag que indica si se debe llamar al mockup uris factory. Valores admisibles `true` y `false`|false|
 | `APP_GENERATOR_URIS_ENDPOINT` | URL del servicio URIS Factory | http://localhost:9326 |
+
+### Ejecución
+
+Al generarse un JAR bootable la ejecución se realizará mediante el siguiente comando:
+
+```bash
+java -jar {jar-name}.jar
+```
+
+Sustituyendo `{jar-name}` por el nombre del fichero JAR generado.
+
+No es necesario especificar la clase de inicio de la aplicación, ya que el fichero MANIFEST.MF generado ya contiene la información necesaria. Solamente se especificarán los parametros necesarios.
+
+##  Documentación adicional
+
+* [Compilación](docs/build.md)
+* [Generación Docker](docs/docker.md)
