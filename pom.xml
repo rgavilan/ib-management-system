@@ -60,8 +60,6 @@
 		<domain-model.version>1.0-SNAPSHOT</domain-model.version>
 		<jena.version>3.14.0</jena.version>
 		<asio-abstractions.version>1.0-SNAPSHOT</asio-abstractions.version>
-		
-		<izertis.libraries.version>1.1.1</izertis.libraries.version>
 	</properties>
 
 	<dependencyManagement>
