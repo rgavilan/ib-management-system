@@ -1,13 +1,10 @@
 package es.um.asio.service.rdf.impl;
 
 import java.util.LinkedHashMap;
-import java.util.Set;
+import java.util.Map;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.jena.ontology.OntClass;
-import org.apache.jena.ontology.OntModel;
-import org.apache.jena.ontology.OntModelSpec;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
@@ -114,20 +111,22 @@ public class RDFPojoBuilderServiceImpl implements RDFPojoBuilderService {
 			model.setNsPrefix(className, RDFPojoBuilderServiceImpl.HTTP_HERCULES_ORG_UM_ES_ES_REC + className + "/");
 
 			// 2. create the properties
-			String propertyValue;
 			String pojoNodeID;
 						
-			final LinkedHashMap inputPojo = ((LinkedHashMap) obj);
-			final Set<String> keys = inputPojo.keySet();
-			for (final String key : keys) {
+			final LinkedHashMap<String,Object> inputPojo = ((LinkedHashMap<String,Object>) obj);
+						
+			String key = null;
+			for(Map.Entry<String, Object> entry: inputPojo.entrySet()) {
+				key = entry.getKey();
+				
 				// we skip the clase field
 				if (!RDFPojoBuilderServiceImpl.ETL_POJO_CLASS.equalsIgnoreCase(key)) {
 					final Property property = model.createProperty(RDFPojoBuilderServiceImpl.HTTP_HERCULES_ORG_UM_ES_ES_REC + className + "/", key);
-
-					final Object pojoNode = inputPojo.get(key);
+					
+					final Object pojoNode = entry.getValue();
 					if (pojoNode instanceof LinkedHashMap) {
 						// nested property
-						pojoNodeID = ((LinkedHashMap) inputPojo.get(key)).get(RDFPojoBuilderServiceImpl.ETL_POJO_ID).toString();
+						pojoNodeID = ((LinkedHashMap) pojoNode).get(RDFPojoBuilderServiceImpl.ETL_POJO_ID).toString();
 						if(StringUtils.isNotBlank(pojoNodeID)) {
 							RDFNode node = model.createResource(RDFPojoBuilderServiceImpl.HTTP_HERCULES_ORG_UM_ES_ES_REC + StringUtils.capitalize(key) + "/" + pojoNodeID);			
 							resourceProperties.addProperty(property, node);
@@ -135,12 +134,12 @@ public class RDFPojoBuilderServiceImpl implements RDFPojoBuilderService {
 							this.logger.error("Nested object with null id: " + pojoNode);
 						}
 					} else {
-						// simple property
-						propertyValue = inputPojo.get(key).toString();
-						resourceProperties.addProperty(property, propertyValue, RDFPojoBuilderServiceImpl.SPANISH_LANGUAGE_BY_DEFAULT);
+						// simple property						
+						resourceProperties.addProperty(property, entry.getValue().toString(), RDFPojoBuilderServiceImpl.SPANISH_LANGUAGE_BY_DEFAULT);
 					}
 				}
 			}
+			
 
 			// 3. we set the type
 			final Resource resourceClass = model.createResource(RDFPojoBuilderServiceImpl.HTTP_HERCULES_ORG_UM_ES_ES_REC + className + "/");
