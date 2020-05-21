@@ -112,7 +112,7 @@ public class URISGeneratorClientImpl implements URISGeneratorClient {
 
 	@Override
 	public String rootUri() {
-		return restTemplate.getForObject(rootURIEndpoint, String.class);
+		return Constants.ROOT_URI; 
 	}
 
 }
