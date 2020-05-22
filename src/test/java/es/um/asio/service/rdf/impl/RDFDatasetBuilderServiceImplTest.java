@@ -43,6 +43,6 @@ public class RDFDatasetBuilderServiceImplTest {
     public void inkoveBuilder() {
 		GeneralBusEvent input = new GeneralBusEvent<InputData>();
 		ManagementBusEvent busEvent = rdfDatasetBuilderService.inkoveBuilder(input);
-		assertNotEquals("proyecto", busEvent);
+		assertNotEquals("actividad", busEvent);
     }
 }
