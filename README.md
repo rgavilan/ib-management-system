@@ -1,3 +1,19 @@
+![](./images/logos_feder.png)
+
+
+
+| Entregable     | Procesador de datos                                       |
+| -------------- | ------------------------------------------------------------ |
+| Fecha          | 25/05/2020                                                   |
+| Proyecto       | [ASIO](https://www.um.es/web/hercules/proyectos/asio) (Arquitectura Semántica e Infraestructura Ontológica) en el marco de la iniciativa [Hércules](https://www.um.es/web/hercules/) para la Semántica de Datos de Investigación de Universidades que forma parte de [CRUE-TIC](http://www.crue.org/SitePages/ProyectoHercules.aspx) |
+| Módulo         | Sistema de gestión                                            |
+| Tipo           | Software                                                     |
+| Objetivo       | Sistema de gestión de datos del módulo de procesamiento para el proyecto Backend SGI (ASIO). |
+| Estado         | **10%** Está funcionando para los pojos sin transformar y tres entidades: Proyecto, grupo de investigación y Universidad |
+| Próximos pasos | Se deben generar los objetos RDF para todos los datos recibidos siguiendo el formato de la ontología. |
+| Documentación  | [Manual de usuario](https://github.com/HerculesCRUE/ib-asio-docs-/blob/master/entregables_hito_1/12-An%C3%A1lisis/Manual%20de%20usuario/Manual%20de%20usuario.md)<br />[Manual de despliegue](https://github.com/HerculesCRUE/ib-asio-composeset/blob/master/README.md)<br />[Documentación técnica](https://github.com/HerculesCRUE/ib-asio-docs-/blob/master/entregables_hito_1/11-Arquitectura/ASIO_Izertis_Arquitectura.md) |
+
+
 # ASIO - Sistema de gestión
 
 Sistema de gestión de datos del módulo de procesamiento para el proyecto Backend SGI (ASIO). 
