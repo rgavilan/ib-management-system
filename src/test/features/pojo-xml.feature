@@ -1,10 +1,10 @@
 #Author: Izertis
 #Keywords Summary : pojo-xml
-Feature: Sent messages between Management-System and Triple-Store-Adapter
+Feature: Generation of RDF from imported xml files
 
-    Scenario: one message is sent by Management-System and the Event-processor catches it sending again for Triple-Store-Adapter
-        Given a new message in managementdata queue
-        Then the Event-processor sends the new message against Triple-Store-Adapter
+    Scenario: the input processor sends xml file to Management-System
+        Given a new message arrives to managementdata queue
+        Then the management-system creates Activity RDF object
         Examples:
             | Data                 | Value                                   |
             | @class               | es.um.asio.domain.actividades.Actividad |
