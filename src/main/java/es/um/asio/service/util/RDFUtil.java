@@ -4,17 +4,30 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RDFLanguages;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The Class RDFUtil.
  */
 public final class RDFUtil {
+	
+	
+	private final static Logger logger = LoggerFactory.getLogger(RDFUtil.class);
 
 	/** The Constant RDF_XML_ABBREV. */
 	public static final String RDF_XML_ABBREV = "RDF/XML-ABBREV";
@@ -66,39 +79,58 @@ public final class RDFUtil {
 		result.read(in, null);
 		return result;
 	}
-	
+
 	/**
 	 * Gets the name space from path removing the last parameter <br/>
 	 * Examples: <br/>
 	 * Input: http://hercules.org/um/es-ES/rec/ContratoProyecto/ <br/>
-	 * Output: http://hercules.org/um/es-ES/rec/ <br/><br/>
-		
+	 * Output: http://hercules.org/um/es-ES/rec/ <br/>
+	 * <br/>
+	 * 
 	 * Input: http://hercules.org/um/es-ES/rec/ContratoProyecto <br/>
-	 * Output: http://hercules.org/um/es-ES/rec/ <br/><br/>
-		
+	 * Output: http://hercules.org/um/es-ES/rec/ <br/>
+	 * <br/>
+	 * 
 	 * Input: https://hercules.org/um/es-ES/rec/ContratoProyecto/ <br/>
-	 * Output: https://hercules.org/um/es-ES/rec/ <br/><br/>
-		
+	 * Output: https://hercules.org/um/es-ES/rec/ <br/>
+	 * <br/>
+	 * 
 	 * Input: https://hercules.org/um/es-ES/rec/ContratoProyecto <br/>
-	 * Output: https://hercules.org/um/es-ES/rec/ <br/><br/>
+	 * Output: https://hercules.org/um/es-ES/rec/ <br/>
+	 * <br/>
 	 *
 	 * @param path the path
 	 * @return the name space from path
 	 */
 	public static String getNameSpaceFromPath(String path) {
-        if (path == null )
-            return null;
-        else {
-        	String[] pathProtocol = path.split("/"); 
-            String tempPath = path.replace('/', ' ');
-            String[] pathParts = tempPath.split(" ");
-            
-            StringBuilder strBuilder = new StringBuilder();
-            strBuilder.append(pathProtocol[0]).append("//");
-            for(int i=2; i< pathParts.length-1 ; i++) {
-            	strBuilder.append(pathParts[i]).append("/");
-            }
-            return strBuilder.toString();
-        } 
-    }
+		if (path == null)
+			return null;
+		else {
+			String[] pathProtocol = path.split("/");
+			String tempPath = path.replace('/', ' ');
+			String[] pathParts = tempPath.split(" ");
+
+			StringBuilder strBuilder = new StringBuilder();
+			strBuilder.append(pathProtocol[0]).append("//");
+			for (int i = 2; i < pathParts.length - 1; i++) {
+				strBuilder.append(pathParts[i]).append("/");
+			}
+			return strBuilder.toString();
+		}
+	}
+
+	/**
+	 * Method to miss out the property EntityId from source object
+	 * 
+	 * @param source
+	 * @return
+	 */
+	public static void skipFields(Object source) {
+		try {
+			BeanUtils.copyProperty(source, "entityId", null);
+			BeanUtils.copyProperty(source, "version", 1);
+		} catch (Exception e) {
+			logger.error("Error skipping fields in {}", source);
+		} 
+	}
 }

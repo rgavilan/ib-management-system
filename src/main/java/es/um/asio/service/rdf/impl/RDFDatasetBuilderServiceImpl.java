@@ -3,6 +3,7 @@ package es.um.asio.service.rdf.impl;
 import java.lang.reflect.Field;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.SerializationUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
@@ -83,7 +84,9 @@ public class RDFDatasetBuilderServiceImpl  implements RDFDatasetBuilderService {
 
 		try {
 			// 1. create the resource
+			RDFUtil.skipFields(obj);
 			String modelId = urisGeneratorClient.createResourceID(obj);
+			
 			Resource resourceProperties = model.createResource(modelId);
 			
 			// 2. only the own fields
@@ -108,6 +111,10 @@ public class RDFDatasetBuilderServiceImpl  implements RDFDatasetBuilderService {
 			// 4. we build the result model
 			result.setModelId(modelId);
 			result.setModel(model);
+			
+			// TODO don't remove these lines they are used for testing
+			// logger.info("########## Generated RDF:*************** ");
+			// model.write(System.out);
 			
 		} catch (Exception e) {
 			logger.error("Error creating resource from input: " + obj);
