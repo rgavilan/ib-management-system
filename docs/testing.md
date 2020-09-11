@@ -10,10 +10,10 @@ Ver documento [README](https://github.com/HerculesCRUE/ib-asio-docs-/blob/master
 
 A continuación se describen los escenarios probados, utilizando el framework [Cucumber](https://cucumber.io/docs/cucumber/)
 
-| Feature                                                     | Descripción                                                                                                                                          |
-| ----------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`multilanguage.feature`](../src/test/features/multilanguage.feature) | Pruebas sobre la generación de RDF en distintos lenguajes  
-| [`pojo-etl.feature`](../src/test/features/pojo-etl.feature)           | Pruebas sobre la generación de RDF procedentes de **ETL**                                                                                            |
-| [`pojo-xml.feature`](../src/test/features/pojo-xml.feature)           | Pruebas sobre la generación de RDF procedentes de ficheros importados **xml**                                                                        |
+| Requisitos                                                | Feature                                                     | Descripción                                                                                                                                          |
+| ----------------------------------------------------------- | ----------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+Req.| [`multilanguage.feature`](../src/test/features/multilanguage.feature) | Pruebas sobre la generación de RDF en distintos lenguajes  
+Req.| [`pojo-etl.feature`](../src/test/features/pojo-etl.feature)           | Pruebas sobre la generación de RDF procedentes de **ETL**                                                                                            |
+Req.| [`pojo-xml.feature`](../src/test/features/pojo-xml.feature)           | Pruebas sobre la generación de RDF procedentes de ficheros importados **xml**                                                                        |
                                                                                           |
 
