@@ -17,3 +17,15 @@ Req.| [`pojo-etl.feature`](../src/test/features/pojo-etl.feature)           | Pr
 Req.| [`pojo-xml.feature`](../src/test/features/pojo-xml.feature)           | Pruebas sobre la generación de RDF procedentes de ficheros importados **xml**                                                                        |
                                                                                           |
 
+
+
+
+
+## Anexo
+
+
+
+[Enlace a la documentación sobre requisitos funcionales]: https://github.com/HerculesCRUE/ib-asio-docs-/blob/master/entregables_hito_1/12-An%C3%A1lisis/Requisitos/Documents/Requisitos%20funcionales.md
+
+
+
