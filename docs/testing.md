@@ -12,7 +12,7 @@ A continuación se describen los escenarios probados, utilizando el framework [C
 
 | Requisitos                                                | Feature                                                     | Descripción                                                                                                                                          |
 | ----------------------------------------------------------- | ----------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-RF3.13<br>RF3.13	| [`multilanguage.feature`](../src/test/features/multilanguage.feature) | Pruebas sobre la generación de RDF en distintos lenguajes  
+RF3.1<br>RF3.13<br>RF3.14<br>RF3.15<br>	| [`multilanguage.feature`](../src/test/features/multilanguage.feature) | Pruebas sobre la generación de RDF en distintos lenguajes  
 Req.| [`pojo-etl.feature`](../src/test/features/pojo-etl.feature)           | Pruebas sobre la generación de RDF procedentes de **ETL**                                                                                            |
 Req.| [`pojo-xml.feature`](../src/test/features/pojo-xml.feature)           | Pruebas sobre la generación de RDF procedentes de ficheros importados **xml**                                                                        |
                                                                                           |
