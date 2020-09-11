@@ -25,7 +25,7 @@ Req.| [`pojo-xml.feature`](../src/test/features/pojo-xml.feature)           | Pr
 
 
 
-[Enlace a la documentación sobre requisitos funcionales]: https://github.com/HerculesCRUE/ib-asio-docs-/blob/master/entregables_hito_1/12-An%C3%A1lisis/Requisitos/Documents/Requisitos%20funcionales.md
+[Enlace a la documentación sobre requisitos funcionales](https://github.com/HerculesCRUE/ib-asio-docs-/blob/master/entregables_hito_1/12-An%C3%A1lisis/Requisitos/Documents/Requisitos%20funcionales.md)
 
 
 
