@@ -93,7 +93,7 @@ public class RDFPojoBuilderServiceImpl implements RDFPojoBuilderService {
 		final ModelWrapper result = new ModelWrapper();
 
 		final Model model = ModelFactory.createDefaultModel();
-		model.createProperty(HTTP_HERCULES_ORG_UM_ES_ES_REC);
+		model.createProperty(urisGeneratorClient.rootUri());
 
 		try {
 			// 1. create the resource
@@ -104,11 +104,11 @@ public class RDFPojoBuilderServiceImpl implements RDFPojoBuilderService {
 				throw new Exception("Pojo without identity");
 			}
 			
-			final String modelId = RDFPojoBuilderServiceImpl.HTTP_HERCULES_ORG_UM_ES_ES_REC + className + "/" + objectId;
+			final String modelId = urisGeneratorClient.createResourceID(obj);
 			final Resource resourceProperties = model.createResource(modelId);
 			
 			// we setting the prefix
-			model.setNsPrefix(className, RDFPojoBuilderServiceImpl.HTTP_HERCULES_ORG_UM_ES_ES_REC + className + "/");
+			// model.setNsPrefix(className, RDFPojoBuilderServiceImpl.HTTP_HERCULES_ORG_UM_ES_ES_REC + className + "/");
 
 			// 2. create the properties
 			String pojoNodeID;
@@ -121,7 +121,7 @@ public class RDFPojoBuilderServiceImpl implements RDFPojoBuilderService {
 				
 				// we skip the clase field
 				if (!RDFPojoBuilderServiceImpl.ETL_POJO_CLASS.equalsIgnoreCase(key)) {
-					final Property property = model.createProperty(RDFPojoBuilderServiceImpl.HTTP_HERCULES_ORG_UM_ES_ES_REC + className + "/", key);
+					final Property property = model.createProperty(urisGeneratorClient.createPropertyURI(obj, key), key);
 					
 					final Object pojoNode = entry.getValue();
 					if (pojoNode instanceof LinkedHashMap) {
@@ -140,9 +140,8 @@ public class RDFPojoBuilderServiceImpl implements RDFPojoBuilderService {
 				}
 			}
 			
-
 			// 3. we set the type
-			final Resource resourceClass = model.createResource(RDFPojoBuilderServiceImpl.HTTP_HERCULES_ORG_UM_ES_ES_REC + className + "/");
+			final Resource resourceClass = model.createResource(urisGeneratorClient.createResourceTypeURI(className));
 			model.add(resourceProperties, RDF.type, resourceClass);
 
 			// 4. we build the result model
