@@ -107,9 +107,6 @@ public class RDFPojoBuilderServiceImpl implements RDFPojoBuilderService {
 			final String modelId = urisGeneratorClient.createResourceID(obj);
 			final Resource resourceProperties = model.createResource(modelId);
 			
-			// we setting the prefix
-			// model.setNsPrefix(className, RDFPojoBuilderServiceImpl.HTTP_HERCULES_ORG_UM_ES_ES_REC + className + "/");
-
 			// 2. create the properties
 			String pojoNodeID;
 						
