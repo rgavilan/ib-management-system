@@ -14,6 +14,13 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class ModelWrapper {
+	
+	/** The model id. */
 	private String modelId;
+	
+	/** The model. */
 	private Model model;
+	
+	/** The nested objects. */
+	private Object linkedModel;
 }

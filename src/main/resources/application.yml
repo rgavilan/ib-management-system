@@ -3,6 +3,7 @@ app:
   kafka:
     general-contingency-topic-name: general-contingency-data
     general-topic-name: general-data
+    general-link-topic-name: general-link-data
     management-topic-name: management-data
     create-topics: false
   generator-uris:

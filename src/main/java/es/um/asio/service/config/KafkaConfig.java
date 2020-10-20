@@ -26,6 +26,7 @@ import es.um.asio.abstractions.domain.ManagementBusEvent;
 import es.um.asio.domain.DataSetData;
 import es.um.asio.domain.InputData;
 import es.um.asio.domain.PojoData;
+import es.um.asio.domain.PojoLinkData;
 import es.um.asio.service.util.CustomJsonSerializer;
 
 /**
@@ -42,6 +43,7 @@ public class KafkaConfig {
     private KafkaProperties kafkaProperties;
 
     
+    //////////////////////////////////////////////////////////// DATASET /////////////////////////////////////////////////////////////////////////////////
     /**
      * Data set data consumer factory.
      *
@@ -65,6 +67,8 @@ public class KafkaConfig {
     }
     
     
+    //////////////////////////////////////////////////////// POJO /////////////////////////////////////////////////////////////////////////////////////
+    
     /**
      * Pojo consumer factory.
      *
@@ -87,6 +91,25 @@ public class KafkaConfig {
         return factory;
     }
     
+    /////////////////////////////////////////////////////// POJO link //////////////////////////////////////////////////////////////////////////////////////
+    
+    /**
+     * Pojo link consumer factory.
+     *
+     * @return the consumer factory
+     */
+    public ConsumerFactory<String, PojoLinkData> pojoLinkConsumerFactory() {
+    	return new DefaultKafkaConsumerFactory<>(this.getKafkaConfiguration());
+    }
+    
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, PojoLinkData> pojoLinkKafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, PojoLinkData> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(this.pojoLinkConsumerFactory());
+        return factory;
+    }
+    
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
      * Gets the kafka configuration.
      *

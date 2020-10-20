@@ -67,7 +67,7 @@ public class RDFCvnBuilderServiceImpl implements RDFCvnBuilderService {
     public ManagementBusEvent inkoveBuilder(GeneralBusEvent<?> input) {        
         if (canBeProcessed(input)) {
             ModelWrapper model = this.createRDF(input.retrieveInnerObj());
-            return new ManagementBusEvent(model.getModelId(), RDFUtil.toString(model.getModel()), input.retrieveInnerObj().getClass().getSimpleName(), input.retrieveOperation());            
+            return new ManagementBusEvent(model.getModelId(), RDFUtil.toString(model.getModel()),StringUtils.EMPTY, input.retrieveInnerObj().getClass().getSimpleName(), input.retrieveOperation());            
         }
       
         return nextBuilder(input);

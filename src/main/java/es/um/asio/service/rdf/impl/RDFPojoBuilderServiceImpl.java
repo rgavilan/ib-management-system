@@ -8,7 +8,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
-import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
@@ -23,6 +22,7 @@ import es.um.asio.domain.PojoData;
 import es.um.asio.service.model.GeneralBusEvent;
 import es.um.asio.service.model.ModelWrapper;
 import es.um.asio.service.rdf.RDFPojoBuilderService;
+import es.um.asio.service.rdf.RDFPojoLinkBuilderService;
 import es.um.asio.service.uris.URISGeneratorClient;
 import es.um.asio.service.util.RDFUtil;
 
@@ -40,8 +40,6 @@ public class RDFPojoBuilderServiceImpl implements RDFPojoBuilderService {
 	/** The Constant ETL_POJO_ID. */
 	private static final String ETL_POJO_ID = "id";
 
-	/** The Constant HTTP_HERCULES_ORG_UM_ES_ES_REC. */
-	private static final String HTTP_HERCULES_ORG_UM_ES_ES_REC = "http://hercules.org/um/es-ES/rec/";
 
 	/** The logger. */
 	private final Logger logger = LoggerFactory.getLogger(RDFPojoBuilderServiceImpl.class);
@@ -49,6 +47,10 @@ public class RDFPojoBuilderServiceImpl implements RDFPojoBuilderService {
 	/** The uris generator client. */
 	@Autowired
 	private URISGeneratorClient urisGeneratorClient;
+	
+	/** The RDF pojo linking builder service. */
+	@Autowired
+	private RDFPojoLinkBuilderService rDFPojoLinkingBuilderService;
 
 	/**
 	 * Creates the.
@@ -63,7 +65,7 @@ public class RDFPojoBuilderServiceImpl implements RDFPojoBuilderService {
 			final ModelWrapper model = this.createRDF(input.retrieveInnerObj());
 			
 			result = new ManagementBusEvent(model.getModelId(), RDFUtil.toString(model.getModel()),
-					this.getClass(input.retrieveInnerObj()), input.retrieveOperation());
+					StringUtils.EMPTY, this.getClass(input.retrieveInnerObj()), input.retrieveOperation());
 		} else {
 			result = this.nextBuilder(input);
 		}
@@ -79,7 +81,7 @@ public class RDFPojoBuilderServiceImpl implements RDFPojoBuilderService {
 	 */
 	@Override
 	public ManagementBusEvent nextBuilder(final GeneralBusEvent<?> input) {
-		return null;
+		return rDFPojoLinkingBuilderService.inkoveBuilder(input);
 	}
 
 	/**
@@ -119,21 +121,9 @@ public class RDFPojoBuilderServiceImpl implements RDFPojoBuilderService {
 				// we skip the clase field
 				if (!RDFPojoBuilderServiceImpl.ETL_POJO_CLASS.equalsIgnoreCase(key)) {
 					final Property property = model.createProperty(urisGeneratorClient.createPropertyURI(obj, key), key);
+					// simple property						
+					resourceProperties.addProperty(property, entry.getValue().toString(), RDFPojoBuilderServiceImpl.SPANISH_LANGUAGE_BY_DEFAULT);
 					
-					final Object pojoNode = entry.getValue();
-					if (pojoNode instanceof LinkedHashMap) {
-						// nested property
-						pojoNodeID = ((LinkedHashMap) pojoNode).get(RDFPojoBuilderServiceImpl.ETL_POJO_ID).toString();
-						if(StringUtils.isNotBlank(pojoNodeID)) {
-							RDFNode node = model.createResource(RDFPojoBuilderServiceImpl.HTTP_HERCULES_ORG_UM_ES_ES_REC + StringUtils.capitalize(key) + "/" + pojoNodeID);			
-							resourceProperties.addProperty(property, node);
-						} else {
-							this.logger.error("Nested object with null id: " + pojoNode);
-						}
-					} else {
-						// simple property						
-						resourceProperties.addProperty(property, entry.getValue().toString(), RDFPojoBuilderServiceImpl.SPANISH_LANGUAGE_BY_DEFAULT);
-					}
 				}
 			}
 			

@@ -3,7 +3,6 @@ package es.um.asio.service.rdf.impl;
 import java.lang.reflect.Field;
 
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.lang3.SerializationUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
@@ -50,7 +49,7 @@ public class RDFDatasetBuilderServiceImpl  implements RDFDatasetBuilderService {
 		ManagementBusEvent result = null;
 		if (input.getData() instanceof InputData) {
 			ModelWrapper model = this.createRDF(input.retrieveInnerObj());
-			result = new ManagementBusEvent(model.getModelId(), RDFUtil.toString(model.getModel()), input.retrieveInnerObj().getClass().getSimpleName(), input.retrieveOperation());
+			result = new ManagementBusEvent(model.getModelId(), RDFUtil.toString(model.getModel()), StringUtils.EMPTY, input.retrieveInnerObj().getClass().getSimpleName(), input.retrieveOperation());
 		} else {
 			result = nextBuilder(input);
 		}
