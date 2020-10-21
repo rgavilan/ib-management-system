@@ -1,5 +1,7 @@
 package es.um.asio.service.uris;
 
+import es.um.asio.abstractions.storage.StorageType;
+
 // TODO: Auto-generated Javadoc
 /**
  * The Interface URISGeneratorClient.
@@ -39,5 +41,15 @@ public interface URISGeneratorClient {
 	 * @return the string
 	 */
 	String rootUri();
+	
+	
+	/**
+	 * Gets the local storage uri.
+	 *
+	 * @param id the id
+	 * @param className the class name
+	 * @return the local storage uri
+	 */
+	String getLocalStorageUri(String id, String className);
 	
 }

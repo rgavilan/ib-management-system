@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import es.um.asio.abstractions.domain.ManagementBusEvent;
+import es.um.asio.abstractions.domain.Operation;
 import es.um.asio.domain.PojoLinkData;
 import es.um.asio.service.model.GeneralBusEvent;
 import es.um.asio.service.model.ModelWrapper;
@@ -42,7 +43,7 @@ public class RDFPojoLinkBuilderServiceImpl implements RDFPojoLinkBuilderService 
 					model.getModelId(), 
 					StringUtils.EMPTY,
 					model.getLinkedModel().toString(), 
-					this.getClass(input.retrieveInnerObj()),	input.retrieveOperation());
+					this.getClass(input.retrieveInnerObj()),	Operation.LINKED_INSERT);
 		} else {
 			result = this.nextBuilder(input);
 		}

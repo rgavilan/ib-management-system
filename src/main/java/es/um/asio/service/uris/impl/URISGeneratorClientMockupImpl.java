@@ -36,4 +36,9 @@ public class URISGeneratorClientMockupImpl implements URISGeneratorClient {
 		return "http://www.w3.org/2001/asio-rdf/3.0#";
 	}
 
+	@Override
+	public String getLocalStorageUri(String id, String className) {		
+		return "http://localhost/";
+	}
+
 }
