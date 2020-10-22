@@ -42,7 +42,7 @@ public class RDFPojoLinkBuilderServiceImpl implements RDFPojoLinkBuilderService 
 			result = new ManagementBusEvent(
 					model.getModelId(), 
 					StringUtils.EMPTY,
-					model.getLinkedModel().toString(), 
+					model.getLinkedModel(), 
 					this.getClass(input.retrieveInnerObj()),	Operation.LINKED_INSERT);
 		} else {
 			result = this.nextBuilder(input);

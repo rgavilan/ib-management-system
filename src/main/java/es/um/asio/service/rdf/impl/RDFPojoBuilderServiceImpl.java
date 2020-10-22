@@ -35,7 +35,7 @@ public class RDFPojoBuilderServiceImpl implements RDFPojoBuilderService {
 	private static final String SPANISH_LANGUAGE_BY_DEFAULT = "es";
 
 	/** The Constant ETL_POJO_CLASS. */
-	private static final String ETL_POJO_CLASS = "clase";
+	private static final String ETL_POJO_CLASS = "@class";
 
 	/** The Constant ETL_POJO_ID. */
 	private static final String ETL_POJO_ID = "id";
