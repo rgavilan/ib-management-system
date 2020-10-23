@@ -42,14 +42,4 @@ public interface URISGeneratorClient {
 	 */
 	String rootUri();
 	
-	
-	/**
-	 * Gets the local storage uri.
-	 *
-	 * @param id the id
-	 * @param className the class name
-	 * @return the local storage uri
-	 */
-	String getLocalStorageUri(String id, String className);
-	
 }

@@ -32,8 +32,6 @@ public class URISGeneratorClientImpl implements URISGeneratorClient {
 	@Value("${app.generator-uris.endpoint-resource-type}")
     private String resourceTypeEndpoint;
 	
-	@Value("${app.generator-uris.endpoint-local-storage-uri}")
-	private String localStorageUri;
 	
 	 /**
      * Rest Template
@@ -117,34 +115,6 @@ public class URISGeneratorClientImpl implements URISGeneratorClient {
 	@Override
 	public String rootUri() {
 		return Constants.ROOT_URI; 
-	}
-
-	
-	/**
-	 * Gets the local storage uri.
-	 *
-	 * @param id the id
-	 * @param className the class name
-	 * @param language the language
-	 * @param storage the storage
-	 * @return the local storage uri
-	 */
-	@Override
-	public String getLocalStorageUri(String id, String className) {
-				
-		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(localStorageUri)
-		        .queryParam(Constants.DOMAIN, Constants.DOMAIN_VALUE)
-		        .queryParam(Constants.SUBDOMAIN, Constants.SUBDOMAIN_VALUE)
-		        .queryParam(Constants.LANG, Constants.SPANISH_LANGUAGE)
-		        .queryParam(Constants.TYPE_CODE, Constants.TYPE_REST)
-		        .queryParam("entity", className)
-		        .queryParam(Constants.REFERENCE, id)
-		        .queryParam(Constants.STORAGE_NAME, StorageType.TRELLIS.name().toLowerCase());
-		
-		Map response = restTemplate.getForObject(builder.toUriString(), Map.class);
-		String result = response != null ? (String)response.get(Constants.CANONICAL_LANGUAGE_URI): null; 
-		
-		return result;
 	}
 
 }
