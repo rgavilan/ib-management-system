@@ -149,7 +149,7 @@ public class RDFPojoBuilderServiceImpl implements RDFPojoBuilderService {
 		} catch (final Exception e) {
 			this.logger.error("Error creating resource from input: " + obj);
 			this.logger.error("Error cause " + e.getMessage());
-			e.printStackTrace();
+			logger.error("createRDF",e);
 		}
 
 		return result;

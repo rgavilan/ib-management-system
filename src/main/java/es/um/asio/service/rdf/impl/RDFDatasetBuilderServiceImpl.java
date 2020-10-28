@@ -117,7 +117,7 @@ public class RDFDatasetBuilderServiceImpl  implements RDFDatasetBuilderService {
 			
 		} catch (Exception e) {
 			logger.error("Error creating resource from input: " + obj);
-			e.printStackTrace();
+			logger.error("createRDF",e);
 		}
 		
 		return result;

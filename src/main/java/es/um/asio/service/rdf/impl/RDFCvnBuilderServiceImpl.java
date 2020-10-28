@@ -123,7 +123,7 @@ public class RDFCvnBuilderServiceImpl implements RDFCvnBuilderService {
             
         } catch (Exception e) {
             logger.error("Error creating resource from input: " + obj);
-            e.printStackTrace();
+            logger.error("createRDF",e);
         }
         
         return result;
