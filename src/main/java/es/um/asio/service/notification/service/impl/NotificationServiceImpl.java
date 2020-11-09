@@ -5,8 +5,8 @@ import org.springframework.kafka.config.KafkaListenerEndpointRegistry;
 import org.springframework.kafka.listener.MessageListenerContainer;
 import org.springframework.stereotype.Service;
 
+import es.um.asio.abstractions.constants.Constants;
 import es.um.asio.service.notification.service.NotificationService;
-import es.um.asio.service.util.Constants;
 
 @Service
 public class NotificationServiceImpl implements NotificationService {
@@ -30,27 +30,28 @@ public class NotificationServiceImpl implements NotificationService {
 	}
 	
     public void startPojoGeneralLinkListener() {
-        MessageListenerContainer listenerContainer = kafkaListenerEndpointRegistry.getListenerContainer("pojoLinkKafkaListenerContainerFactory");
+        MessageListenerContainer listenerContainer = kafkaListenerEndpointRegistry.getListenerContainer(Constants.POJO_LINK_FACTORY);
         if( listenerContainer != null )
         	listenerContainer.start();        
     }
 
     public void stopPojoGeneralLinkListener() {
-        MessageListenerContainer listenerContainer = kafkaListenerEndpointRegistry.getListenerContainer("pojoLinkKafkaListenerContainerFactory");
+        MessageListenerContainer listenerContainer = kafkaListenerEndpointRegistry.getListenerContainer(Constants.POJO_LINK_FACTORY);
         if( listenerContainer != null )
         	listenerContainer.stop();        
     }
     
     public void startPojoGeneralListener () {
-    	MessageListenerContainer listenerContainer = kafkaListenerEndpointRegistry.getListenerContainer("pojoKafkaListenerContainerFactory");
+    	MessageListenerContainer listenerContainer = kafkaListenerEndpointRegistry.getListenerContainer(Constants.POJO_FACTORY);
         if( listenerContainer != null )
         	listenerContainer.start();     
     }
 
     public void stopLinkPojoGeneralListener () {
-        MessageListenerContainer listenerContainer = kafkaListenerEndpointRegistry.getListenerContainer("pojoKafkaListenerContainerFactory");
+        MessageListenerContainer listenerContainer = kafkaListenerEndpointRegistry.getListenerContainer(Constants.POJO_FACTORY);
         if( listenerContainer != null )
         	listenerContainer.stop();        
     }
+
 
 }
