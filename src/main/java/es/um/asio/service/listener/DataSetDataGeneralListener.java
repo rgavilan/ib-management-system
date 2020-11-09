@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.annotation.TopicPartition;
 import org.springframework.stereotype.Component;
 
 import es.um.asio.abstractions.domain.ManagementBusEvent;
@@ -40,7 +39,7 @@ public class DataSetDataGeneralListener {
      * 
      * @param message
      */
-    @KafkaListener(topics = "#{'${app.kafka.general-contingency-topic-name}'.split(',')}", containerFactory = "dataSetDataKafkaListenerContainerFactory")
+    @KafkaListener(id="dataSetDataKafkaListenerContainerFactory",topics = "#{'${app.kafka.general-contingency-topic-name}'.split(',')}", containerFactory = "dataSetDataKafkaListenerContainerFactory")
     public void listen(final InputData<DataSetData> message) {
     	
     	// INSERT operation by default

@@ -1,5 +1,16 @@
 ---
 app:
+ # CORS
+  cors:
+    enabled: true
+    allowedOrigin: '*'
+    allowedMethods: GET,POST,PUT,DELETE
+    allowedHeaders:
+      - Authorization
+      - X-Requested-With
+      - Content-Type
+    maxAge: 3600
+
   kafka:
     general-contingency-topic-name: general-contingency-data
     general-topic-name: general-data
@@ -14,6 +25,15 @@ app:
     endpoint-resource-id: ${app.generator-uris.endpoint}/uri-factory/canonical/resource
     endpoint-property: ${app.generator-uris.endpoint}/uri-factory/canonical/property
     endpoint-resource-type: ${app.generator-uris.endpoint}/uri-factory/canonical/entity
+
+# Cache configuration
+  cache:
+    embedded:
+      enabled: true
+
+  # Swagger
+  swagger:
+    enabled: false
    
 # Spring configuration
 spring:
