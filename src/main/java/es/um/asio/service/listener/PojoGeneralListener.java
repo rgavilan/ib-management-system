@@ -39,7 +39,7 @@ public class PojoGeneralListener {
      * 
      * @param message
      */
-    @KafkaListener(id="pojoKafkaListenerContainerFactory",topics = "#{'${app.kafka.general-topic-name}'.split(',')}",autoStartup = "false", containerFactory = "pojoKafkaListenerContainerFactory", properties = {"spring.json.value.default.type:es.um.asio.domain.PojoData"})
+    @KafkaListener(id="pojoKafkaListenerContainerFactory",topics = "#{'${app.kafka.general-topic-name}'.split(',')}",autoStartup = "true", containerFactory = "pojoKafkaListenerContainerFactory", properties = {"spring.json.value.default.type:es.um.asio.domain.PojoData"})
     public void listen(final PojoData message) {
     	 if (this.logger.isDebugEnabled()) {
              this.logger.debug("Received message: {}", message);

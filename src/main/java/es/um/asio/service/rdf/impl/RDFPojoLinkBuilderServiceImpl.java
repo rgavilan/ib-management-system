@@ -1,11 +1,14 @@
 package es.um.asio.service.rdf.impl;
 
+import java.util.LinkedHashMap;
+
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import es.um.asio.abstractions.constants.Constants;
 import es.um.asio.abstractions.domain.ManagementBusEvent;
 import es.um.asio.abstractions.domain.Operation;
 import es.um.asio.domain.PojoLinkData;
@@ -23,7 +26,7 @@ public class RDFPojoLinkBuilderServiceImpl implements RDFPojoLinkBuilderService 
 	private final Logger logger = LoggerFactory.getLogger(RDFPojoLinkBuilderServiceImpl.class);
 
 	/** The Constant ETL_POJO_CLASS. */
-	private static final String ETL_POJO_CLASS = "clase";
+	private static final String ETL_POJO_CLASS = "@class";
 
 	/** The Constant ETL_POJO_ID. */
 	private static final String ETL_POJO_ID = "id";
@@ -43,7 +46,7 @@ public class RDFPojoLinkBuilderServiceImpl implements RDFPojoLinkBuilderService 
 					model.getModelId(), 
 					StringUtils.EMPTY,
 					model.getLinkedModel(), 
-					this.getClass(input.retrieveInnerObj()),	Operation.LINKED_INSERT);
+					this.getClass(model.getLinkedModel()),	Operation.LINKED_INSERT);
 		} else {
 			result = this.nextBuilder(input);
 		}
@@ -57,11 +60,12 @@ public class RDFPojoLinkBuilderServiceImpl implements RDFPojoLinkBuilderService 
 		String objectId;
 		try {
 			// model ID
-			objectId = this.safetyCheck(PropertyUtils.getProperty(obj, RDFPojoLinkBuilderServiceImpl.ETL_POJO_ID));
+			LinkedHashMap<String, Object> linkedObj = (LinkedHashMap<String, Object>) PropertyUtils.getProperty(obj, Constants.LINKED_MODEL);			
+			objectId = this.safetyCheck(linkedObj.get(RDFPojoLinkBuilderServiceImpl.ETL_POJO_ID));
 			result.setModelId(objectId);
 			
 			// nested object
-			result.setLinkedModel(obj);
+			result.setLinkedModel(linkedObj);
 
 		} catch (Exception e) {
 			this.logger.error("Error creating resource from linking input: " + obj);
