@@ -22,6 +22,12 @@ public class NotificationController {
 	 public void notificationETL(@PathVariable("event") final String event) {
 		 notificationService.notificationETL(event);	        
 	 }
+	 
+	 @GetMapping(value = "/isMSRunning")
+	 public Boolean getStatusETL() {
+		 return notificationService.getStatusETL();	        
+	 }
+	
 	
 	/**
      * Mappings.
