@@ -20,6 +20,7 @@ import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
+import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer2;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 import es.um.asio.abstractions.domain.ManagementBusEvent;
@@ -27,6 +28,7 @@ import es.um.asio.domain.DataSetData;
 import es.um.asio.domain.InputData;
 import es.um.asio.domain.PojoData;
 import es.um.asio.domain.PojoLinkData;
+import es.um.asio.service.error.KafkaErrorHandler;
 import es.um.asio.service.util.CustomJsonSerializer;
 
 /**
@@ -75,7 +77,9 @@ public class KafkaConfig {
      * @return the consumer factory
      */
     public ConsumerFactory<String, PojoData> pojoConsumerFactory() {
-    	return new DefaultKafkaConsumerFactory<>(this.getKafkaConfiguration());
+    	// ErrorHandlingDeserializer2 avoid infinite loop when the input is wrong built
+    	return new DefaultKafkaConsumerFactory<>(this.getKafkaConfiguration(), new StringDeserializer(),
+    	            new ErrorHandlingDeserializer2(new JsonDeserializer(PojoData.class)));
     }
     
     
@@ -88,6 +92,7 @@ public class KafkaConfig {
     public ConcurrentKafkaListenerContainerFactory<String, PojoData> pojoKafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, PojoData> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(this.pojoConsumerFactory());
+        factory.setErrorHandler(new KafkaErrorHandler());
         return factory;
     }
     
@@ -99,7 +104,9 @@ public class KafkaConfig {
      * @return the consumer factory
      */
     public ConsumerFactory<String, PojoLinkData> pojoLinkConsumerFactory() {
-    	return new DefaultKafkaConsumerFactory<>(this.getKafkaConfiguration());
+    	// ErrorHandlingDeserializer2 avoid infinite loop when the input is wrong built
+    	return new DefaultKafkaConsumerFactory<>(this.getKafkaConfiguration(), new StringDeserializer(),
+    	            new ErrorHandlingDeserializer2(new JsonDeserializer(PojoLinkData.class)));
     }
     
     @Bean

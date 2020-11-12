@@ -30,6 +30,9 @@ public class NotificationServiceImpl implements NotificationService {
 	}
 	
     public void startPojoGeneralLinkListener() {
+    	
+    	
+    	
         MessageListenerContainer listenerContainer = kafkaListenerEndpointRegistry.getListenerContainer(Constants.POJO_LINK_FACTORY);
         if( listenerContainer != null )
         	listenerContainer.start();        

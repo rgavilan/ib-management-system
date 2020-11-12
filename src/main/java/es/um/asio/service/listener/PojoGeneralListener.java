@@ -19,35 +19,38 @@ import es.um.asio.service.rdf.RDFService;
 @Profile("!unit-test")
 @Component
 public class PojoGeneralListener {
-	
-	 /**
-     * Logger
-     */
-    private final Logger logger = LoggerFactory.getLogger(PojoGeneralListener.class);
-    
-    /**
-     * Service to handle message entity related operations
-     */
-    @Autowired
-    private KafkaService kafkaService;
-    
-    @Autowired
-    private RDFService rdfService;
-    
-    /**
-     * Method listening input topic name
-     * 
-     * @param message
-     */
-    @KafkaListener(id="pojoKafkaListenerContainerFactory",topics = "#{'${app.kafka.general-topic-name}'.split(',')}",autoStartup = "true", containerFactory = "pojoKafkaListenerContainerFactory", properties = {"spring.json.value.default.type:es.um.asio.domain.PojoData"})
-    public void listen(final PojoData message) {
-    	 if (this.logger.isDebugEnabled()) {
-             this.logger.debug("Received message: {}", message);
-         }
 
-    	 ManagementBusEvent managementBusEvent = rdfService.createRDF(new GeneralBusEvent<PojoData>(message));
-                       
-    	 this.kafkaService.send(managementBusEvent);
-    }
+	/**
+	 * Logger
+	 */
+	private final Logger logger = LoggerFactory.getLogger(PojoGeneralListener.class);
+
+	/**
+	 * Service to handle message entity related operations
+	 */
+	@Autowired
+	private KafkaService kafkaService;
+
+	@Autowired
+	private RDFService rdfService;
+
+	/**
+	 * Method listening input topic name
+	 * 
+	 * @param message
+	 */
+	@KafkaListener(id = "pojoKafkaListenerContainerFactory", topics = "#{'${app.kafka.general-topic-name}'.split(',')}", autoStartup = "true", containerFactory = "pojoKafkaListenerContainerFactory", properties = {
+			"spring.json.value.default.type:es.um.asio.domain.PojoData" })
+	public void listen(final PojoData message) {
+		// public void listen(ConsumerRecord<?, ?> cr) {
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Received message: {}", message);
+		}
+
+		ManagementBusEvent managementBusEvent = rdfService.createRDF(new GeneralBusEvent<PojoData>(message));
+
+		this.kafkaService.send(managementBusEvent);
+
+	}
 
 }
