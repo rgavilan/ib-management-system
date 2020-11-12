@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import es.um.asio.abstractions.constants.Constants;
 import es.um.asio.service.notification.service.NotificationService;
 
+
+
 @Service
 public class NotificationServiceImpl implements NotificationService {
 	
@@ -29,6 +31,10 @@ public class NotificationServiceImpl implements NotificationService {
 		}		
 	}
 	
+	
+    /**
+     * Método para arrancar el listener general link 
+     */
     public void startPojoGeneralLinkListener() {
     	
     	
@@ -38,23 +44,52 @@ public class NotificationServiceImpl implements NotificationService {
         	listenerContainer.start();        
     }
 
+    /**
+     * Método para detener el listener general link 
+     */
     public void stopPojoGeneralLinkListener() {
         MessageListenerContainer listenerContainer = kafkaListenerEndpointRegistry.getListenerContainer(Constants.POJO_LINK_FACTORY);
         if( listenerContainer != null )
         	listenerContainer.stop();        
     }
     
+    /**
+     * Método para arrancar el listener general 
+     */
     public void startPojoGeneralListener () {
     	MessageListenerContainer listenerContainer = kafkaListenerEndpointRegistry.getListenerContainer(Constants.POJO_FACTORY);
         if( listenerContainer != null )
         	listenerContainer.start();     
     }
 
+    /**
+     * Método para detener el listener general 
+     */
     public void stopLinkPojoGeneralListener () {
         MessageListenerContainer listenerContainer = kafkaListenerEndpointRegistry.getListenerContainer(Constants.POJO_FACTORY);
         if( listenerContainer != null )
         	listenerContainer.stop();        
     }
+
+    /**
+     * Método para calcular el estado del management system. Ver si esta ocupado o no por la ETL
+     * 
+     * @return true (libre) / false (ocupado)
+     */
+
+	@Override
+	public Boolean getStatusETL() {
+		 MessageListenerContainer pojolinkContainer = kafkaListenerEndpointRegistry.getListenerContainer(Constants.POJO_LINK_FACTORY);
+		 boolean pojolink = pojolinkContainer.isRunning();
+		 MessageListenerContainer pojoContainer = kafkaListenerEndpointRegistry.getListenerContainer(Constants.POJO_FACTORY);
+		 boolean pojo = pojoContainer.isRunning();
+		 
+		 if(!pojo && !pojolink) {
+			 return true;
+		 }else {
+			 return false;
+		 }
+	}
 
 
 }
