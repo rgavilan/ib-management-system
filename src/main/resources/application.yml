@@ -46,7 +46,7 @@ spring:
     producer:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
-      ## Actuator
+## Actuator
 management:
   endpoint:
     shutdown:
@@ -62,3 +62,8 @@ management:
 ## In case of configure web endpoints, remove it or change port number
 server:
   port: ${management.server.port}
+
+### log
+logging:
+  level:
+    es.um.asio.service: WARN

@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.um.asio.abstractions.domain.ManagementBusEvent;
+import es.um.asio.abstractions.perfomance.WatchDog;
 import es.um.asio.domain.PojoData;
 import es.um.asio.service.model.GeneralBusEvent;
 import es.um.asio.service.model.ModelWrapper;
@@ -92,10 +93,16 @@ public class RDFPojoBuilderServiceImpl implements RDFPojoBuilderService {
 	 */
 	@Override
 	public ModelWrapper createRDF(final Object obj) {
-		final ModelWrapper result = new ModelWrapper();
+		WatchDog urisWatchDog = new WatchDog();
+		WatchDog createRDFWatchDog = new WatchDog();
+		
 
+		final ModelWrapper result = new ModelWrapper();				
 		final Model model = ModelFactory.createDefaultModel();
+		
+		urisWatchDog.reset();
 		model.createProperty(urisGeneratorClient.rootUri());
+		urisWatchDog.takeTime("rootUri");
 
 		try {
 			// 1. create the resource
@@ -106,7 +113,10 @@ public class RDFPojoBuilderServiceImpl implements RDFPojoBuilderService {
 				throw new Exception("Pojo without identity");
 			}
 			
+			urisWatchDog.reset();
 			final String modelId = urisGeneratorClient.createResourceID(obj);
+			urisWatchDog.takeTime("createResourceID");
+			
 			final Resource resourceProperties = model.createResource(modelId);
 			
 			// 2. create the properties
@@ -120,7 +130,9 @@ public class RDFPojoBuilderServiceImpl implements RDFPojoBuilderService {
 				
 				// we skip the clase field
 				if (!RDFPojoBuilderServiceImpl.ETL_POJO_CLASS.equalsIgnoreCase(key)) {
+					urisWatchDog.reset();
 					final Property property = model.createProperty(urisGeneratorClient.createPropertyURI(obj, key), key);
+					urisWatchDog.takeTime("createPropertyURI");
 					// simple property						
 					resourceProperties.addProperty(property, entry.getValue().toString(), RDFPojoBuilderServiceImpl.SPANISH_LANGUAGE_BY_DEFAULT);
 					
@@ -128,7 +140,10 @@ public class RDFPojoBuilderServiceImpl implements RDFPojoBuilderService {
 			}
 			
 			// 3. we set the type
+			urisWatchDog.reset();
 			final Resource resourceClass = model.createResource(urisGeneratorClient.createResourceTypeURI(className));
+			urisWatchDog.takeTime("createResourceTypeURI");
+			
 			model.add(resourceProperties, RDF.type, resourceClass);
 
 			// 4. we build the result model
@@ -151,7 +166,15 @@ public class RDFPojoBuilderServiceImpl implements RDFPojoBuilderService {
 			this.logger.error("Error cause " + e.getMessage());
 			logger.error("createRDF",e);
 		}
-
+		
+		createRDFWatchDog.takeTime("createRDF");
+		
+		// we print the watchdog results
+		this.logger.warn("-----------------------------------------------------------------------");
+		createRDFWatchDog.printnResults(this.logger);
+		urisWatchDog.printnResults(this.logger);
+		this.logger.warn("-----------------------------------------------------------------------");
+		
 		return result;
 	}
 	

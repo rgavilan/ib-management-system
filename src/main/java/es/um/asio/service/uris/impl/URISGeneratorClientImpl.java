@@ -3,6 +3,7 @@ package es.um.asio.service.uris.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -12,8 +13,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import es.um.asio.abstractions.constants.Constants;
-import es.um.asio.abstractions.storage.StorageType;
 import es.um.asio.service.uris.URISGeneratorClient;
+import es.um.asio.service.uris.URISGeneratorClientCache;
 import es.um.asio.service.util.RDFUtil;
 
 @Service
@@ -33,7 +34,10 @@ public class URISGeneratorClientImpl implements URISGeneratorClient {
     private String resourceTypeEndpoint;
 	
 	
-	 /**
+	@Autowired
+	private URISGeneratorClientCache uRISGeneratorClientCache;
+
+	/**
      * Rest Template
      */
     @Autowired
@@ -72,19 +76,26 @@ public class URISGeneratorClientImpl implements URISGeneratorClient {
 	 */
 	@Override
 	public String createPropertyURI(Object obj, String property) {
-		HashMap input = new HashMap<>();
-		input.put(Constants.OBJECT, obj);
-		input.put(Constants.CLASS, obj.getClass().getName());
-		input.put(Constants.PROPERTY, property);
-				
-		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(propertyEndpoint)
-		        .queryParam(Constants.DOMAIN, Constants.DOMAIN_VALUE)
-		        .queryParam(Constants.LANG, Constants.SPANISH_LANGUAGE)
-		        .queryParam(Constants.SUBDOMAIN, Constants.SUBDOMAIN_VALUE);
+		String result = uRISGeneratorClientCache.find(property, Constants.CACHE_PROPERTIES);
 		
-		Map response = restTemplate.postForObject(builder.toUriString(), input, Map.class);
-		
-		String result = response != null ? RDFUtil.getNameSpaceFromPath((String)response.get(Constants.CANONICAL_LANGUAGE_URI)): null; 
+		if(StringUtils.isBlank(result)) {
+			HashMap input = new HashMap<>();
+			input.put(Constants.OBJECT, obj);
+			input.put(Constants.CLASS, obj.getClass().getName());
+			input.put(Constants.PROPERTY, property);
+			
+			UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(propertyEndpoint)
+					.queryParam(Constants.DOMAIN, Constants.DOMAIN_VALUE)
+					.queryParam(Constants.LANG, Constants.SPANISH_LANGUAGE)
+					.queryParam(Constants.SUBDOMAIN, Constants.SUBDOMAIN_VALUE);
+			
+			Map response = restTemplate.postForObject(builder.toUriString(), input, Map.class);
+			
+			result = response != null ? RDFUtil.getNameSpaceFromPath((String)response.get(Constants.CANONICAL_LANGUAGE_URI)): null; 
+			
+			// we save the result in cache
+			uRISGeneratorClientCache.saveInCache(property, result, Constants.CACHE_PROPERTIES);
+		}
 		
 		return result;
 	}
@@ -97,17 +108,24 @@ public class URISGeneratorClientImpl implements URISGeneratorClient {
 	 */
 	@Override
 	public String createResourceTypeURI(String className) {
-		HashMap input = new HashMap<>();
-		input.put(Constants.CLASS, className);
+		String result = uRISGeneratorClientCache.find(className, Constants.CACHE_ENTITIES);
 		
-		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(resourceTypeEndpoint)
-		        .queryParam(Constants.DOMAIN, Constants.DOMAIN_VALUE)
-		        .queryParam(Constants.LANG, Constants.SPANISH_LANGUAGE)
-		        .queryParam(Constants.SUBDOMAIN, Constants.SUBDOMAIN_VALUE);
-		
-		Map response = restTemplate.postForObject(builder.toUriString(), input, Map.class);
-		
-		String result = response != null ? (String)response.get(Constants.CANONICAL_LANGUAGE_URI): null; 
+		if(StringUtils.isBlank(result)) {
+			HashMap input = new HashMap<>();
+			input.put(Constants.CLASS, className);
+			
+			UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(resourceTypeEndpoint)
+					.queryParam(Constants.DOMAIN, Constants.DOMAIN_VALUE)
+					.queryParam(Constants.LANG, Constants.SPANISH_LANGUAGE)
+					.queryParam(Constants.SUBDOMAIN, Constants.SUBDOMAIN_VALUE);
+			
+			Map response = restTemplate.postForObject(builder.toUriString(), input, Map.class);
+			
+			result = response != null ? (String)response.get(Constants.CANONICAL_LANGUAGE_URI): null; 	
+			
+			// we save the result in cache
+			uRISGeneratorClientCache.saveInCache(className, result, Constants.CACHE_ENTITIES);
+		}
 		
 		return result;
 	}
