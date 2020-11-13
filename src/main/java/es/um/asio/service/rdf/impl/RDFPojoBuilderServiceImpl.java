@@ -125,6 +125,7 @@ public class RDFPojoBuilderServiceImpl implements RDFPojoBuilderService {
 			final LinkedHashMap<String,Object> inputPojo = ((LinkedHashMap<String,Object>) obj);
 						
 			String key = null;
+			String value = null;
 			for(Map.Entry<String, Object> entry: inputPojo.entrySet()) {
 				key = entry.getKey();
 				
@@ -133,9 +134,10 @@ public class RDFPojoBuilderServiceImpl implements RDFPojoBuilderService {
 					urisWatchDog.reset();
 					final Property property = model.createProperty(urisGeneratorClient.createPropertyURI(obj, key), key);
 					urisWatchDog.takeTime("createPropertyURI");
-					// simple property						
-					resourceProperties.addProperty(property, entry.getValue().toString(), RDFPojoBuilderServiceImpl.SPANISH_LANGUAGE_BY_DEFAULT);
 					
+					// simple property						
+					value = entry.getValue() == null ? StringUtils.EMPTY : StringUtils.defaultString(entry.getValue().toString());
+					resourceProperties.addProperty(property, value, RDFPojoBuilderServiceImpl.SPANISH_LANGUAGE_BY_DEFAULT);
 				}
 			}
 			
