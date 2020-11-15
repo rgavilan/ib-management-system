@@ -2,8 +2,11 @@ package es.um.asio.service.notification.service;
 
 public interface NotificationService {
 
-	public void notificationETL(String event);
+	Boolean notificationETL(String event);
 
-	public Boolean isRunningQueues();
+	void stopPojoGeneralListener();
 	
+	void startPojoGeneralLinkListener();
+	
+	void stopPojoGeneralLinkListener();
 }
