@@ -25,7 +25,7 @@ public class NotificationController {
 	 
 	 @GetMapping(value = "/isMSRunning")
 	 public Boolean getStatusETL() {
-		 return notificationService.getStatusETL();	        
+		 return notificationService.isRunningQueues();	        
 	 }
 	
 	

@@ -113,6 +113,7 @@ public class KafkaConfig {
     public ConcurrentKafkaListenerContainerFactory<String, PojoLinkData> pojoLinkKafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, PojoLinkData> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(this.pojoLinkConsumerFactory());
+        factory.setErrorHandler(new KafkaErrorHandler());
         return factory;
     }
     

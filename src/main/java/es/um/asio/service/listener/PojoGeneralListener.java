@@ -42,6 +42,7 @@ public class PojoGeneralListener {
 	@KafkaListener(id = "pojoKafkaListenerContainerFactory", topics = "#{'${app.kafka.general-topic-name}'.split(',')}", autoStartup = "true", containerFactory = "pojoKafkaListenerContainerFactory", properties = {
 			"spring.json.value.default.type:es.um.asio.domain.PojoData" })
 	public void listen(final PojoData message) {
+		/*
 		// public void listen(ConsumerRecord<?, ?> cr) {
 		if (this.logger.isDebugEnabled()) {
 			this.logger.debug("Received message: {}", message);
@@ -50,6 +51,9 @@ public class PojoGeneralListener {
 		ManagementBusEvent managementBusEvent = rdfService.createRDF(new GeneralBusEvent<PojoData>(message));
 
 		this.kafkaService.send(managementBusEvent);
+		*/
+		
+		this.logger.warn("Pojo General item {}", message.getData());
 
 	}
 
