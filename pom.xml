@@ -60,6 +60,8 @@
 		<domain-model.version>1.0-SNAPSHOT</domain-model.version>
 		<jena.version>3.14.0</jena.version>
 		<asio-abstractions.version>1.0-SNAPSHOT</asio-abstractions.version>
+		<rdf4j-rio-api.version>2.1.4</rdf4j-rio-api.version>
+		<rxjava.version>3.0.4</rxjava.version>
 	</properties>
 
 	<dependencyManagement>
@@ -246,13 +248,13 @@
 		<dependency>
 			<groupId>org.eclipse.rdf4j</groupId>
 			<artifactId>rdf4j-rio-api</artifactId>
-			<version>2.1.4</version>
+			<version>${rdf4j-rio-api.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>io.reactivex.rxjava3</groupId>
 			<artifactId>rxjava</artifactId>
-			<version>3.0.4</version>
+			<version>${rxjava.version}</version>
 		</dependency>
 
 
