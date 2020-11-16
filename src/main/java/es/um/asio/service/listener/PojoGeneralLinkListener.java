@@ -34,6 +34,7 @@ public class PojoGeneralLinkListener {
     @Autowired
     private RDFService rdfService;
     
+    
     /**
      * Method listening input topic name
      * 
@@ -41,7 +42,10 @@ public class PojoGeneralLinkListener {
      */
     @KafkaListener(id="pojoLinkKafkaListenerContainerFactory",topics = "#{'${app.kafka.general-link-topic-name}'.split(',')}",autoStartup = "false", containerFactory = "pojoLinkKafkaListenerContainerFactory", properties = {"spring.json.value.default.type:es.um.asio.domain.PojoLinkData"})
     public void listen(final PojoLinkData message) {
-    	/*
+    // don't remove this line public void listen(ConsumerRecord<?, ?> cr) {
+    	
+    	this.logger.warn("Pojo General Link item {}", message.getData());
+    	
     	 if (this.logger.isDebugEnabled()) {
              this.logger.debug("Received message: {}", message);
          }
@@ -49,8 +53,5 @@ public class PojoGeneralLinkListener {
     	 ManagementBusEvent managementBusEvent = rdfService.createRDF(new GeneralBusEvent<PojoLinkData>(message));
                        
     	 this.kafkaService.send(managementBusEvent);
-    	 */
-    	this.logger.warn("Pojo General Link item {}", message.getData());
     }
-
 }

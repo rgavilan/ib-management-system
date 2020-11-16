@@ -93,7 +93,7 @@ public class KafkaConfig {
         ConcurrentKafkaListenerContainerFactory<String, PojoData> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(this.pojoConsumerFactory());
         factory.setErrorHandler(new KafkaErrorHandler());
-        factory.getContainerProperties().setIdleEventInterval(1000L);
+        factory.getContainerProperties().setIdleEventInterval(3000L);
         return factory;
     }
     
@@ -115,7 +115,7 @@ public class KafkaConfig {
         ConcurrentKafkaListenerContainerFactory<String, PojoLinkData> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(this.pojoLinkConsumerFactory());
         factory.setErrorHandler(new KafkaErrorHandler());
-        factory.getContainerProperties().setIdleEventInterval(1000L);
+        factory.getContainerProperties().setIdleEventInterval(3000L);
         return factory;
     }
     
@@ -131,6 +131,7 @@ public class KafkaConfig {
     	customerConfigMap.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
     	customerConfigMap.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
     	customerConfigMap.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, "30000");
+    	// customerConfigMap.put(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG, "1000");
     	customerConfigMap.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, 2);
     	return customerConfigMap;
     }
