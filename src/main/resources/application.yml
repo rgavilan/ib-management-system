@@ -34,6 +34,9 @@ app:
   # Swagger
   swagger:
     enabled: false
+  #ActiveMQ
+  activemq:
+    queue-name: management-data 
    
 # Spring configuration
 spring:
@@ -45,6 +48,13 @@ spring:
       group-id: management-system
     producer:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+  activemq:
+    user: admin
+    password: admin
+    broker-url: tcp://127.0.0.1:61616
+    broker:
+      jmx:
+        createConnector: false  
 
 ## Actuator
 management:
