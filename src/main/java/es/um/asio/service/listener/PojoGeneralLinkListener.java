@@ -1,10 +1,13 @@
 package es.um.asio.service.listener;
 
+import javax.jms.Queue;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.config.KafkaListenerEndpointRegistry;
 import org.springframework.kafka.event.ListenerContainerIdleEvent;
@@ -14,7 +17,6 @@ import org.springframework.stereotype.Component;
 import es.um.asio.abstractions.constants.Constants;
 import es.um.asio.abstractions.domain.ManagementBusEvent;
 import es.um.asio.domain.PojoLinkData;
-import es.um.asio.service.kafka.KafkaService;
 import es.um.asio.service.model.GeneralBusEvent;
 import es.um.asio.service.notification.service.NotificationService;
 import es.um.asio.service.rdf.RDFService;
@@ -31,11 +33,13 @@ public class PojoGeneralLinkListener {
      */
     private final Logger logger = LoggerFactory.getLogger(PojoGeneralLinkListener.class);
     
-    /**
-     * Service to handle message entity related operations
-     */
+	/** The queue. */
+	@Autowired
+    private Queue queue;
+
+    /** The jms template. */
     @Autowired
-    private KafkaService kafkaService;
+    private JmsTemplate jmsTemplate;
     
     @Autowired
     private RDFService rdfService;
@@ -65,18 +69,15 @@ public class PojoGeneralLinkListener {
 
     	 ManagementBusEvent managementBusEvent = rdfService.createRDF(new GeneralBusEvent<PojoLinkData>(message));
                        
-    	 this.kafkaService.send(managementBusEvent);
-    	
-    	//this.logger.warn("Pojo General Link item {}", message.getData());
+    	// we send the element to activeMQ
+ 		jmsTemplate.convertAndSend(queue, managementBusEvent);
     	
     	totalItems++;
-    	
     }
     
     @EventListener(condition = "event.listenerId.startsWith('pojoLinkKafkaListenerContainerFactory-')")
 	public void eventHandler(ListenerContainerIdleEvent event) {
-		this.logger.warn("POJO-LINK-GENERAL No messages received for " + event.getIdleTime() + " milliseconds");
-		
+		this.logger.warn("POJO-LINK-GENERAL No messages received for " + event.getIdleTime() + " milliseconds");		
 		this.logger.warn("Total processed items: {}", totalItems);
 		
 		final MessageListenerContainer listenerLinkContainer = this.kafkaListenerEndpointRegistry
