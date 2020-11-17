@@ -132,7 +132,10 @@ public class KafkaConfig {
     	customerConfigMap.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
     	customerConfigMap.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, "30000");
     	// customerConfigMap.put(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG, "1000");
-    	customerConfigMap.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, 2);
+    	// customerConfigMap.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, 2);
+    	// customerConfigMap.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, true);
+    	// customerConfigMap.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, 1000);
+    	customerConfigMap.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
     	return customerConfigMap;
     }
     

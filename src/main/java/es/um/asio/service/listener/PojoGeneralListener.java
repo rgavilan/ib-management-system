@@ -45,6 +45,8 @@ public class PojoGeneralListener {
 
 	@Autowired
 	private KafkaListenerEndpointRegistry kafkaListenerEndpointRegistry;
+	
+	private static Integer totalItems = 0;
 
 	/**
 	 * Method listening input topic name
@@ -56,6 +58,9 @@ public class PojoGeneralListener {
 	public void listen(final PojoData message) {
 		// don't remove this line public void listen(ConsumerRecord<?, ?> cr)
 		
+		this.logger.error("Received message: {}", message);
+	
+		
 		if (this.logger.isDebugEnabled()) {
 			this.logger.debug("Received message: {}", message);
 		}
@@ -63,28 +68,27 @@ public class PojoGeneralListener {
 		ManagementBusEvent managementBusEvent = rdfService.createRDF(new GeneralBusEvent<PojoData>(message));
 
 		this.kafkaService.send(managementBusEvent);
+		
+		
+		totalItems++;
+	
 
 	}
 
-	@EventListener
+	@EventListener(condition = "event.listenerId.startsWith('pojoKafkaListenerContainerFactory-')")
 	public void eventHandler(ListenerContainerIdleEvent event) {
-		this.logger.warn("No messages received for " + event.getIdleTime() + " milliseconds");
+		this.logger.warn("POJO-GENERAL No messages received for " + event.getIdleTime() + " milliseconds");
+		
+		this.logger.warn("Total processed items: {}", totalItems);
 
 		final MessageListenerContainer listenerPlainContainer = this.kafkaListenerEndpointRegistry
 				.getListenerContainer(Constants.POJO_FACTORY);
-		final MessageListenerContainer listenerLinkContainer = this.kafkaListenerEndpointRegistry
-				.getListenerContainer(Constants.POJO_LINK_FACTORY);
 		boolean isPlainRunning = listenerPlainContainer.isRunning();
-		boolean isLinkRunning = listenerLinkContainer.isRunning();
 
-		if (isPlainRunning) {
+		if (isPlainRunning && totalItems > 0) {
 			this.notificationService.stopPojoGeneralListener();
 			this.notificationService.startPojoGeneralLinkListener();
-		}
-
-		if (isLinkRunning) {
-			this.notificationService.stopPojoGeneralListener();
-			this.notificationService.stopPojoGeneralLinkListener();
+			totalItems = 0;
 		}
 	}
 }

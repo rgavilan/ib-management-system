@@ -57,6 +57,7 @@ public class NotificationServiceImpl implements NotificationService {
 				.getListenerContainer(Constants.POJO_FACTORY);
 		if (listenerContainer != null) {
 			listenerContainer.start();
+			listenerContainer.setAutoStartup(true);
 		}
 	}
 
@@ -68,6 +69,7 @@ public class NotificationServiceImpl implements NotificationService {
 				.getListenerContainer(Constants.POJO_FACTORY);
 		if (listenerContainer != null) {
 			listenerContainer.stop();
+			listenerContainer.setAutoStartup(false);
 		}
 	}
 
