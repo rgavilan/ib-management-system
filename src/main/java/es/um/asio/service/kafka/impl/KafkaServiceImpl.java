@@ -22,6 +22,7 @@ public class KafkaServiceImpl implements KafkaService {
 
 	@Override
 	public void send(ManagementBusEvent message) {
+		this.logger.info("Sending message to kafka queue {}", message);
 		this.kafkaRepository.send(message);		
 	}
 }

@@ -5,6 +5,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import es.um.asio.abstractions.domain.Operation;
 import es.um.asio.domain.InputData;
 import es.um.asio.domain.PojoData;
+import es.um.asio.service.error.ManagementException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,7 +29,7 @@ public class GeneralBusEvent<T> {
 		try {
 			return (T) PropertyUtils.getProperty(data, "data");
 		} catch (Exception e) {
-			throw new RuntimeException("Not found data property in " + data);
+			throw new ManagementException("Not found data property in " + data, e);
 		}
 	}
 
