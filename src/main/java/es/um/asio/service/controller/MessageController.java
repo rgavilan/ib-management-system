@@ -31,6 +31,6 @@ public class MessageController {
     	obj.setClassName("myTestClass");
     	
         jmsTemplate.convertAndSend(queue, obj);
-        return new ResponseEntity(message, HttpStatus.OK);
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 }

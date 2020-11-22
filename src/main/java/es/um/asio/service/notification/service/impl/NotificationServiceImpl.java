@@ -25,10 +25,11 @@ public class NotificationServiceImpl implements NotificationService {
 	private KafkaListenerEndpointRegistry kafkaListenerEndpointRegistry;
 
 	/**
-	 * Notification ETL. Logic:
-	 * If the event is END_LINK_PLAIN we start the general-pojo queue
-	 * When the general-pojo queue is idle we stop general-pojo queue and we start general-link-data queue 
-	 * Finally when the general-link-data is idle we stop the general-link-data queue
+	 * Notification ETL. Logic: If the event is END_LINK_PLAIN we start the
+	 * general-pojo queue When the general-pojo queue is idle we stop general-pojo
+	 * queue and we start general-link-data queue Finally when the general-link-data
+	 * is idle we stop the general-link-data queue
+	 *
 	 * @param event the event
 	 * @return the boolean
 	 */
@@ -38,11 +39,11 @@ public class NotificationServiceImpl implements NotificationService {
 		this.logger.warn("NOTIFICATION event {}", event);
 
 		// we need to run asynchronously this code to avoid blocking in the ETL
-		ExecutorService executor = Executors.newSingleThreadExecutor();
+		final ExecutorService executor = Executors.newSingleThreadExecutor();
 		executor.submit(() -> {
 			if (Constants.END_LINK_PLAIN.equals(event)) {
 				this.logger.warn("Starting Pojo General queue");
-				startPojoGeneralListener();
+				this.startPojoGeneralListener();
 			}
 		});
 
@@ -64,6 +65,7 @@ public class NotificationServiceImpl implements NotificationService {
 	/**
 	 * Stop pojo general listener.
 	 */
+	@Override
 	public void stopPojoGeneralListener() {
 		final MessageListenerContainer listenerContainer = this.kafkaListenerEndpointRegistry
 				.getListenerContainer(Constants.POJO_FACTORY);
@@ -76,6 +78,7 @@ public class NotificationServiceImpl implements NotificationService {
 	/**
 	 * Start pojo general link listener.
 	 */
+	@Override
 	public void startPojoGeneralLinkListener() {
 		final MessageListenerContainer listenerContainer = this.kafkaListenerEndpointRegistry
 				.getListenerContainer(Constants.POJO_LINK_FACTORY);
@@ -87,6 +90,7 @@ public class NotificationServiceImpl implements NotificationService {
 	/**
 	 * Stop pojo general link listener.
 	 */
+	@Override
 	public void stopPojoGeneralLinkListener() {
 		final MessageListenerContainer listenerContainer = this.kafkaListenerEndpointRegistry
 				.getListenerContainer(Constants.POJO_LINK_FACTORY);
@@ -94,27 +98,23 @@ public class NotificationServiceImpl implements NotificationService {
 			listenerContainer.stop();
 		}
 	}
-	
-    /**
-     * Gets the status ETL.
-     *
-     * @return the status ETL
-     */
-    @Override
-    public Boolean isRunningQueues() {
-        MessageListenerContainer pojoContainer = kafkaListenerEndpointRegistry
-                .getListenerContainer(Constants.POJO_FACTORY);
-        boolean pojo = pojoContainer.isRunning();
 
-        MessageListenerContainer pojolinkContainer = kafkaListenerEndpointRegistry
-                .getListenerContainer(Constants.POJO_LINK_FACTORY);
-        boolean pojolink = pojolinkContainer.isRunning();
+	/**
+	 * Gets the status ETL.
+	 *
+	 * @return the status ETL
+	 */
+	@Override
+	public Boolean isRunningQueues() {
+		final MessageListenerContainer pojoContainer = this.kafkaListenerEndpointRegistry
+				.getListenerContainer(Constants.POJO_FACTORY);
+		final boolean pojo = pojoContainer.isRunning();
 
-        if (pojo || pojolink) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+		final MessageListenerContainer pojolinkContainer = this.kafkaListenerEndpointRegistry
+				.getListenerContainer(Constants.POJO_LINK_FACTORY);
+		final boolean pojolink = pojolinkContainer.isRunning();
+
+		return (pojo || pojolink);
+	}
 
 }

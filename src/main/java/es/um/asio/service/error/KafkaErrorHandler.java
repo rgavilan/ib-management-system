@@ -6,6 +6,7 @@ import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.kafka.listener.ContainerAwareErrorHandler;
 import org.springframework.kafka.listener.MessageListenerContainer;
 import org.springframework.kafka.support.serializer.DeserializationException;
@@ -18,7 +19,6 @@ public class KafkaErrorHandler implements ContainerAwareErrorHandler  {
 	
 	 @Override
 	    public void handle(Exception thrownException, List<ConsumerRecord<?, ?>> records, Consumer<?, ?> consumer, MessageListenerContainer container) {
-	        // doSeeks(records, consumer);
 	        if (!records.isEmpty()) {
 	            ConsumerRecord<?, ?> record = records.get(0);
 	            String topic = record.topic();
@@ -27,10 +27,13 @@ public class KafkaErrorHandler implements ContainerAwareErrorHandler  {
 	            if (thrownException.getCause() instanceof DeserializationException) {
 	                DeserializationException exception = (DeserializationException) thrownException.getCause();
 	                String malformedMessage = new String(exception.getData());
-	                logger.error("Skipping message with topic: {} and offset: {} " +
-	                        "- malformed message: {} , exception: {}", topic, offset, malformedMessage, exception.getLocalizedMessage());
+	                logger.error("Skipping message with topic: {} and offset: {} - malformed message: {} , exception: {}", topic, offset, malformedMessage, exception.getLocalizedMessage());
 	            } else {
-	                logger.error("Skipping message with topic {} - offset {} - partition {} - exception {}", topic, offset, partition, thrownException.toString());
+	            	String exception = thrownException.toString();
+	                logger.error("Skipping message with topic {} - offset {} - partition {} - exception {}", topic, offset, partition, exception);
+	                
+	               
+	                
 	            }
 	        } else {
 	            logger.error("Consumer exception - cause: {}", thrownException.getMessage());	            

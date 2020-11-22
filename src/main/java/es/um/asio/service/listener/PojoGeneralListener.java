@@ -35,11 +35,11 @@ public class PojoGeneralListener {
 
 	/** The queue. */
 	@Autowired
-    private Queue queue;
+	private Queue queue;
 
-    /** The jms template. */
-    @Autowired
-    private JmsTemplate jmsTemplate;
+	/** The jms template. */
+	@Autowired
+	private JmsTemplate jmsTemplate;
 
 	@Autowired
 	private RDFService rdfService;
@@ -49,47 +49,54 @@ public class PojoGeneralListener {
 
 	@Autowired
 	private KafkaListenerEndpointRegistry kafkaListenerEndpointRegistry;
-	
-	private static Integer totalItems = 0;
+
+	private Integer totalItems = 0;
+
+	/**
+	 * Instantiates a new pojo general listener.
+	 */
+	public PojoGeneralListener() {
+		super();
+		this.totalItems = 0;
+	}
 
 	/**
 	 * Method listening input topic name
-	 * 
+	 *
 	 * @param message
 	 */
 	@KafkaListener(id = "pojoKafkaListenerContainerFactory", topics = "#{'${app.kafka.general-topic-name}'.split(',')}", autoStartup = "false", containerFactory = "pojoKafkaListenerContainerFactory", properties = {
 			"spring.json.value.default.type:es.um.asio.domain.PojoData" })
 	public void listen(final PojoData message) {
 		// don't remove this line public void listen(ConsumerRecord<?, ?> cr)
-		
+
 		this.logger.error("Received message: {}", message);
-	
-		
+
 		if (this.logger.isDebugEnabled()) {
 			this.logger.debug("Received message: {}", message);
 		}
 
-		ManagementBusEvent managementBusEvent = rdfService.createRDF(new GeneralBusEvent<PojoData>(message));
+		final ManagementBusEvent managementBusEvent = this.rdfService.createRDF(new GeneralBusEvent<PojoData>(message));
 
 		// we send the element to activeMQ
-		jmsTemplate.convertAndSend(queue, managementBusEvent);
-				
-		totalItems++;	
+		this.jmsTemplate.convertAndSend(this.queue, managementBusEvent);
+
+		this.totalItems++;
 	}
 
 	@EventListener(condition = "event.listenerId.startsWith('pojoKafkaListenerContainerFactory-')")
-	public void eventHandler(ListenerContainerIdleEvent event) {
-		this.logger.warn("POJO-GENERAL No messages received for " + event.getIdleTime() + " milliseconds");		
-		this.logger.warn("Total processed items: {}", totalItems);
+	public void eventHandler(final ListenerContainerIdleEvent event) {
+		this.logger.warn("POJO-GENERAL No messages received for {} milliseconds", event.getIdleTime());
+		this.logger.warn("Total processed items: {}", this.totalItems);
 
 		final MessageListenerContainer listenerPlainContainer = this.kafkaListenerEndpointRegistry
 				.getListenerContainer(Constants.POJO_FACTORY);
-		boolean isPlainRunning = listenerPlainContainer.isRunning();
+		final boolean isPlainRunning = listenerPlainContainer.isRunning();
 
-		if (isPlainRunning && totalItems > 0) {
+		if (isPlainRunning && (this.totalItems > 0)) {
 			this.notificationService.stopPojoGeneralListener();
 			this.notificationService.startPojoGeneralLinkListener();
-			totalItems = 0;
+			this.totalItems = 0;
 		}
 	}
 }
