@@ -63,7 +63,7 @@ public class URISGeneratorClientCacheImpl implements URISGeneratorClientCache {
 		case Constants.CACHE_PROPERTIES:
 			return cacheProperties;
 		default:
-			return null;
+			return new HashMap<>();
 		}
  	}
 }

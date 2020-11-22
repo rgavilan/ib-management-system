@@ -30,7 +30,7 @@ public class KafkaErrorHandler implements ContainerAwareErrorHandler  {
 	                logger.error("Skipping message with topic: {} and offset: {} " +
 	                        "- malformed message: {} , exception: {}", topic, offset, malformedMessage, exception.getLocalizedMessage());
 	            } else {
-	                logger.error("Skipping message with topic {} - offset {} - partition {} - exception {}", topic, offset, partition, thrownException);
+	                logger.error("Skipping message with topic {} - offset {} - partition {} - exception {}", topic, offset, partition, thrownException.toString());
 	            }
 	        } else {
 	            logger.error("Consumer exception - cause: {}", thrownException.getMessage());	            

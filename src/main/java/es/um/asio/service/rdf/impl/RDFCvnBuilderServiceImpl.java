@@ -145,8 +145,8 @@ public class RDFCvnBuilderServiceImpl implements RDFCvnBuilderService {
         Resource resource = StringUtils.isEmpty(resourceID) ?  model.createResource():model.createResource(resourceID);
         
         List<Field> fields = this.getFields(obj.getClass());       
-        for (Field field : fields) {            
-            field.setAccessible(true);
+        for (Field field : fields) {        	
+            // field.setAccessible(true);  // watch out with this line
             Object value = field.get(obj);      
             if(value == null) {
                 continue;
