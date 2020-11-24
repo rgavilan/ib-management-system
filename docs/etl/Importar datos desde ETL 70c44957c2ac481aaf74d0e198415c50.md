@@ -4,7 +4,7 @@
 
 ## Obligatorios
 
-- Tener instalado Pentaho en local. [https://marketplace.hitachivantara.com/pentaho/](https://marketplace.hitachivantara.com/pentaho/)  Versión 9
+- Tener instalado Pentaho en local. [https://marketplace.hitachivantara.com/pentaho/](https://marketplace.hitachivantara.com/pentaho/) Versión 9
 - Bases de datos: etl, uris, app
 
 ## Recomendados
@@ -13,12 +13,16 @@
 
 ![Importar%20datos%20desde%20ETL%2070c44957c2ac481aaf74d0e198415c50/Untitled.png](Importar%20datos%20desde%20ETL%2070c44957c2ac481aaf74d0e198415c50/Untitled.png)
 
+- La configuración del Conduktor
+
+![Importar%20datos%20desde%20ETL%2070c44957c2ac481aaf74d0e198415c50/Untitled10.png](Importar%20datos%20desde%20ETL%2070c44957c2ac481aaf74d0e198415c50/Untitled10.png)
+
 # Antes de ejecutar una nueva importación
 
 Tener instalado [Pentaho](https://www.notion.so/Pentaho-0cb0bd85cf5e4ac0b288a4293ee07064)
 
 1. Ejecutar `cleanTrellis.bat` . Lo que hace este fichero es parar las imágenes de docker kafka, zookeeper, fuseki-sandbox y trellis. Limpiar las colas y las vuelve a levantar. (Modificar las variables managementSystemPath y tripleStoragePath poniendo la ruta de cada uno)
-2. Limpiar las tablas de la base de datos etl 
+2. Limpiar las tablas de la base de datos etl
 
 ```docker
 TRUNCATE table etl.EmpresaExplotacionPatente;
@@ -28,6 +32,12 @@ TRUNCATE table etl.InventorPatente;
 TRUNCATE table etl.Patente;
 TRUNCATE table etl.Proyecto;
 TRUNCATE table etl.Universidad;
+TRUNCATE table etl.Articulo ;
+TRUNCATE table etl.AutorArticulo;
+TRUNCATE table etl.Libro;
+TRUNCATE table etl.AutorLibro;
+TRUNCATE table etl.FinanciacionProyecto;
+TRUNCATE table etl.DatosEquipoInvestigacion;
 ```
 
 3. Limpiar la cola activeMQ. (borrar y volver a crearla)
@@ -60,7 +70,7 @@ TRUNCATE table etl.Universidad;
 
 ![Importar%20datos%20desde%20ETL%2070c44957c2ac481aaf74d0e198415c50/Untitled%206.png](Importar%20datos%20desde%20ETL%2070c44957c2ac481aaf74d0e198415c50/Untitled%206.png)
 
-Necesitamos conocer el container id de la imágen fuseki-trellis_fuseki_sandbox  con el comando `docker ps` para recuperar el backup
+Necesitamos conocer el container id de la imágen fuseki-trellis_fuseki_sandbox con el comando `docker ps` para recuperar el backup
 
 ![Importar%20datos%20desde%20ETL%2070c44957c2ac481aaf74d0e198415c50/Untitled%207.png](Importar%20datos%20desde%20ETL%2070c44957c2ac481aaf74d0e198415c50/Untitled%207.png)
 
@@ -80,4 +90,4 @@ docker cp <containerId>:/file/path/within/container /host/path/target
 
 Instalar pentaho
 
-Cargar proyecto de  [https://git.izertis.com/universidaddemurcia/semantmurc/dataset-etl](https://git.izertis.com/universidaddemurcia/semantmurc/dataset-etl)
+Cargar proyecto de [https://git.izertis.com/universidaddemurcia/semantmurc/dataset-etl](https://git.izertis.com/universidaddemurcia/semantmurc/dataset-etl)
