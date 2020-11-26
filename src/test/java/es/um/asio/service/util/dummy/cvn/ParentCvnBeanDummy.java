@@ -8,5 +8,5 @@ import lombok.Setter;
 @Setter
 public class ParentCvnBeanDummy extends CvnBean {
 
-    private String parent;
+	public String parent;
 }

@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 public class ComplexCvnBeanDummy extends CvnBean {
 
-    private String bar;
-    
-    private SimpleCvnBeanDummy simpleCvnBean;
+	public String bar;
+
+	public SimpleCvnBeanDummy simpleCvnBean;
 }

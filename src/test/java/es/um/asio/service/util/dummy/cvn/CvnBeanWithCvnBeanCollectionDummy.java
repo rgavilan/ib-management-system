@@ -9,6 +9,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CvnBeanWithCvnBeanCollectionDummy extends CvnBean {
-    
-    private List<SimpleCvnBeanDummy> simpleCvnBeans;
+
+	public List<SimpleCvnBeanDummy> simpleCvnBeans;
 }
