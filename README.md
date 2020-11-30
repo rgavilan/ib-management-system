@@ -66,6 +66,11 @@ Será preciso configurar las siguientes variables de entorno cuando se instale e
 | `SPRING_KAFKA_CONSUMER_GROUP_ID` | ID del grupo de consumidores | management-system |
 | `APP_GENERATOR_URIS_MOCKUP_ENABLED` | Flag que indica si se debe llamar al mockup uris factory. Valores admisibles `true` y `false`|false|
 | `APP_GENERATOR_URIS_ENDPOINT` | URL del servicio URIS Factory | http://localhost:9326 |
+|`APP_ACTIVEMQ_QUEUE_NAME`|Nombre del topic en JMS|management-data|
+|`SPRING_ACTIVEMQ_USER`|Nombre del topic en JMS|admin|
+|`SPRING_ACTIVEMQ_PASSWORD`|Nombre del topic en JMS|admin|
+|`SPRING_ACTIVEMQ_BROKER_URL`|Nombre del topic en JMS|tcp://127.0.0.1:61616|
+|`SPRING_ACTIVEMQ_BROKER_JMX_CREATECONNECTOR`|Flag que indica si es necesario crear un conector|false|
 
 ### Ejecución
 
