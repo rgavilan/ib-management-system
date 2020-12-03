@@ -21,30 +21,33 @@
 
 Tener instalado [Pentaho](https://www.notion.so/Pentaho-0cb0bd85cf5e4ac0b288a4293ee07064)
 
-1. Ejecutar `cleanTrellis.bat` . Lo que hace este fichero es parar las imágenes de docker kafka, zookeeper, fuseki-sandbox y trellis. Limpiar las colas y las vuelve a levantar. (Modificar las variables managementSystemPath y tripleStoragePath poniendo la ruta de cada uno)
+1. Ejecutar `cleanTrellis.bat` . Lo que hace este fichero es parar las imágenes de docker kafka, zookeeper, fuseki-sandbox, trellis y discovery. Limpiar las colas y las vuelve a levantar. (Modificar las variables managementSystemPath y tripleStoragePath poniendo la ruta de cada uno)
 2. Limpiar las tablas de la base de datos etl
 
 ```docker
+TRUNCATE table etl.Articulo;
 TRUNCATE table etl.EmpresaExplotacionPatente;
 TRUNCATE table etl.FacturaProyecto;
-TRUNCATE table etl.GrupoInvestigacion;
-TRUNCATE table etl.InventorPatente;
-TRUNCATE table etl.Patente;
-TRUNCATE table etl.Proyecto;
-TRUNCATE table etl.Universidad;
-TRUNCATE table etl.Articulo ;
-TRUNCATE table etl.AutorArticulo;
-TRUNCATE table etl.Libro;
-TRUNCATE table etl.AutorLibro;
 TRUNCATE table etl.FinanciacionProyecto;
-TRUNCATE table etl.DatosEquipoInvestigacion;
+TRUNCATE table etl.GrupoInvestigacion;
+TRUNCATE table etl.Libro;
+TRUNCATE table etl.Patente;
+TRUNCATE table etl.Persona;
+TRUNCATE table etl.Proyecto;
+TRUNCATE table etl.Rel_AutorArticulo;
+TRUNCATE table etl.Rel_AutorLibro;
+TRUNCATE table etl.Rel_DatosEquipoInvestigacion;
+TRUNCATE table etl.Rel_EquipoProyecto;
+TRUNCATE table etl.Rel_InventorPatente;
+TRUNCATE table etl.Rel_RelacionOrigenProyecto;
+TRUNCATE table etl.Universidad;
 ```
 
 3. Limpiar la cola activeMQ. (borrar y volver a crearla)
 
 ![Importar%20datos%20desde%20ETL%2070c44957c2ac481aaf74d0e198415c50/Untitled%201.png](Importar%20datos%20desde%20ETL%2070c44957c2ac481aaf74d0e198415c50/Untitled%201.png)
 
-4. Borrar la base de datos uris y volverla a crear
+4. Borrar las bases de datos uris y discovery, volverlas a crear
 
 5. Crear los topic `general-data` y `general-link-data`
 
@@ -54,7 +57,7 @@ TRUNCATE table etl.DatosEquipoInvestigacion;
 
 ![Importar%20datos%20desde%20ETL%2070c44957c2ac481aaf74d0e198415c50/Untitled%203.png](Importar%20datos%20desde%20ETL%2070c44957c2ac481aaf74d0e198415c50/Untitled%203.png)
 
-7. Arrancar el backend (Uris, TripleStorage, Management-system, Event-processor)
+7. Arrancar el backend (Uris, Discovery, TripleStorage, Management-system, Event-processor)
 
 8. Arrancar la ETL
 
