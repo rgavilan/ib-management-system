@@ -21,13 +21,13 @@ docker container prune -f
 docker volume prune -f
 docker network prune -f
 
-
+cd %discoveryPath%
+docker-compose up -d
 cd %managementSystemPath% 
 docker-compose up -d
 cd %tripleStoragePath%
 docker-compose up -d
-cd %discoveryPath%
-docker-compose up -d
+
 
 cd c:\desarrollo\bat-files
 
