@@ -34,7 +34,8 @@
 		<sonar.dependencyCheck.htmlReportPath>${dependency.check.report.dir}/dependency-check-report.html</sonar.dependencyCheck.htmlReportPath>
 		<m2e.apt.activation>jdt_apt</m2e.apt.activation>
 		<nvd.mirror.url>http://192.168.1.246:9082</nvd.mirror.url>
-
+		<cucumber.version>6.4.0</cucumber.version>
+		
 		<!-- sonar -->
 		<sonar.sources>pom.xml,src/main</sonar.sources>
 		<sonar.tests></sonar.tests>
@@ -272,6 +273,33 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		
+		<dependency>
+			<groupId>io.cucumber</groupId>
+			<artifactId>cucumber-java</artifactId>
+			<version>${cucumber.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>io.cucumber</groupId>
+			<artifactId>cucumber-junit</artifactId>
+			<version>${cucumber.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>io.cucumber</groupId>
+			<artifactId>cucumber-spring</artifactId>
+			<version>${cucumber.version}</version>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>net.masterthought</groupId>
+			<artifactId>cucumber-reporting</artifactId>
+			<version>5.3.1</version>
+		</dependency>
 
 	</dependencies>
 
@@ -444,6 +472,7 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 
 				<configuration>
+					<testFailureIgnore>true</testFailureIgnore>
 					<!-- Sets the VM argument line used when unit tests are run. -->
 					<argLine>${surefireArgLine}</argLine>
 					<!-- Skips unit tests if the value of skip.unit.tests property is true -->
@@ -479,6 +508,26 @@
 			<plugin>
 				<groupId>org.owasp</groupId>
 				<artifactId>dependency-check-maven</artifactId>
+			</plugin>
+			
+			<plugin>
+				<groupId>net.masterthought</groupId>
+				<artifactId>maven-cucumber-reporting</artifactId>
+				<version>3.13.0</version>
+				<executions>
+					<execution>
+						<id>execution</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<projectName>ManagementSystemCucumber</projectName>
+							<outputDirectory>${project.build.directory}</outputDirectory>
+							<cucumberOutput>${project.build.directory}/cucumber/cucumber.json</cucumberOutput>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

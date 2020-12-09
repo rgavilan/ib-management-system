@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -21,10 +22,10 @@ import es.um.asio.service.uris.URISGeneratorClient;
 @RunWith(SpringRunner.class)
 @ActiveProfiles("unit-test")
 public class RDFDatasetBuilderServiceImplTest {
-	
+
 	@Autowired
-    private RDFDatasetBuilderService rdfDatasetBuilderService;
-		
+	private RDFDatasetBuilderService rdfDatasetBuilderService;
+
 	@MockBean
 	private RDFPojoBuilderService rdfPojoBuilderService;
 
@@ -32,17 +33,18 @@ public class RDFDatasetBuilderServiceImplTest {
 	private URISGeneratorClient urisGeneratorClient;
 
 	@Configuration
-    static class RDFDatasetBuilderServiceImplTestConfig {
-        @Bean
-        RDFDatasetBuilderService RDFCvnBuilderService() {
-            return new RDFDatasetBuilderServiceImpl();
-        }
-    }
-	
+	static class RDFDatasetBuilderServiceImplTestConfig {
+		@Bean
+		@Primary
+		RDFDatasetBuilderService RDFCvnBuilderService() {
+			return new RDFDatasetBuilderServiceImpl();
+		}
+	}
+
 	@Test
-    public void inkoveBuilder() {
+	public void inkoveBuilder() {
 		GeneralBusEvent input = new GeneralBusEvent<InputData>();
 		ManagementBusEvent busEvent = rdfDatasetBuilderService.inkoveBuilder(input);
 		assertNotEquals("actividad", busEvent);
-    }
+	}
 }

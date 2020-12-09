@@ -1,28 +1,81 @@
+---
 app:
+ # CORS
+  cors:
+    enabled: true
+    allowedOrigin: '*'
+    allowedMethods: GET,POST,PUT,DELETE
+    allowedHeaders:
+      - Authorization
+      - X-Requested-With
+      - Content-Type
+    maxAge: 3600
+
   kafka:
+    general-contingency-topic-name: general-contingency-data
     general-topic-name: general-data
+    general-link-topic-name: general-link-data
     management-topic-name: management-data
     create-topics: false
   generator-uris:
     mockup:
       enabled: false
-    endpoint: http://localhost:8080
+    endpoint: http://localhost:9326
     endpoint-root-uri: ${app.generator-uris.endpoint}/uri-factory/root/uri
     endpoint-resource-id: ${app.generator-uris.endpoint}/uri-factory/canonical/resource
     endpoint-property: ${app.generator-uris.endpoint}/uri-factory/canonical/property
     endpoint-resource-type: ${app.generator-uris.endpoint}/uri-factory/canonical/entity
-    
+
+# Cache configuration
+  cache:
+    embedded:
+      enabled: true
+
+  # Swagger
+  swagger:
+    enabled: false
+  #ActiveMQ
+  activemq:
+    queue-name: management-data 
+   
 # Spring configuration
 spring:
+  main:
+    allow-bean-definition-overriding: true
   kafka:
-    bootstrap-servers:
-      - localhost:29092
+    bootstrap-servers: localhost:29092
     consumer:
       bootstrap-servers:
         - localhost:29092
       group-id: management-system
     producer:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-  # Solr
-  solr:
-    enabled: false
+  activemq:
+    user: admin
+    password: admin
+    broker-url: tcp://127.0.0.1:61616
+    broker:
+      jmx:
+        createConnector: false  
+
+## Actuator
+management:
+  endpoint:
+    shutdown:
+      enabled: true
+    health:
+      show-details: always
+  endpoints:
+    web:
+      base-path: /management
+  server:
+    port: 9321
+
+## In case of configure web endpoints, remove it or change port number
+server:
+  port: ${management.server.port}
+
+### log
+logging:
+  level:
+    es.um.asio.service: WARN
