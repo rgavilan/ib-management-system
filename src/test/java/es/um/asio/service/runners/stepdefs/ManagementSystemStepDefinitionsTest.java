@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.web.client.RestTemplate;
 
+import es.um.asio.service.config.KafkaAdminConfig;
 import es.um.asio.service.model.ModelWrapper;
 import es.um.asio.service.rdf.RDFPojoBuilderService;
 import es.um.asio.service.rdf.RDFPojoLinkBuilderService;
@@ -43,6 +44,9 @@ public class ManagementSystemStepDefinitionsTest {
 
 	@MockBean
 	private RDFPojoLinkBuilderService rDFPojoLinkingBuilderService;
+
+	@MockBean
+	private KafkaAdminConfig kafka;
 
 	@MockBean
 	private RestTemplate restTemplate;
