@@ -17,6 +17,7 @@
 	<packaging>${artifact.packaging}</packaging>
 	<name>UM - ASIO - management-system</name>
 	<description>UM - ASIO - management-system</description>
+	<url>https://www.um.es/web/hercules/</url>
 
 	<scm>
 		<url>scm:git:https://github.com/HerculesCRUE/ib-management-system.git</url>
