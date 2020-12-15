@@ -31,7 +31,7 @@ public class KafkaRepositoryTest {
 	@MockBean
     private KafkaTemplate<String, ManagementBusEvent> kafkaTemplate;
 	
-	private String managementTopicName = "management-data";
+	private static final String MANAGEMENT_TOPIC_NAME = "management-data";
 	
 	@TestConfiguration
 	static class KafkaRepositoryImplTestConfig {
@@ -43,14 +43,14 @@ public class KafkaRepositoryTest {
 	
 	@Before
     public void setUp() {
-        ReflectionTestUtils.setField(kafkaRepository, "managementTopicName", managementTopicName);
+        ReflectionTestUtils.setField(kafkaRepository, "managementTopicName", MANAGEMENT_TOPIC_NAME);
     }
 	
 	@Test
 	public void send() {
 		ManagementBusEvent message = new ManagementBusEvent();
 		kafkaRepository.send(message);
-		verify(kafkaTemplate, times(1)).send(managementTopicName, message);
+		verify(kafkaTemplate, times(1)).send(MANAGEMENT_TOPIC_NAME, message);
 	}
 
 }
