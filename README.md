@@ -16,6 +16,11 @@
 
 # ASIO - Sistema de gestión
 
+|     | Master |
+| --- | ------ |
+| Quality Gate | [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=HerculesCRUE_ib-management-system&metric=alert_status)](https://sonarcloud.io/dashboard?id=HerculesCRUE_ib-management-system) |
+| Coverage | [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=HerculesCRUE_ib-management-system&metric=coverage)](https://sonarcloud.io/dashboard?id=HerculesCRUE_ib-management-system) |
+
 Sistema de gestión de datos del módulo de procesamiento para el proyecto Backend SGI (ASIO). 
 
 ## OnBoarding
@@ -89,7 +94,7 @@ No es necesario especificar la clase de inicio de la aplicación, ya que el fich
 Se incluyen los resultados del testing y cobertura en los siguientes enlaces:
 
 * [Testing TDD](http://herc-iz-front-desa.atica.um.es:8070/management-system/surefire/surefire-report.html)
-* [Cobertura TDD](http://herc-iz-front-desa.atica.um.es:8070/management-system/jacoco/)
+* [Cobertura TDD](https://sonarcloud.io/component_measures?id=HerculesCRUE_ib-management-system&metric=coverage&view=list)
 * [Testing BDD](docs/testing.md)
 
 ##  Documentación adicional
