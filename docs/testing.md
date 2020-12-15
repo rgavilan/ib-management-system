@@ -21,7 +21,7 @@ RF3.1<br>RF3.13<br>RF3.14<br>RF3.15	| [`pojo-xml.feature`](../src/test/features/
 
 ## Reporte
 
-* [Cucumber Report](http://herc-iz-front-desa.atica.um.es:8070/management-system/cucumber-html-reports/overview-features.html)
+* [Cucumber Report](http://herc-iz-front-desa.atica.um.es:8070/management-system/cucumber/overview-features.html)
 
 
 
