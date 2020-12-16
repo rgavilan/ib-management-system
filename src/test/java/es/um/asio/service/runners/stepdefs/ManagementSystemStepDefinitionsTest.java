@@ -149,7 +149,7 @@ public class ManagementSystemStepDefinitionsTest {
 
 	@Then("^the input processor sends xml file to Management-System$")
 	public void the_input_processor_sends_xml_file_to_Management_System() {
-
+		throw new PendingException();
 	}
 
 }
